@@ -25,14 +25,14 @@ public class EventsPresenter extends BasePresenter
 
     public void createEvent(String sName,String sDescription){
 
-        final Event objEvent = new Event(sName,new Date(),sDescription);
+        final Event objEvent = new Event();
 
         observerTask(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber suscriber) {
                 try
                 {
-                    EventInteractor.getInstance().createEvent(objEvent);
+                    EventInteractor.getInstance().getAllEvent(null);
                     Log.i(TAG, "Event created!!");
 
                     suscriber.onCompleted();

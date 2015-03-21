@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.eventerzgz.presenter.events.EventsIface;
+import com.eventerzgz.presenter.events.EventsPresenter;
 import com.eventerzgz.view.R;
 
-public class ListEventsActivity extends ActionBarActivity {
+public class ListEventsActivity extends ActionBarActivity implements EventsIface {
+
+    private EventsPresenter eventsPresenter = new EventsPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_events);
+        eventsPresenter.createEvent(null,null);
     }
 
 
@@ -36,5 +41,20 @@ public class ListEventsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void createdEvent() {
+
+    }
+
+    @Override
+    public void deleteEvent() {
+
+    }
+
+    @Override
+    public void error(String sMessage) {
+
     }
 }
