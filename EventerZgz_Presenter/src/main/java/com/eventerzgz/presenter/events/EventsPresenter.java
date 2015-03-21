@@ -1,11 +1,11 @@
 package com.eventerzgz.presenter.events;
 
-import java.util.Date;
-
 import android.util.Log;
+
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
+
 import rx.Observable;
 import rx.Subscriber;
 
@@ -25,7 +25,7 @@ public class EventsPresenter extends BasePresenter
 
     public void createEvent(String sName,String sDescription){
 
-        final Event objEvent = new Event(sName,new Date(),sDescription);
+        final Event objEvent = new Event();
 
         observerTask(new Observable.OnSubscribe<Boolean>() {
             @Override
