@@ -3,6 +3,7 @@ package com.eventerzgz.interactor.category;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.exception.EventZgzException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,16 @@ public class CategoryInteractor {
 
     public static List<Category> getCategories() throws EventZgzException
     {
-        return new CategoryRest().getAllCategories();
+        List<Category> categoriesList;
+
+        if(CategoryMem.getInstance().getAllCategories() != null && CategoryMem.getInstance().getAllCategories().size() > 0){
+            categoriesList = CategoryMem.getInstance().getAllCategories();
+        }else{
+            categoriesList = new CategoryRest().getAllCategories();
+            CategoryMem.getInstance().setEventCached(categoriesList);
+        }
+
+        return categoriesList;
     }
 
 
