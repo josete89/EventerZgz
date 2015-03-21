@@ -29,7 +29,7 @@ public class CategoryMem implements CategoryDataSource {
         return instance;
     }
 
-    public static void setEventCached(List<Category> eventCached) {
+    public static void setCategoriesCached(List<Category> eventCached) {
         CategoryMem.eventCached = eventCached;
     }
 

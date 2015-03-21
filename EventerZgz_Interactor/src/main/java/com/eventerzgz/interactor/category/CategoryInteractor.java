@@ -19,7 +19,7 @@ public class CategoryInteractor {
             categoriesList = CategoryMem.getInstance().getAllCategories();
         }else{
             categoriesList = new CategoryRest().getAllCategories();
-            CategoryMem.getInstance().setEventCached(categoriesList);
+            CategoryMem.getInstance().setCategoriesCached(categoriesList);
         }
 
         return categoriesList;
