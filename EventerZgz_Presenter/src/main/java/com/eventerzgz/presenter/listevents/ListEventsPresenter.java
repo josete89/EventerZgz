@@ -3,6 +3,8 @@ package com.eventerzgz.presenter.listevents;
 import android.util.Log;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
+import com.eventerzgz.model.Base;
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
 import rx.Observable;
@@ -36,44 +38,22 @@ public class ListEventsPresenter extends BasePresenter {
 
     public void getEventList(){
 
-        final List<Event> eventList = new ArrayList<>();
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-        eventList.add(eventDummy());
-
-
-
-
-
-        observerTask(new Observable.OnSubscribe<Boolean>() {
+        observerTask(new Observable.OnSubscribe<List<Event>>() {
             @Override
             public void call(Subscriber suscriber) {
                 try
                 {
-                   // EventInteractor.getInstance().getAllEvent(null);
-                    CategoryInteractor.getCategories();
-                    Log.i(TAG, "Event created!!");
-
-                    suscriber.onCompleted();
+                    suscriber.onNext(EventInteractor.getAllEvent(null));
                 } catch (Exception e)
                 {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
             }
-        }, new Subscriber<Boolean>() {
+        }, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
-                listEventsIface.fetchedEvents(eventList);
+
             }
 
             @Override
@@ -82,10 +62,41 @@ public class ListEventsPresenter extends BasePresenter {
             }
 
             @Override
-            public void onNext(Boolean o) {
-
+            public void onNext(List<Event> o) {
+                listEventsIface.fetchedEvents(o);
             }
         });
+
+        observerTask(new Observable.OnSubscribe<List<Category>>() {
+            @Override
+            public void call(Subscriber suscriber) {
+                try
+                {
+                    suscriber.onNext(CategoryInteractor.getCategories());
+                } catch (Exception e)
+                {
+                    Log.e(TAG, e.getMessage(), e);
+                    suscriber.onError(e);
+                }
+            }
+        }, new Subscriber<List<Category>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listEventsIface.error(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<Category> o) {
+                listEventsIface.fetchedCategories(o);
+                onCompleted();
+            }
+        });
+
     }
 
 }
