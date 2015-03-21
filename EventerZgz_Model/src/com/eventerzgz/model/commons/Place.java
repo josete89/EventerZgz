@@ -12,7 +12,7 @@ public class Place
     @Element(name="direccion", required = false)
     private String sAddress;
 
-    @Element(name="direccion", required = false)
+    @Element(name="cp", required = false)
     private String sCP;
 
     @Element(name="localidad", required = false)
