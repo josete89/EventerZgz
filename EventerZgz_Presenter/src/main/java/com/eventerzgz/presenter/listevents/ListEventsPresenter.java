@@ -25,7 +25,7 @@ public class ListEventsPresenter extends BasePresenter {
         this.listEventsIface = listEventsIface;
     }
 
-    public static Event eventDummy(){
+    public static Event eventDummy() {
         Event eventDummy = new Event();
 
         eventDummy.setdEndDate(new Date());
@@ -71,11 +71,9 @@ public class ListEventsPresenter extends BasePresenter {
         observerTask(new Observable.OnSubscribe<List<Category>>() {
             @Override
             public void call(Subscriber suscriber) {
-                try
-                {
+                try {
                     suscriber.onNext(CategoryInteractor.getCategories());
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
