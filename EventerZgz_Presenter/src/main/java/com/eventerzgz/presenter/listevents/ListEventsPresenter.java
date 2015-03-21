@@ -3,14 +3,12 @@ package com.eventerzgz.presenter.listevents;
 import android.util.Log;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
-import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
 import rx.Observable;
 import rx.Subscriber;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class ListEventsPresenter extends BasePresenter {
             public void call(Subscriber suscriber) {
                 try
                 {
-                    suscriber.onNext(EventInteractor.getAllEvent(null));
+                    suscriber.onNext(EventInteractor.getAllEvent());
                 } catch (Exception e)
                 {
                     Log.e(TAG, e.getMessage(), e);

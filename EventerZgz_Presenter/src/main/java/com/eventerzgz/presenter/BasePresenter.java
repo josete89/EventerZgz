@@ -21,15 +21,13 @@ public abstract class BasePresenter
 
     protected String TAG = "EventerZgz";
 
-    public void observerTask(Observable.OnSubscribe onSubscribe, Subscriber subscriber){
+    public void observerTask(Observable.OnSubscribe onSubscribe, Subscriber subscriber)
+    {
         Observable.create(onSubscribe).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 
     }
-
-
-
 
     public void addCalendarEvent(Event event,Context ctx)
     {
