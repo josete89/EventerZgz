@@ -7,10 +7,10 @@ import org.simpleframework.xml.Element;
  */
 public abstract class Base
 {
-    @Element
+    @Element(required = false)
     private int id;
 
-    @Element(name="title")
+    @Element(name="title", required = false)
     private String sTitle;
 
     public int getId() {
@@ -52,5 +52,13 @@ public abstract class Base
         int result = id;
         result = 31 * result + (sTitle != null ? sTitle.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "\nBase{" +
+                "id=" + id +
+                ", sTitle='" + sTitle + '\'' +
+                '}';
     }
 }
