@@ -4,4 +4,12 @@
     <string name="app_name">EcoZgz</string>
     <string name="hello_world">Hola mundo</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_detail_event">Detalle eventos</string>
+    <string name="title_activity_list_event">Listado eventos</string>
+
+    <string name="compartir">Compartir</string>
+    <string name="compartircon">Compartir con: </string>
+    <string name="verMas">Ver más</string>
+    <string name="action_search">Search</string>
+    <string name="contenido_no_disponible">Contenido no disponible</string>
 </resources>

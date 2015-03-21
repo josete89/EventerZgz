@@ -1,13 +1,13 @@
 package com.eventerzgz.model.event;
 
-import java.util.Date;
-import java.util.List;
-
 import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.ExtraInfo;
 import com.eventerzgz.model.commons.Geometry;
 import com.eventerzgz.model.commons.Poblation;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by joseluis on 20/3/15.

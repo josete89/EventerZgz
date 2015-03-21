@@ -9,6 +9,7 @@ public interface EventsIface extends BasePresenterIface
 {
 
     public void createdEvent();
-    public void deleteEvent();
+
+
     
 }
