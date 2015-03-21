@@ -50,5 +50,7 @@ dependencies {
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'com.android.support:appcompat-v7:20.0.0'
-
+    compile files('libs/universal-image-loader-1.8.5-with-sources.jar')
+    compile project(':viewflow')
+    compile files('libs/nineoldandroids-2.4.0.jar')
 }
