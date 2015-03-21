@@ -6,6 +6,7 @@ package com.eventerzgz.view.application;
 
 import android.app.Application;
 
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -28,6 +29,7 @@ public class EventerZgzApplication  extends Application {
     //Data
     //----
     public static List<Event> eventsList;
+    public static List<Category> categoryList;
 
 
     @Override

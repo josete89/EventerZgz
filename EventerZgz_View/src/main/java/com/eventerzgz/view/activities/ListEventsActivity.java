@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
@@ -66,13 +67,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents = (ListView) findViewById(R.id.listViewEvents);
         progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
         emptyView = findViewById(R.id.emptyView);
-        textViewError = (TextView)findViewById(R.id.textViewError);
+        textViewError = (TextView) findViewById(R.id.textViewError);
 
         configPaginacionListView();
 
         // Menu lateral
         // ------------
-        configureMenuLateral();
+        //configureMenuLateral();
 
         //Presenter
         //---------
@@ -164,6 +165,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
+    public void fetchedCategories(List<Category> listCategory) {
+        EventerZgzApplication.categoryList = listCategory;
+        configureMenuLateral();
+    }
+
+    @Override
     public void error(String sMessage) {
 
         hideLoading();
@@ -234,13 +241,16 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             Event event = EventerZgzApplication.eventsList.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
-            viewholder.textViewFecha.setText(event.getdEndDate().toString());
-
+            if (event.getdEndDate() != null) {
+                viewholder.textViewFecha.setText(event.getdEndDate().toString());
+            } else {
+                viewholder.textViewFecha.setVisibility(View.GONE);
+            }
             //Imagen
             //------
-            if(event.getsImage()!=null && event.getsImage().equals("")){
-                ImageLoader.getInstance().displayImage(event.getImageWithUri(), viewholder.imageView);
-            }else{
+            if (event.getsImage() != null && !event.getsImage().equals("")) {
+                ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
+            } else {
                 viewholder.imageView.setVisibility(View.GONE);
             }
 
@@ -249,14 +259,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.tvCompartir.setTag(position);
             viewholder.tvCompartir
                     .setOnClickListener(new View.OnClickListener() {
-                           @Override
-                           public void onClick(View v) {
-                                int position = (Integer) v.getTag();
-                                String url = "www.marca.com";
-                                SocialShare.share(ListEventsActivity.this, url);
-                           }
-                    }
-            );
+                                            @Override
+                                            public void onClick(View v) {
+                                                int position = (Integer) v.getTag();
+                                                String url = "www.marca.com";
+                                                SocialShare.share(ListEventsActivity.this, url);
+                                            }
+                                        }
+                    );
 
             return vi;
         }
@@ -272,8 +282,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     // --------------------------------------------------------------------------------------
-// DRAWER ITEM CLICK LISTENER
-// --------------------------------------------------------------------------------------
+    // DRAWER ITEM CLICK LISTENER
+    // --------------------------------------------------------------------------------------
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -352,7 +362,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     // INTENT EVENT
     // --------------------------------------------------------------------------------------
-    private void intentDetailEvent(int position){
+    private void intentDetailEvent(int position) {
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
         startActivity(intentEvent);

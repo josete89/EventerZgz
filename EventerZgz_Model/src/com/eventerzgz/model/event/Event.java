@@ -183,10 +183,6 @@ public class Event extends Base {
     }
 
 
-    public String getImageWithUri() {
-        return "http://" + sImage;
-    }
-
     public Date getdStartDate() {
         return dStartDate;
     }

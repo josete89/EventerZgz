@@ -1,13 +1,13 @@
 package com.eventerzgz.presenter;
 
-import java.util.Calendar;
-
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.provider.CalendarContract;
+
 import com.eventerzgz.model.event.Event;
+
+import java.util.Calendar;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,8 +41,8 @@ public abstract class BasePresenter
 
         String title = event.getsTitle();
         String description = event.getsDescription();
-        String location = event.getSubEventList() != null && event.getSubEventList().size() > 0 ? event.getSubEventList().get(0).getObjPlace().getsAddress():"";
-        String email = event.getSubEventList() != null && event.getSubEventList().size() > 0 ? event.getSubEventList().get(0).getObjPlace().getsMail():"";
+        String location = (event.getSubEvent() != null && event.getSubEvent().getWhere() != null) ? event.getSubEvent().getWhere().getsAddress():"";
+        String email = (event.getSubEvent() != null && event.getSubEvent().getWhere() != null) ? event.getSubEvent().getWhere().getsMail():"";
 
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
