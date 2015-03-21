@@ -4,4 +4,9 @@
     <string name="app_name">EcoZgz</string>
     <string name="hello_world">Hola mundo</string>
     <string name="action_settings">Settings</string>
+    <string name="welcome">Bienvenido a EventerZGZ</string>
+    <string name="saltar">SALTAR</string>
+    <string name="question_categories">"¿En qué categorías estás interesado?"</string>
+    <string name="question_notif">"¿En que categoría deseas recibir notificaciones?"</string>
+    <string name="question_map">"¿Sobre que zona deseas ver eventos?"</string>
 </resources>

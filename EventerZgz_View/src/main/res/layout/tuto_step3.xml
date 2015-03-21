@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="@string/question_map"
+        android:textSize="25sp"
+        android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
+</LinearLayout>
+    <com.eventerzgz.view.utils.ButtonView
+        android:id="@+id/button"
+        ripple:alphaFactor="0.7"
+        ripple:hover="true"
+        ripple:rippleColor="#58FAAC"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/card_bk"
+        android:gravity="center"
+        android:text="@string/saltar"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+</RelativeLayout>
