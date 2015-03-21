@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eventerzgz.model.event.Event;
+import com.eventerzgz.presenter.detail.DetailEventPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +29,10 @@ public class DetailEventActivity extends ActionBarActivity {
     private TextView textViewTitle;
     private TextView textViewDescription;
     private ImageView imageViewDetail;
-
+    private TextView textViewDireccion;
+    private TextView textViewTelefono;
+    private TextView textViewConexion;
+    private TextView textViewLugar;
     //Data intent
     //-----------
     private int posEventSelected;
@@ -57,7 +61,11 @@ public class DetailEventActivity extends ActionBarActivity {
         //----
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         textViewDescription = (TextView) findViewById(R.id.textViewDescription);
+        textViewDireccion = (TextView) findViewById(R.id.textViewDireccion);
+        textViewTelefono = (TextView) findViewById(R.id.textViewTelefono);
+        textViewConexion = (TextView) findViewById(R.id.textViewConexion);
         imageViewDetail = (ImageView)findViewById(R.id.imageViewDetail);
+        textViewLugar = (TextView)findViewById(R.id.textViewLugar);
         setInfoEvent();
 
         try {
@@ -93,6 +101,15 @@ public class DetailEventActivity extends ActionBarActivity {
         }else{
             imageViewDetail.setVisibility(View.GONE);
         }
+        try {
+            textViewDireccion.setText(eventSelected.getSubEvent().getWhere().getsAddress());
+            textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());
+            textViewConexion.setText(eventSelected.getSubEvent().getWhere().getsBus());
+            textViewLugar.setText(eventSelected.getSubEvent().getWhere().getsTitle());
+        }catch (Exception e){
+
+        }
+
     }
 
 
@@ -158,6 +175,15 @@ public class DetailEventActivity extends ActionBarActivity {
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?daddr=" + latitudePoint + "," + longitudePoint));
         startActivity(intent);
+    }
+
+    public void onClickDetail(View view){
+        switch (view.getId()){
+            case R.id.btnCreate:
+                new DetailEventPresenter().addCalendarEvent(eventSelected, DetailEventActivity.this);
+                break;
+        }
+
     }
 
 }

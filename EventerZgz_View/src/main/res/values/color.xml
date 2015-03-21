@@ -23,4 +23,8 @@
 
     <color name="primary_color">#16a085</color>
     <color name="primary_color_light">#1abc9c</color>
+
+    <color name="fab_color_pressed">#007787</color>
+    <color name="fab_color_shadow">#44000000</color>
+    <color name="style_color_accent">#01bcd5</color>
 </resources>

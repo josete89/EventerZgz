@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <!-- IMAGEN -->
 
         <RelativeLayout
@@ -60,13 +61,19 @@
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
 
-
+        <LinearLayout
+            android:id="@+id/layoutLinea"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/layoutImage"
+            android:background="@color/primary_color"
+            android:orientation="horizontal"></LinearLayout>
         <!-- INFO -->
         <LinearLayout
             android:id="@+id/layoutInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layoutImage"
+            android:layout_below="@+id/layoutLinea"
             android:background="@color/white"
             android:orientation="vertical"
             android:tag="sticky">
@@ -88,6 +95,64 @@
                 android:textSize="22sp"
                 tools:ignore="HardcodedText" />
 
+            <TextView
+                android:id="@+id/textViewDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/textViewConexion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewLugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/textViewDescription"
                 style="@style/textShadow"
@@ -111,6 +176,17 @@
             android:layout_height="200dp"
             android:layout_below="@+id/layoutInfo" />
 
-
+        <ImageButton
+            android:id="@+id/btnCreate"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/layoutImage"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="-30dp"
+            android:background="@drawable/btn_fab_default"
+            android:onClick="onClickDetail"
+            android:src="@drawable/calendar"
+            android:textSize="28sp" />
     </RelativeLayout>
 </ScrollView>
