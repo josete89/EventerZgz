@@ -9,11 +9,7 @@ import android.util.Log;
 import com.eventerzgz.interactor.BaseInteractor;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 
 /**
  * Created by joseluis on 20/3/15.
@@ -98,9 +94,9 @@ public class EventInteractor extends BaseInteractor{
 
         String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*";
 
-        Content content = doHTTPGet(sUrl);
+        String content = doHTTPGet(sUrl);
 
-        Log.i(TAG,content.toString());
+        Log.i(TAG,content);
 
         return eventList;
     }

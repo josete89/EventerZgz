@@ -10,10 +10,6 @@ import com.eventerzgz.model.exception.EventZgzException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -25,23 +21,21 @@ public class BaseInteractor {
     protected final String TAG = "EventerZgz";
     protected final int TIMEOUT = 500;
 
-   // public enum HTTP_CODES {}
-
-
-    protected Content doHTTPGet(String sUrl) throws EventZgzException
+    
+    protected String doHTTPGet(String sUrl) throws EventZgzException
     {
         try
         {
-            Response response = Request.Get(sUrl).connectTimeout(TIMEOUT).execute();
-            HttpResponse httpResponse = response.returnResponse();
+            DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(sUrl);
+            HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
 
             Log.i(TAG,"URL"+sUrl+"HTTP Response ->"+httpResponse.getStatusLine().getStatusCode());
-
 
             if(httpResponse != null
                     && httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
             {
-                return response.returnContent();
+                return getHttpContent(httpResponse.getEntity());
             }
             else
             {
