@@ -10,8 +10,8 @@ public class Coordinates
 
     public Coordinates(String coordinates) {
         String[] coords = coordinates.split(",");
-        this.fLatitude = Float.parseFloat(coords[0]);
-        this.fLonguide = Float.parseFloat(coords[1]);
+        this.fLonguide = Float.parseFloat(coords[0]);
+        this.fLatitude = Float.parseFloat(coords[1]);
     }
 
     public static Coordinates doParse(String sRawObj){
