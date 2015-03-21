@@ -3,8 +3,7 @@ package com.eventerzgz.presenter.events;
 import java.util.Date;
 
 import android.util.Log;
-import com.eventerzgz.interactor.EventInteractor;
-import com.eventerzgz.interactor.EventerRepository;
+import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.Event;
 import com.eventerzgz.presenter.BasePresenter;
 import rx.Observable;
@@ -31,11 +30,11 @@ public class EventsPresenter extends BasePresenter
         observerTask(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber suscriber) {
-                EventerRepository userRepository = EventInteractor.getInstance();
                 try
                 {
-                    userRepository.createEvent(objEvent);
-                    Log.i(TAG, "");
+                    EventInteractor.getInstance().createEvent(objEvent);
+                    Log.i(TAG, "Event created!!");
+
                     suscriber.onCompleted();
                 } catch (Exception e)
                 {
