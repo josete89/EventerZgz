@@ -12,7 +12,7 @@ public class Place
     @Element(name="direccion", required = false)
     private String sAddress;
 
-    @Element(name="direccion", required = false)
+    @Element(name="cp", required = false)
     private String sCP;
 
     @Element(name="localidad", required = false)
@@ -36,10 +36,9 @@ public class Place
     @Element(name="autobuses", required = false)
     private String sBus;
 
-    @Element(name="pais", required = false)
+    @Element(name="accesibilidad", required = false)
     private String sAccessibility;
 
-    @Element(name="pais", required = false)
     private Coordinates objCoordinates;
 
     public static Place doParse(String sRawObj){
