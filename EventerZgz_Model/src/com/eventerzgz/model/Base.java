@@ -41,7 +41,7 @@ public abstract class Base
 
         Base base = (Base) o;
 
-        if (id != base.id) return false;
+        if (id != null ? !id.equals(base.id) : base.id != null) return false;
         if (sTitle != null ? !sTitle.equals(base.sTitle) : base.sTitle != null) return false;
 
         return true;
@@ -49,7 +49,7 @@ public abstract class Base
 
     @Override
     public int hashCode() {
-        int result = 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sTitle != null ? sTitle.hashCode() : 0);
         return result;
     }

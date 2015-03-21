@@ -4,10 +4,17 @@ package com.eventerzgz.view.application;
  * Created by JavierArroyo on 21/3/15.
  */
 
+import android.app.AlarmManager;
 import android.app.Application;
 
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.SystemClock;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
+import com.eventerzgz.presenter.service.AlarmReciver;
+import com.eventerzgz.presenter.service.EventService;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -32,6 +39,20 @@ public class EventerZgzApplication  extends Application {
     public static List<Category> categoryList;
 
 
+
+    public void startService(){
+        // TODO - Comprobar que no esté lanzado ya
+
+
+
+        AlarmManager alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), AlarmReciver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
+                        6 * 1000, alarmIntent);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,5 +69,6 @@ public class EventerZgzApplication  extends Application {
 
         // Iniciar ImageLoader
         ImageLoader.getInstance().init(config);
+        startService();
     }
 }

@@ -59,6 +59,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ListEventsActivity" />
         </activity>
+
+        <!-- to be activated service on boot is completed -->
+        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+        <!-- Keeps the processor from sleeping when a message is received. -->
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+        <receiver android:name="com.eventerzgz.presenter.service.AlarmReciver"
+                  android:enabled="true"
+                  >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
