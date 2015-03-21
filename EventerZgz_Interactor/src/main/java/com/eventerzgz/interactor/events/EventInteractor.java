@@ -88,7 +88,7 @@ public class EventInteractor extends BaseInteractor{
 
     }
 
-    public List<Event> getAllEvent(EventFilter... eventFilter) throws EventZgzException
+    public static List<Event> getAllEvent(EventFilter... eventFilter) throws EventZgzException
     {
 
         //Decidir la impl
@@ -102,8 +102,5 @@ public class EventInteractor extends BaseInteractor{
     }
 
 
-    public static EventInteractor getInstance()
-    {
-        return new EventInteractor();
-    }
+
 }

@@ -32,7 +32,7 @@ public class EventsPresenter extends BasePresenter
             public void call(Subscriber suscriber) {
                 try
                 {
-                    EventInteractor.getInstance().getAllEvent(null);
+                   // EventInteractor.getInstance().getAllEvent(null);
                     Log.i(TAG, "Event created!!");
 
                     suscriber.onCompleted();
