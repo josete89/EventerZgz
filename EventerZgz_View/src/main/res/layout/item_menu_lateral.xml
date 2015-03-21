@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="100dp"
+    android:orientation="vertical" >
+
+
+    <TextView
+        android:id="@+id/textViewCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:drawablePadding="10dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+</LinearLayout>

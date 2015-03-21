@@ -2,12 +2,11 @@ package com.eventerzgz.view.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.eventerzgz.view.R;
-import com.eventerzgz.view.adapter.DiffAdapter;
+import com.eventerzgz.view.adapter.TutorialAdapter;
 
 import org.taptwo.android.widget.TitleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
@@ -27,7 +26,7 @@ public class TutorialActivity extends Activity {
         setContentView(R.layout.title_layout);
 
         viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-        DiffAdapter adapter = new DiffAdapter(this);
+        TutorialAdapter adapter = new TutorialAdapter(this);
         viewFlow.setAdapter(adapter);
         TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
         indicator.setTitleProvider(adapter);

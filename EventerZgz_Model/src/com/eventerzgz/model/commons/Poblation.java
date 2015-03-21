@@ -7,7 +7,21 @@ import com.eventerzgz.model.Base;
  */
 public class Poblation extends Base
 {
+    private String sImage;
+
+    public static Poblation doParse(String sRawObj){
+        return new Poblation();
+    }
 
 
+
+    //GETTERS & SETTERS
+    public String getsImage() {
+        return sImage;
+    }
+
+    public void setsImage(String sImage) {
+        this.sImage = sImage;
+    }
 
 }

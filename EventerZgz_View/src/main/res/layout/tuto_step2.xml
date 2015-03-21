@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <com.eventerzgz.view.utils.ButtonView
-        android:id="@+id/button"
+        android:id="@+id/buttonClose"
         ripple:alphaFactor="0.7"
         ripple:hover="true"
         ripple:rippleColor="#58FAAC"

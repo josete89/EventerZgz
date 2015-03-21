@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="@string/saltar"
-        android:id="@+id/button"
+        android:id="@+id/buttonClose"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:textSize="20sp"

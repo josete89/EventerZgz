@@ -91,6 +91,7 @@
     <orderEntry type="library" exported="" name="realm-android-0.74.0" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-0.23.0" level="project" />
     <orderEntry type="library" exported="" name="httpclient-android-4.3.5.1" level="project" />
+    <orderEntry type="library" exported="" name="simple-xml-2.7.1" level="project" />
     <orderEntry type="module" module-name="EventerZgz_Model" exported="" />
     <orderEntry type="module" module-name="EventerZgz_Interactor" exported="" />
   </component>

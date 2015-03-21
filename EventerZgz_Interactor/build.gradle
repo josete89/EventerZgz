@@ -47,9 +47,9 @@ android {
 }
 
 dependencies {
+
     compile project(':EventerZgz_Model')
     compile 'io.realm:realm-android:0.74.0'
     compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
-    //compile fileTree(dir: 'lib', include: ['*.jar'])
-    //testCompile group: 'junit', name: 'junit', version: '4.11'
+
 }

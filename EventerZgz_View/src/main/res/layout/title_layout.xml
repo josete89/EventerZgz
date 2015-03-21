@@ -24,7 +24,7 @@
             app:footerTriangleHeight="10dp"
             app:selectedColor="#FF16a085"
             app:selectedSize="14sp"
-            app:textColor="#FFFFFFFF"
+            app:textColor="#FF1abc9c"
             app:textSize="12sp"
             app:titlePadding="10dp" >
         </org.taptwo.android.widget.TitleFlowIndicator>
