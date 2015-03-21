@@ -8,16 +8,16 @@ import org.simpleframework.xml.Element;
 public abstract class Base
 {
     @Element(required = false)
-    private int id;
+    private String id;
 
     @Element(name="title", required = false)
     private String sTitle;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,7 +49,7 @@ public abstract class Base
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = 0;
         result = 31 * result + (sTitle != null ? sTitle.hashCode() : 0);
         return result;
     }

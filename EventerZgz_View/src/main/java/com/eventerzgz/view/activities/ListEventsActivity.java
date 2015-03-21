@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
@@ -162,6 +163,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
+    public void fetchedCategories(List<Category> event) {
+
+    }
+
+    @Override
     public void error(String sMessage) {
         emptyView.setVisibility(View.VISIBLE);
     }
@@ -176,7 +182,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listViewEvents.setAdapter(adapterListEvents);
         } else {
             adapterListEvents.notifyDataSetChanged();
-            ;
         }
     }
 

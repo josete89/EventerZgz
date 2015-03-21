@@ -39,8 +39,8 @@ public class EventerRest extends BaseRest implements EventDatasource
 
     @Override
     public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilters) throws EventZgzException {
-
-        StringBuilder stringBuilder = new StringBuilder("http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*");
+        
+        StringBuilder stringBuilder = new StringBuilder("http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?srsname=wgs84");
 
         if(eventFilters != null && eventFilters.length > 0)
         {
