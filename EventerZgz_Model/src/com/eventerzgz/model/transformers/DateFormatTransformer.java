@@ -1,4 +1,4 @@
-package com.eventerzgz.model.event;
+package com.eventerzgz.model.transformers;
 
 import org.simpleframework.xml.transform.Transform;
 
