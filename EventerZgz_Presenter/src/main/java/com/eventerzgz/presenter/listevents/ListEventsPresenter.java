@@ -1,6 +1,7 @@
 package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
+import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
@@ -58,7 +59,8 @@ public class ListEventsPresenter extends BasePresenter {
             public void call(Subscriber suscriber) {
                 try
                 {
-                    EventInteractor.getInstance().getAllEvent(null);
+                   // EventInteractor.getInstance().getAllEvent(null);
+                    CategoryInteractor.getCategories();
                     Log.i(TAG, "Event created!!");
 
                     suscriber.onCompleted();

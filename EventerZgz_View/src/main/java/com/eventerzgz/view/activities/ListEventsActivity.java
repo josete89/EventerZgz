@@ -295,7 +295,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                         && totalItemCount != 0) {
                     if (flagLoading == false) {
                         flagLoading = true;
-                        // TODO - AÑADIR ITEMS AL LISTADO PARA CARGARLOS //
+                        // TODO - ANADIR ITEMS AL LISTADO PARA CARGARLOS //
                         //adapter.notifyDataSetChanged();
                         // listView.invalidateViews();
                         //swipeLayout.setRefreshing(false);

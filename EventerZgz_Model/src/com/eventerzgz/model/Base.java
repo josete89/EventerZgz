@@ -1,11 +1,16 @@
 package com.eventerzgz.model;
 
+import org.simpleframework.xml.Element;
+
 /**
  * Created by joseluis on 20/3/15.
  */
 public abstract class Base
 {
+    @Element
     private int id;
+
+    @Element(name="title")
     private String sTitle;
 
     public int getId() {
@@ -26,7 +31,7 @@ public abstract class Base
 
 
     public String getFieldWithUri(String sFieldValue){
-        return "http://"+sFieldValue;
+        return "http:"+sFieldValue;
     }
 
     @Override

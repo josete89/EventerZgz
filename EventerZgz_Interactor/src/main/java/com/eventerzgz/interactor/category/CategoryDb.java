@@ -11,7 +11,6 @@ import com.eventerzgz.model.exception.EventZgzException;
 public class CategoryDb implements CategoryDataSource
 {
 
-
     @Override
     public List<Category> getAllCategories() throws EventZgzException {
         return null;
