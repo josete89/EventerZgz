@@ -52,6 +52,10 @@ public class ListEventsPresenter extends BasePresenter {
         getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
     }
 
+    public void getAllEvents(){
+        getEventList();
+    }
+
     public void getEventsByMEGADEMOQUERY(){
         String query = new QueryBuilder()
                 .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
