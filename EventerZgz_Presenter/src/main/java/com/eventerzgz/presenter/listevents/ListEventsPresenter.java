@@ -1,19 +1,16 @@
 package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
-
-import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
+import rx.Observable;
+import rx.Subscriber;
 
 import java.util.Date;
 import java.util.List;
-
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by JavierArroyo on 21/3/15.
@@ -37,25 +34,16 @@ public class ListEventsPresenter extends BasePresenter {
         return eventDummy;
     }
 
-    public void getEventList() {
+    public void getEventList(){
 
         observerTask(new Observable.OnSubscribe<List<Event>>() {
             @Override
             public void call(Subscriber suscriber) {
-                try {
-                    String query = new QueryBuilder()
-                            .addFilter("startDate", QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
-                            .addFilter("endDate", QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
-                            .build();
-                    suscriber.onNext(EventInteractor.getAllEvent(
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, "startDate desc"), // "desc" is optional
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50),
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.DISTANCE, 3000), //metros
-                            EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE
-                    ));
-                } catch (Exception e) {
+                try
+                {
+                    suscriber.onNext(EventInteractor.getAllEvent());
+                } catch (Exception e)
+                {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
@@ -74,6 +62,7 @@ public class ListEventsPresenter extends BasePresenter {
             @Override
             public void onNext(List<Event> o) {
                 listEventsIface.fetchedEvents(o);
+                onCompleted();
             }
         });
 

@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.application.EventerZgzApplication;
 
 /**
  * @author jarroyo
@@ -27,16 +28,17 @@ import com.eventerzgz.view.R;
 public class MenuLateralItemsAdapter extends BaseAdapter {
 
 	private Context context;
-	String[] arrayCategorias;
 
 	public MenuLateralItemsAdapter(Context context) {
 		this.context = context;
-		arrayCategorias = context.getResources().getStringArray(R.array.opciones_menu);
 	}
 
 	@Override
 	public int getCount() {
-		return arrayCategorias.length;
+		if(EventerZgzApplication.categoryList!=null){
+            return EventerZgzApplication.categoryList.size();
+        }
+        return 0;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class MenuLateralItemsAdapter extends BaseAdapter {
 			break;
 		}
 
-		textViewCategoria.setText(arrayCategorias[position]);
+		textViewCategoria.setText(EventerZgzApplication.categoryList.get(position).getsTitle().trim());
 
 		return convertView;
 	}

@@ -29,6 +29,7 @@ import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -40,14 +41,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private AdapterListEvents adapterListEvents;
     private ProgressBar progressBarLoading;
     private View emptyView;
-
+    private TextView textViewError;
     //Presenter
     //---------
     private final ListEventsPresenter listEventsPresenter = new ListEventsPresenter(this);
 
     //Data
     //----
-    //private List<Event> listEvents;
     private boolean flagLoading = false;
 
     // Menu lateral
@@ -67,11 +67,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents = (ListView) findViewById(R.id.listViewEvents);
         progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
         emptyView = findViewById(R.id.emptyView);
+        textViewError = (TextView) findViewById(R.id.textViewError);
+
         configPaginacionListView();
 
         // Menu lateral
         // ------------
-        configureMenuLateral();
+        //configureMenuLateral();
 
         //Presenter
         //---------
@@ -163,13 +165,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
-    public void fetchedCategories(List<Category> event) {
-
+    public void fetchedCategories(List<Category> listCategory) {
+        EventerZgzApplication.categoryList = listCategory;
+        configureMenuLateral();
     }
 
     @Override
     public void error(String sMessage) {
+
+        hideLoading();
         emptyView.setVisibility(View.VISIBLE);
+        textViewError.setText(sMessage);
     }
 
 
@@ -182,6 +188,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listViewEvents.setAdapter(adapterListEvents);
         } else {
             adapterListEvents.notifyDataSetChanged();
+            ;
         }
     }
 
@@ -226,27 +233,40 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.tvVerMas = (TextView) vi.findViewById(R.id.tvVerMas);
                 viewholder.tvCompartir = (TextView) vi
                         .findViewById(R.id.tvCompartir);
-
+                viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
 
                 vi.setTag(viewholder);
             }
             viewholder = (ViewHolder) vi.getTag();
 
-            viewholder.tvTitle.setText(EventerZgzApplication.eventsList.get(position).getsTitle());
-            viewholder.textViewFecha.setText(EventerZgzApplication.eventsList.get(position).getdEndDate().toString());
+            Event event = EventerZgzApplication.eventsList.get(position);
+            viewholder.tvTitle.setText(event.getsTitle());
+            if (event.getdEndDate() != null) {
+                viewholder.textViewFecha.setText(event.getdEndDate().toString());
+            } else {
+                viewholder.textViewFecha.setVisibility(View.GONE);
+            }
+            //Imagen
+            //------
+            if (event.getsImage() != null && !event.getsImage().equals("")) {
+                ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
+            } else {
+                viewholder.imageView.setVisibility(View.GONE);
+            }
+
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
             viewholder.tvCompartir
                     .setOnClickListener(new View.OnClickListener() {
-                           @Override
-                           public void onClick(View v) {
-                                int position = (Integer) v.getTag();
-                                String url = "www.marca.com";
-                                SocialShare.share(ListEventsActivity.this, url);
-                           }
-                    }
-            );
+                                            @Override
+                                            public void onClick(View v) {
+                                                int position = (Integer) v.getTag();
+                                                String url = "www.marca.com";
+                                                SocialShare.share(ListEventsActivity.this, url);
+                                            }
+                                        }
+                    );
 
             return vi;
         }
@@ -257,13 +277,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView textViewFecha;
         TextView tvVerMas;
         TextView tvCompartir;
-        ImageView image;
+        ImageView imageView;
         LinearLayout linearLayoutClip;
     }
 
     // --------------------------------------------------------------------------------------
-// DRAWER ITEM CLICK LISTENER
-// --------------------------------------------------------------------------------------
+    // DRAWER ITEM CLICK LISTENER
+    // --------------------------------------------------------------------------------------
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener {
         @Override
@@ -342,7 +362,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     // INTENT EVENT
     // --------------------------------------------------------------------------------------
-    private void intentDetailEvent(int position){
+    private void intentDetailEvent(int position) {
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
         startActivity(intentEvent);
