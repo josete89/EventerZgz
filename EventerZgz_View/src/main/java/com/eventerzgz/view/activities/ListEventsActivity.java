@@ -78,7 +78,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //Presenter
         //---------
         showLoading();
-        listEventsPresenter.getEventList();
+        listEventsPresenter.getAllEvents();
 
         // CLick Event
         // -----------
@@ -132,7 +132,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    listEventsPresenter.
+                    //listEventsPresenter.
                     return true;
                 }
 
@@ -165,6 +165,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
+
     public void fetchedCategories(List<Category> listCategory) {
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();

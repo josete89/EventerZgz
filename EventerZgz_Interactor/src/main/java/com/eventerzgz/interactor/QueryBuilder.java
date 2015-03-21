@@ -27,8 +27,8 @@ public class QueryBuilder {
     public enum FIELD{
         START_DATE("startDate"),
         END_DATE("endDate"),
-        TITLE("title"),
-        CATEGORY("temas.id");
+        CATEGORY("temas.id"),
+        TITLE("title");
 
         private final String value;
 
