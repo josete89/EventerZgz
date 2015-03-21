@@ -1,8 +1,8 @@
 package com.eventerzgz.model.event;
 
-import java.util.Date;
-
 import com.eventerzgz.model.Base;
+
+import java.util.Date;
 
 /**
  * Created by joseluis on 20/3/15.
