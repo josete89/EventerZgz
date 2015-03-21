@@ -28,6 +28,7 @@ import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -39,14 +40,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private AdapterListEvents adapterListEvents;
     private ProgressBar progressBarLoading;
     private View emptyView;
-
+    private TextView textViewError;
     //Presenter
     //---------
     private final ListEventsPresenter listEventsPresenter = new ListEventsPresenter(this);
 
     //Data
     //----
-    //private List<Event> listEvents;
     private boolean flagLoading = false;
 
     // Menu lateral
@@ -66,6 +66,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents = (ListView) findViewById(R.id.listViewEvents);
         progressBarLoading = (ProgressBar) findViewById(R.id.progressBarLoading);
         emptyView = findViewById(R.id.emptyView);
+        textViewError = (TextView)findViewById(R.id.textViewError);
+
         configPaginacionListView();
 
         // Menu lateral
@@ -163,7 +165,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     @Override
     public void error(String sMessage) {
+
+        hideLoading();
         emptyView.setVisibility(View.VISIBLE);
+        textViewError.setText(sMessage);
     }
 
 
@@ -221,14 +226,24 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.tvVerMas = (TextView) vi.findViewById(R.id.tvVerMas);
                 viewholder.tvCompartir = (TextView) vi
                         .findViewById(R.id.tvCompartir);
-
+                viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
 
                 vi.setTag(viewholder);
             }
             viewholder = (ViewHolder) vi.getTag();
 
-            viewholder.tvTitle.setText(EventerZgzApplication.eventsList.get(position).getsTitle());
-            viewholder.textViewFecha.setText(EventerZgzApplication.eventsList.get(position).getdEndDate().toString());
+            Event event = EventerZgzApplication.eventsList.get(position);
+            viewholder.tvTitle.setText(event.getsTitle());
+            viewholder.textViewFecha.setText(event.getdEndDate().toString());
+
+            //Imagen
+            //------
+            if(event.getsImage()!=null && event.getsImage().equals("")){
+                ImageLoader.getInstance().displayImage(event.getImageWithUri(), viewholder.imageView);
+            }else{
+                viewholder.imageView.setVisibility(View.GONE);
+            }
+
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
@@ -252,7 +267,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView textViewFecha;
         TextView tvVerMas;
         TextView tvCompartir;
-        ImageView image;
+        ImageView imageView;
         LinearLayout linearLayoutClip;
     }
 

@@ -1,15 +1,16 @@
 package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
-import com.eventerzgz.interactor.events.EventInteractor;
+
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
-import rx.Observable;
-import rx.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by JavierArroyo on 21/3/15.
@@ -58,7 +59,7 @@ public class ListEventsPresenter extends BasePresenter {
             public void call(Subscriber suscriber) {
                 try
                 {
-                    EventInteractor.getInstance().getAllEvent(null);
+                   // EventInteractor.getInstance().getAllEvent(null);
                     Log.i(TAG, "Event created!!");
 
                     suscriber.onCompleted();
