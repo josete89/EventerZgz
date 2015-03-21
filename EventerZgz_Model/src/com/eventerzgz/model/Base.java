@@ -25,6 +25,10 @@ public abstract class Base
     }
 
 
+    public String getFieldWithUri(String sFieldValue){
+        return "http://"+sFieldValue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

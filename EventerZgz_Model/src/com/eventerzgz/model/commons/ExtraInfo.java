@@ -1,9 +1,11 @@
 package com.eventerzgz.model.commons;
 
+import com.eventerzgz.model.Base;
+
 /**
  * Created by joseluis on 21/3/15.
  */
-public class ExtraInfo
+public class ExtraInfo extends Base
 {
     private String sCodAnexo;
     private String sImage;
@@ -48,4 +50,6 @@ public class ExtraInfo
     public void setsDocumentName(String sDocumentName) {
         this.sDocumentName = sDocumentName;
     }
+
+
 }

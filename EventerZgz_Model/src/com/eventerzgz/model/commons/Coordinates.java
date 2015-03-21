@@ -30,4 +30,7 @@ public class Coordinates
         this.fLonguide = fLonguide;
     }
 
+
+
+
 }

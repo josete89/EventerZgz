@@ -121,4 +121,10 @@ public class Event extends Base
     public void setObjGeometry(Geometry objGeometry) {
         this.objGeometry = objGeometry;
     }
+
+
+
+    public String getImageWithUri(){
+        return "http://"+sImage;
+    }
 }
