@@ -43,7 +43,7 @@ public class ListEventsPresenter extends BasePresenter {
             public void call(Subscriber suscriber) {
                 try
                 {
-                    suscriber.onNext(EventInteractor.getAllEvent(null));
+                    suscriber.onNext(EventInteractor.getAllEvent());
                 } catch (Exception e)
                 {
                     Log.e(TAG, e.getMessage(), e);
