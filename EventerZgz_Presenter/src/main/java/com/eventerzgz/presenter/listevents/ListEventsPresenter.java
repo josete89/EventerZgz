@@ -1,16 +1,18 @@
 package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
+
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
-import rx.Observable;
-import rx.Subscriber;
 
 import java.util.Date;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by JavierArroyo on 21/3/15.
