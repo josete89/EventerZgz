@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
+import com.eventerzgz.view.utils.CheckBoxView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -81,7 +83,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider {
                     break;
                 case VIEW2:
                     convertView = mInflater.inflate(R.layout.tuto_step2, null);
-                    configViewStart(convertView);
+                    configViewCategories(convertView);
                     break;
                 case VIEW3:
                     convertView = mInflater.inflate(R.layout.tuto_step3, null);
@@ -97,14 +99,14 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider {
         return convertView;
     }
 
-    private void openListEvents(){
+    private void openListEvents() {
         Intent intent = new Intent(context, ListEventsActivity.class);
         context.startActivity(intent);
     }
 
-    private void configViewFinish(View convertView){
+    private void configViewFinish(View convertView) {
         Button buttonClose = (Button) convertView.findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener(){
+        buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // GUARDAR DATOS //
@@ -114,15 +116,21 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider {
         });
     }
 
-    private void configViewStart(View convertView){
+    private void configViewStart(View convertView) {
         Button buttonClose = (Button) convertView.findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener(){
+        buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((Activity) context).finish();
                 openListEvents();
             }
         });
+    }
+
+    private void configViewCategories(View convertView){
+        LinearLayout layoutCategories = (LinearLayout) convertView.findViewById(R.id.layoutCategories);
+        CheckBoxView checkBox = new CheckBoxView(context,null);
+        layoutCategories.addView(checkBox);
     }
 
     private void configViewPosition(View convertView) {
@@ -135,7 +143,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider {
         }
 
         Button buttonClose = (Button) convertView.findViewById(R.id.buttonClose);
-        buttonClose.setOnClickListener(new View.OnClickListener(){
+        buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((Activity) context).finish();

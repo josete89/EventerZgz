@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.gc.materialdesign.R;
+import com.eventerzgz.view.R;
 
 public class CheckBoxView extends CustomView {
 
