@@ -1,11 +1,9 @@
 package com.eventerzgz.interactor.events;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
-import android.util.Log;
 import com.eventerzgz.interactor.BaseInteractor;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
@@ -18,28 +16,89 @@ public class EventInteractor extends BaseInteractor{
 
     public static enum EventFilter{
 
-        CATEGORY_FILTER("") {
+        QUERY_FILTER("q") {
             @Override
-            public void fillLinkedMap(LinkedHashMap linkedMap) {
-                linkedMap.put(getKeyValue(),getFilterValue());
+            public void appendParam(StringBuilder stringBuilder) {
+
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        START (""){
+        START ("start"){
             @Override
-            public void fillLinkedMap(LinkedHashMap linkedMap) {
-                linkedMap.put(getKeyValue(),getFilterValue());
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        ROWS (""){
+        SORT ("sort"){
             @Override
-            public void fillLinkedMap(LinkedHashMap linkedMap) {
-                linkedMap.put(getKeyValue(),getFilterValue());
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        DISTANCE (""){
+        ROWS ("rows"){
             @Override
-            public void fillLinkedMap(LinkedHashMap linkedMap) {
-                linkedMap.put(getKeyValue(),getFilterValue());
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
+            }
+        },
+        DISTANCE ("distance"){
+            @Override
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
+            }
+        },
+        POINT ("point"){
+            @Override
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         };
 
@@ -51,12 +110,16 @@ public class EventInteractor extends BaseInteractor{
         }
 
 
-        public static EventFilter createEnumWithValue(EventFilter eventFilter,String sValue){
+        public static EventFilter createFilter(EventFilter eventFilter,String sValue){
             eventFilter.setFilterValue(sValue);
             return eventFilter;
         }
+        public static EventFilter createFilter(EventFilter eventFilter,int iValue){
+            eventFilter.setFilterValue(String.valueOf(iValue));
+            return eventFilter;
+        }
 
-        public abstract void fillLinkedMap(LinkedHashMap linkedMap);
+        public abstract void appendParam(StringBuilder stringBuilder);
 
         public String getKeyValue() {
             return keyValue;
@@ -90,9 +153,7 @@ public class EventInteractor extends BaseInteractor{
 
     public static List<Event> getAllEvent(EventFilter... eventFilter) throws EventZgzException
     {
-
         //Decidir la impl
-
         return new EventerRest().getAllEvents(eventFilter);
 
     }

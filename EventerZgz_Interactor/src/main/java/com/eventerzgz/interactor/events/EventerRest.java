@@ -38,12 +38,19 @@ public class EventerRest extends BaseRest implements EventDatasource
     }
 
     @Override
-    public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) throws EventZgzException {
-        List<Event> eventList = new ArrayList<>();
+    public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilters) throws EventZgzException {
+        
+        StringBuilder stringBuilder = new StringBuilder("http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?srsname=wgs84");
 
-        String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*";
+        if(eventFilters != null && eventFilters.length > 0)
+        {
+            for (EventInteractor.EventFilter eventFilter : eventFilters)
+            {
+                eventFilter.appendParam(stringBuilder);
+            }
+        }
 
-        String content = doHTTPGet(sUrl);
+        String content = doHTTPGet(stringBuilder.toString());
 
         return Event.doParse(content);
     }

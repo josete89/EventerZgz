@@ -269,8 +269,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckbox[i] = new CheckBox(context);
             listCheckboxPush[i] = new CheckBox(context);
 
-            listCheckbox[i].setId(categoryList.get(i).getId());
-            listCheckboxPush[i].setId(categoryList.get(i).getId());
+            listCheckbox[i].setId(Integer.parseInt(categoryList.get(i).getId()));
+            listCheckboxPush[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
             listCheckbox[i].setText(categoryList.get(i).getsTitle());
             listCheckboxPush[i].setText(categoryList.get(i).getsTitle());

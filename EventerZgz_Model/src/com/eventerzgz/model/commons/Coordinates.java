@@ -8,8 +8,14 @@ public class Coordinates
     private float fLatitude;
     private float fLonguide;
 
+    public Coordinates(String coordinates) {
+        String[] coords = coordinates.split(",");
+        this.fLonguide = Float.parseFloat(coords[0]);
+        this.fLatitude = Float.parseFloat(coords[1]);
+    }
+
     public static Coordinates doParse(String sRawObj){
-        return new Coordinates();
+        return new Coordinates("0,0");
     }
 
 
@@ -31,6 +37,11 @@ public class Coordinates
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "fLatitude=" + fLatitude +
+                ", fLonguide=" + fLonguide +
+                '}';
+    }
 }

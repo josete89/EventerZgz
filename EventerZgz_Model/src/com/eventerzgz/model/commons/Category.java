@@ -50,7 +50,7 @@ public class Category extends Base {
                 String id = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result']["+j+"]/*[name()='binding'][@name='id']/*[name()='literal']/text()").evaluate(xmlDocument);
                 String title = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result']["+j+"]/*[name()='binding'][@name='tema']/*[name()='literal']/text()").evaluate(xmlDocument);
                 System.out.println(i);
-                objCategory.setId(Integer.parseInt(id));
+                objCategory.setId(id);
                 objCategory.setsTitle(title);
                 categoryList.add(objCategory);
             }

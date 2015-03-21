@@ -1,22 +1,44 @@
 package com.eventerzgz.model.commons;
 
+import com.eventerzgz.model.Base;
+
+import org.simpleframework.xml.Element;
+
 /**
  * Created by joseluis on 21/3/15.
  */
 public class Place
-{
-    private String sId;
-    private String sTitle;
+ extends Base{
+    @Element(name="direccion", required = false)
     private String sAddress;
+
+    @Element(name="cp", required = false)
     private String sCP;
+
+    @Element(name="localidad", required = false)
     private String sTown;
+
+    @Element(name="provincia", required = false)
     private String sProvince;
+
+    @Element(name="pais", required = false)
     private String sCountry;
+
+    @Element(name="telefono", required = false)
     private String sTelephone;
+
+    @Element(name="fax", required = false)
     private String sFax;
+
+    @Element(name="mail", required = false)
     private String sMail;
+
+    @Element(name="autobuses", required = false)
     private String sBus;
+
+    @Element(name="accesibilidad", required = false)
     private String sAccessibility;
+
     private Coordinates objCoordinates;
 
     public static Place doParse(String sRawObj){
@@ -25,21 +47,6 @@ public class Place
 
 
     //GETTERS & SETTERS
-    public String getsId() {
-        return sId;
-    }
-
-    public void setsId(String sId) {
-        this.sId = sId;
-    }
-
-    public String getsTitle() {
-        return sTitle;
-    }
-
-    public void setsTitle(String sTitle) {
-        this.sTitle = sTitle;
-    }
 
     public String getsAddress() {
         return sAddress;
@@ -129,5 +136,20 @@ public class Place
         this.objCoordinates = objCoordinates;
     }
 
-
+    @Override
+    public String toString() {
+        return "Place{" +
+                "sAddress='" + sAddress + '\'' +
+                ", sCP='" + sCP + '\'' +
+                ", sTown='" + sTown + '\'' +
+                ", sProvince='" + sProvince + '\'' +
+                ", sCountry='" + sCountry + '\'' +
+                ", sTelephone='" + sTelephone + '\'' +
+                ", sFax='" + sFax + '\'' +
+                ", sMail='" + sMail + '\'' +
+                ", sBus='" + sBus + '\'' +
+                ", sAccessibility='" + sAccessibility + '\'' +
+                ", objCoordinates=" + objCoordinates +
+                "} " + super.toString();
+    }
 }
