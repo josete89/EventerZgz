@@ -10,11 +10,9 @@ public class SubEvent {
     private Place objPlace;
     private String sEndDate;
 
-
-    
-
-
-
+    public static Event doParse(String sRawObj){
+        return new Event();
+    }
 
     //GETTERS & SETTERS
 
