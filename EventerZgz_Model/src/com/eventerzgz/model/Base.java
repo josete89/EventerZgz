@@ -5,14 +5,14 @@ package com.eventerzgz.model;
  */
 public abstract class Base
 {
-    private Integer id;
+    private int id;
     private String sTitle;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -22,5 +22,26 @@ public abstract class Base
 
     public void setsTitle(String sTitle) {
         this.sTitle = sTitle;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Base)) return false;
+
+        Base base = (Base) o;
+
+        if (id != base.id) return false;
+        if (sTitle != null ? !sTitle.equals(base.sTitle) : base.sTitle != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (sTitle != null ? sTitle.hashCode() : 0);
+        return result;
     }
 }

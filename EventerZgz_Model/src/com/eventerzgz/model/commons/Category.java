@@ -5,14 +5,13 @@ import com.eventerzgz.model.Base;
 /**
  * Created by joseluis on 21/3/15.
  */
-public class Poblation extends Base
+public class Category extends Base
 {
     private String sImage;
 
-    public static Poblation doParse(String sRawObj){
-        return new Poblation();
+    public static Category doParse(String sRawObj){
+        return new Category();
     }
-
 
 
     //GETTERS & SETTERS
@@ -23,5 +22,6 @@ public class Poblation extends Base
     public void setsImage(String sImage) {
         this.sImage = sImage;
     }
+
 
 }
