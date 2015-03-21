@@ -31,4 +31,20 @@ public class TutorialActivity extends Activity {
         indicator.setTitleProvider(adapter);
         viewFlow.setFlowIndicator(indicator);
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if(TutorialAdapter.mapView != null){
+            TutorialAdapter.mapView.onLowMemory();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        if(TutorialAdapter.mapView != null) {
+            TutorialAdapter.mapView.onResume();
+        }
+        super.onResume();
+    }
 }

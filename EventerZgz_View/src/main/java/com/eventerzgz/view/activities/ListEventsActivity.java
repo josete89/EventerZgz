@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
@@ -159,6 +160,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         hideLoading();
         EventerZgzApplication.eventsList = listEvents;
         refreshListEvents();
+    }
+
+    @Override
+    public void fetchedCategories(List<Category> event) {
+
     }
 
     @Override

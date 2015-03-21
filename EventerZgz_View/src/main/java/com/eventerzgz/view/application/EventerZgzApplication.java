@@ -29,6 +29,9 @@ public class EventerZgzApplication  extends Application {
     //----
     public static List<Event> eventsList;
 
+    //Preferences
+    //-----
+    public static final String APP_PREFERENCES = "eventerzgz";
 
     @Override
     public void onCreate() {
