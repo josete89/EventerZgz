@@ -27,9 +27,4 @@ public class CategoryInteractor {
     }
 
 
-    public static CategoryInteractor getInstance()
-    {
-        return new CategoryInteractor();
-    }
-
 }

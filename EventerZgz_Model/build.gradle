@@ -22,5 +22,6 @@ dependencies {
     compile('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
         exclude module: 'xpp3'
+        exclude module: 'stax-api'
     }
 }

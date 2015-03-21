@@ -26,7 +26,7 @@ public abstract class Base
 
 
     public String getFieldWithUri(String sFieldValue){
-        return "http://"+sFieldValue;
+        return "http:"+sFieldValue;
     }
 
     @Override
