@@ -5,14 +5,22 @@ package com.eventerzgz.model;
  */
 public abstract class Base
 {
-    private String id;
+    private Integer id;
+    private String sTitle;
 
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getsTitle() {
+        return sTitle;
+    }
+
+    public void setsTitle(String sTitle) {
+        this.sTitle = sTitle;
     }
 }
