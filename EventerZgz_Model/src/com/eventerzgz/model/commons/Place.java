@@ -36,10 +36,9 @@ public class Place
     @Element(name="autobuses", required = false)
     private String sBus;
 
-    @Element(name="pais", required = false)
+    @Element(name="accesibilidad", required = false)
     private String sAccessibility;
 
-    @Element(name="pais", required = false)
     private Coordinates objCoordinates;
 
     public static Place doParse(String sRawObj){
