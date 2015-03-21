@@ -2,15 +2,18 @@ package com.eventerzgz.model.event;
 
 import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Coordinates;
 import com.eventerzgz.model.commons.ExtraInfo;
-import com.eventerzgz.model.commons.Geometry;
 import com.eventerzgz.model.commons.Poblation;
 import com.eventerzgz.model.exception.EventZgzException;
+import com.eventerzgz.model.transformers.CoordinatesTransformer;
+import com.eventerzgz.model.transformers.DateFormatTransformer;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;
-import org.simpleframework.xml.transform.Transform;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -21,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by joseluis on 20/3/15.
@@ -33,19 +35,35 @@ public class Event extends Base {
 
     @Element(name="endDate", required = false)
     private Date dEndDate;
+
+    @Element(name="lastUpdated", required = false)
     private Date dLastUpdate;
 
-    @Element(name="description")
+    @Element(name="description", required = false)
     private String sDescription;
+
+    @Element(name="destacada", required = false)
     private boolean bHighlighted;
+
+    @Element(name="tipoEntrada", required = false)
     private String sTicketType;
+
     @Element(name="image", required = false)
     private String sImage;
+
+    @ElementList(name="temas", required = false)
     private List<Category> categoryList;
+
     private List<SubEvent> subEventList;
+
+    @ElementList(name="poblacion", required = false)
     private List<Poblation> poblationList;
+
     private List<ExtraInfo> extraInfoList;
-    private Geometry objGeometry;
+
+    @Element(name="coordinates", required = false)
+    @Path("geometry")
+    private Coordinates objCoordinates;
 
 
     public static List<Event> doParse(String sRawObj) throws EventZgzException {
@@ -55,6 +73,7 @@ public class Event extends Base {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             RegistryMatcher m = new RegistryMatcher();
             m.bind(Date.class, new DateFormatTransformer(format));
+            m.bind(Coordinates.class, new CoordinatesTransformer());
             persister = new Persister(m);
             SparqlEventList sparqlEventList = persister.read(SparqlEventList.class, sRawObj, false);
             eventList = sparqlEventList.getList();
@@ -160,12 +179,12 @@ public class Event extends Base {
         this.extraInfoList = extraInfoList;
     }
 
-    public Geometry getObjGeometry() {
-        return objGeometry;
+    public Coordinates getObjCoordinates() {
+        return objCoordinates;
     }
 
-    public void setObjGeometry(Geometry objGeometry) {
-        this.objGeometry = objGeometry;
+    public void setObjCoordinates(Coordinates objCoordinates) {
+        this.objCoordinates = objCoordinates;
     }
 
 
@@ -179,5 +198,23 @@ public class Event extends Base {
 
     public void setdStartDate(Date dStartDate) {
         this.dStartDate = dStartDate;
+    }
+
+    @Override
+    public String toString() {
+        return "\nEvent{" +
+                "dStartDate=" + dStartDate +
+                ", dEndDate=" + dEndDate +
+                ", dLastUpdate=" + dLastUpdate +
+                //", sDescription='" + sDescription + '\'' +
+                ", bHighlighted=" + bHighlighted +
+                ", sTicketType='" + sTicketType + '\'' +
+                ", sImage='" + sImage + '\'' +
+                ", categoryList=" + categoryList +
+                ", subEventList=" + subEventList +
+                ", poblationList=" + poblationList +
+                ", extraInfoList=" + extraInfoList +
+                ", objCoordinates=" + objCoordinates +
+                '}'+ super.toString();
     }
 }
