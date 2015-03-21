@@ -34,10 +34,10 @@ public class EventDb implements EventDatasource
     }
 
     @Override
-    public List<Event> getAllEvents()
-    {
-        return Collections.emptyList();
+    public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) {
+        return null;
     }
+
 
     @Override
     public Event findEventById(String sId)

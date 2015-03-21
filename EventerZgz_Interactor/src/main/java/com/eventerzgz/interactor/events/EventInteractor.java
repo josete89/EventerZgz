@@ -90,15 +90,11 @@ public class EventInteractor extends BaseInteractor{
 
     public List<Event> getAllEvent(EventFilter... eventFilter) throws EventZgzException
     {
-        List<Event> eventList = new ArrayList<>();
 
-        String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*";
+        //Decidir la impl
 
-        String content = doHTTPGet(sUrl);
+        return new EventerRest().getAllEvents(eventFilter);
 
-        Log.i(TAG,content);
-
-        return eventList;
     }
 
     public void findById(String sId){

@@ -1,45 +1,61 @@
 package com.eventerzgz.interactor.events;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.util.Log;
+import com.eventerzgz.interactor.BaseInteractor;
+import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.event.Event;
+import com.eventerzgz.model.exception.EventZgzException;
 
 /**
  * Created by joseluis on 20/3/15.
  */
-public class EventerRest implements EventDatasource
+public class EventerRest extends BaseRest implements EventDatasource
 {
     protected EventerRest(){
 
     }
 
+
+
+
     @Override
-    public void createEvent(Event objEvent)
+    public void createEvent(Event objEvent) throws EventZgzException
     {
 
     }
 
     @Override
-    public void updateEvent(Event objEvent)
+    public void updateEvent(Event objEvent) throws EventZgzException
     {
 
     }
 
     @Override
-    public void deleteEvent(String sId)
+    public void deleteEvent(String sId) throws EventZgzException
     {
 
     }
 
     @Override
-    public List<Event> getAllEvents()
-    {
-        return Collections.emptyList();
+    public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) throws EventZgzException {
+        List<Event> eventList = new ArrayList<>();
+
+        String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*";
+
+        String content = doHTTPGet(sUrl);
+
+        Log.i(TAG, content);
+
+        return null;
     }
 
+
     @Override
-    public Event findEventById(String sId)
+    public Event findEventById(String sId) throws EventZgzException
     {
         return null;
     }
