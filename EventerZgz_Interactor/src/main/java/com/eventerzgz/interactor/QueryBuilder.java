@@ -39,7 +39,21 @@ public class QueryBuilder {
         public String toString() { return value; }
     }
 
-    public QueryBuilder addFilter(String key, COMPARATOR comparator, String value) {
+    public enum FIELD{
+        START_DATE("startDate"),
+        END_DATE("endDate"),
+        CATEGORY("temas.id");
+
+        private final String value;
+
+        private FIELD(final String newValue) {
+            value = newValue;
+        }
+
+        public String toString() { return value; }
+    }
+
+    public QueryBuilder addFilter(FIELD key, COMPARATOR comparator, String value) {
         if (query.length() > 0) {
             query.append(';');
         }

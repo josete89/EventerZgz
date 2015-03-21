@@ -44,8 +44,9 @@ public class ListEventsPresenter extends BasePresenter {
             public void call(Subscriber suscriber) {
                 try {
                     String query = new QueryBuilder()
-                            .addFilter("startDate", QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
-                            .addFilter("endDate", QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
+                            .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
+                            .addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
+                            .addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS, "37")
                             .build();
                     suscriber.onNext(EventInteractor.getAllEvent(
                             EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
