@@ -21,6 +21,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
+        exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
 }
