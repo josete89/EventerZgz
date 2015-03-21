@@ -1,88 +1,122 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.eventerzgz.view.activities.DetailEventActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="match_parent"
+        >
 
-        <ImageView
-            android:id="@+id/imageViewGuiaUtil"
+        <!-- IMAGEN -->
+
+        <RelativeLayout
+            android:id="@+id/layoutImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/listado_default"/>
+            android:layout_height="200dp">
 
-        <TextView
-            android:id="@+id/textViewCategoriaSlider"
-            style="@style/textShadow"
+            <ImageView
+                android:id="@+id/imageViewGuiaUtil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/listado_default" />
+
+            <TextView
+                android:id="@+id/textViewCategoriaSlider"
+                style="@style/textShadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="light"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="Categoria"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/textViewSubcategoriaSlider"
+                style="@style/textShadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewCategoriaSlider"
+                android:background="@android:color/transparent"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:text="Subcategoria"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+
+        <!-- INFO -->
+        <LinearLayout
+            android:id="@+id/layoutInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/transparent"
-            android:fontFamily="light"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:text="Categoria"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/textViewSubcategoriaSlider"
-            style="@style/textShadow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewCategoriaSlider"
-            android:background="@android:color/transparent"
-            android:fontFamily="bold"
-            android:gravity="left"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="2dp"
-            android:text="Subcategoria"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:tag="sticky">
-
-        <TextView
-            android:id="@+id/mainTitle"
-            style="@style/textShadow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="50dp"
+            android:layout_below="@+id/layoutImage"
             android:background="@color/white"
-            android:fontFamily="bold"
-            android:gravity="left"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
+            android:orientation="vertical"
+            android:tag="sticky"
+            >
 
-            android:textColor="#FFA500"
-            android:textSize="22sp"
-            tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/textViewTitle"
+                style="@style/textShadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="50dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="#FFA500"
+                android:textSize="22sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                style="@style/textShadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="50dp"
+                android:background="@color/white"
+                android:fontFamily="bold"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="#FFA500"
+                android:textSize="22sp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+
+        <include
+            android:id="@+id/layoutMap"
+            layout="@layout/view_map"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/layoutInfo" />
+
 
     </RelativeLayout>
-
-
-</RelativeLayout>
+</ScrollView>
