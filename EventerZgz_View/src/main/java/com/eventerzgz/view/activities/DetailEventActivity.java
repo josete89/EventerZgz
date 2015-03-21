@@ -1,40 +1,149 @@
 package com.eventerzgz.view.activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
+import android.widget.TextView;
 
+import com.eventerzgz.model.event.Event;
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.application.EventerZgzApplication;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DetailEventActivity extends ActionBarActivity {
+
+    //View
+    //----
+    private TextView textViewTitle;
+    private TextView textViewDescription;
+
+    //Data intent
+    //-----------
+    private int posEventSelected;
+    private Event eventSelected;
+
+    // Mapa
+    // ----
+    private MapView mapView;
+    private GoogleMap map;
+    private double latitudePoint;
+    private double longitudePoint;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_event);
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail_event, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            posEventSelected = extras.getInt(EventerZgzApplication.INTENT_EVENT_SELECTED);
+            eventSelected = EventerZgzApplication.eventsList.get(posEventSelected);
         }
 
-        return super.onOptionsItemSelected(item);
+        //View
+        //----
+        textViewTitle = (TextView) findViewById(R.id.textViewTitle);
+        textViewDescription = (TextView) findViewById(R.id.textViewDescription);
+
+        setInfoEvent();
+
+        try {
+            mapView = (MapView) findViewById(R.id.mapview);
+            mapView.onCreate(savedInstanceState);
+            configMap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    //--------------------------------------------------------------------
+    // SET INFO EVENT
+    //--------------------------------------------------------------------
+    private void setInfoEvent(){
+        textViewTitle.setText(eventSelected.getsTitle());
+        textViewDescription
+                .setText(Html.fromHtml(eventSelected.getsDescription()));
+    }
+
+
+    // -----------------------------------------------------------------------------------------------------
+    // CONFIG MAP
+    // -----------------------------------------------------------------------------------------------------
+    private void configMap() {
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        map = mapView.getMap();
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+//		map.setMyLocationEnabled(true);
+
+        try {
+            MapsInitializer.initialize(DetailEventActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // CLICK MAP
+        // ---------
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                intentOpenMap();
+            }
+        });
+
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                intentOpenMap();
+                return true;
+            }
+        });
+
+    }
+
+    // -------------------------------------------------------------------------
+    // ADD MARKER TO MAP
+    // -------------------------------------------------------------------------
+    private Marker addMarkerToMap(double latitude, double longitude) {
+
+        Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(
+                latitude, longitude)));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                latitude, longitude), 18));
+        mapView.invalidate();
+        return marker;
+
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // INTENT OPEN MAP
+    // -----------------------------------------------------------------------------------------------------
+    private void intentOpenMap() {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=" + latitudePoint + "," + longitudePoint));
+        startActivity(intent);
+    }
+
 }

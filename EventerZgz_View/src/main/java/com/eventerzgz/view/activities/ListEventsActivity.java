@@ -26,6 +26,7 @@ import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
+import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     //Data
     //----
-    private List<Event> listEvents;
+    //private List<Event> listEvents;
     private boolean flagLoading = false;
 
     // Menu lateral
@@ -81,7 +82,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                intentDetailEvent();
+                intentDetailEvent(position);
             }
         });
     }
@@ -156,7 +157,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     @Override
     public void fetchedEvents(List<Event> listEvents) {
         hideLoading();
-        this.listEvents = listEvents;
+        EventerZgzApplication.eventsList = listEvents;
         refreshListEvents();
     }
 
@@ -186,8 +187,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         @Override
         public int getCount() {
-            if (listEvents != null) {
-                return listEvents.size();
+            if (EventerZgzApplication.eventsList != null) {
+                return EventerZgzApplication.eventsList.size();
             }
             return 0;
         }
@@ -226,8 +227,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
             viewholder = (ViewHolder) vi.getTag();
 
-            viewholder.tvTitle.setText(listEvents.get(position).getsTitle());
-            viewholder.textViewFecha.setText(listEvents.get(position).getdEndDate().toString());
+            viewholder.tvTitle.setText(EventerZgzApplication.eventsList.get(position).getsTitle());
+            viewholder.textViewFecha.setText(EventerZgzApplication.eventsList.get(position).getdEndDate().toString());
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
@@ -336,8 +337,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     // INTENT EVENT
     // --------------------------------------------------------------------------------------
-    private void intentDetailEvent(){
+    private void intentDetailEvent(int position){
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
+        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
         startActivity(intentEvent);
     }
 }

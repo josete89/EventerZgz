@@ -1,14 +1,11 @@
 package com.eventerzgz.interactor.events;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import android.util.Log;
-import com.eventerzgz.interactor.BaseInteractor;
 import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by joseluis on 20/3/15.
@@ -48,9 +45,13 @@ public class EventerRest extends BaseRest implements EventDatasource
 
         String content = doHTTPGet(sUrl);
 
-        Log.i(TAG, content);
+        return Event.doParse(content);
+    }
 
-        return null;
+    public static void main(String[] list) throws Exception {
+        EventerRest eventerRest = new EventerRest();
+        List<Event> eventList = eventerRest.getAllEvents();
+        System.out.println(eventList);
     }
 
 
