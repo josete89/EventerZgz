@@ -1,20 +1,5 @@
 package com.eventerzgz.interactor;
 
-import android.util.Log;
-
-import com.eventerzgz.model.exception.EventZgzException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 /**
  * Created by joseluis on 21/3/15.
  */
@@ -42,6 +27,7 @@ public class QueryBuilder {
     public enum FIELD{
         START_DATE("startDate"),
         END_DATE("endDate"),
+        TITLE("title"),
         CATEGORY("temas.id");
 
         private final String value;

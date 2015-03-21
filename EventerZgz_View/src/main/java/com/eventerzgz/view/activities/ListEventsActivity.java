@@ -132,7 +132,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    //TODO Peticion con texto
+                    listEventsPresenter.
                     return true;
                 }
 
@@ -244,7 +244,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
             }catch (Exception e){
-                
+
             }
             if (event.getdEndDate() != null) {
                 viewholder.textViewFecha.setText(event.getdEndDate().toString());
