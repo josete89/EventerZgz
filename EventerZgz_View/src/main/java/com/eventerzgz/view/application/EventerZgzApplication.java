@@ -38,6 +38,9 @@ public class EventerZgzApplication  extends Application {
     public static List<Event> eventsList;
     public static List<Category> categoryList;
 
+    //Preferences
+    //-----
+    public static final String APP_PREFERENCES = "eventerzgz";
 
 
     public void startService(){

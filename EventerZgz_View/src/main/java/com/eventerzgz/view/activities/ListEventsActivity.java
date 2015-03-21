@@ -79,7 +79,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //Presenter
         //---------
         showLoading();
-        listEventsPresenter.getEventList();
+        listEventsPresenter.getAllEvents();
 
         // CLick Event
         // -----------
@@ -135,7 +135,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    //TODO Peticion con texto
+                    //listEventsPresenter.
                     return true;
                 }
 
@@ -168,6 +168,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
+
     public void fetchedCategories(List<Category> listCategory) {
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
@@ -230,7 +231,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 viewholder = new ViewHolder();
                 viewholder.tvTitle = (TextView) vi.findViewById(R.id.tvTitle);
-
+                viewholder.tvLugar = (TextView) vi.findViewById(R.id.tvLugar);
                 viewholder.textViewFecha = (TextView) vi
                         .findViewById(R.id.textViewFecha);
                 viewholder.tvVerMas = (TextView) vi.findViewById(R.id.tvVerMas);
@@ -244,6 +245,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             Event event = EventerZgzApplication.eventsList.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
+            try {
+                viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
+            }catch (Exception e){
+
+            }
             if (event.getdEndDate() != null) {
                 viewholder.textViewFecha.setText(event.getdEndDate().toString());
             } else {
@@ -277,6 +283,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     private static class ViewHolder {
         TextView tvTitle;
+        TextView tvLugar;
         TextView textViewFecha;
         TextView tvVerMas;
         TextView tvCompartir;

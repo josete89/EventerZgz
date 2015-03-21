@@ -16,7 +16,7 @@ public class EventInteractor extends BaseInteractor{
 
     public static enum EventFilter{
 
-        CATEGORY_FILTER("title") {
+        QUERY_FILTER("q") {
             @Override
             public void appendParam(StringBuilder stringBuilder) {
 
@@ -28,10 +28,10 @@ public class EventInteractor extends BaseInteractor{
                     e.printStackTrace();
                 }
 
-                stringBuilder.append("&").append(getKeyValue()).append("==").append(s);
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        START (""){
+        START ("start"){
             @Override
             public void appendParam(StringBuilder stringBuilder) {
                 String s = "";
@@ -42,10 +42,10 @@ public class EventInteractor extends BaseInteractor{
                     e.printStackTrace();
                 }
 
-                stringBuilder.append("&").append(getKeyValue()).append("==").append(s);
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        ROWS (""){
+        SORT ("sort"){
             @Override
             public void appendParam(StringBuilder stringBuilder) {
                 String s = "";
@@ -56,10 +56,10 @@ public class EventInteractor extends BaseInteractor{
                     e.printStackTrace();
                 }
 
-                stringBuilder.append("&").append(getKeyValue()).append("==").append(s);
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         },
-        DISTANCE (""){
+        ROWS ("rows"){
             @Override
             public void appendParam(StringBuilder stringBuilder) {
                 String s = "";
@@ -70,7 +70,35 @@ public class EventInteractor extends BaseInteractor{
                     e.printStackTrace();
                 }
 
-                stringBuilder.append("&").append(getKeyValue()).append("==").append(s);
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
+            }
+        },
+        DISTANCE ("distance"){
+            @Override
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
+            }
+        },
+        POINT ("point"){
+            @Override
+            public void appendParam(StringBuilder stringBuilder) {
+                String s = "";
+
+                try {
+                    s = URLEncoder.encode(getFilterValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                stringBuilder.append("&").append(getKeyValue()).append("=").append(s);
             }
         };
 
@@ -82,8 +110,12 @@ public class EventInteractor extends BaseInteractor{
         }
 
 
-        public static EventFilter createEnumWithValue(EventFilter eventFilter,String sValue){
+        public static EventFilter createFilter(EventFilter eventFilter,String sValue){
             eventFilter.setFilterValue(sValue);
+            return eventFilter;
+        }
+        public static EventFilter createFilter(EventFilter eventFilter,int iValue){
+            eventFilter.setFilterValue(String.valueOf(iValue));
             return eventFilter;
         }
 

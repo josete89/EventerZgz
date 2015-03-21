@@ -33,7 +33,12 @@ public abstract class BasePresenter
     {
 
         Calendar beginTime = Calendar.getInstance();
-        beginTime.setTime(event.getdStartDate());
+        if(event.getdStartDate()!=null) {
+            beginTime.setTime(event.getdStartDate());
+        }
+        if(event.getdEndDate()!=null){
+            beginTime.setTime(event.getdEndDate());
+        }
         Calendar endTime = Calendar.getInstance();
         endTime.setTime(event.getdEndDate());
 
@@ -47,7 +52,6 @@ public abstract class BasePresenter
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
                 .putExtra(CalendarContract.Events.TITLE, title)
-                .putExtra(CalendarContract.Events.DESCRIPTION, description)
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
                 .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE)
                 .putExtra(Intent.EXTRA_EMAIL, email);

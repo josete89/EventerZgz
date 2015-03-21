@@ -2,6 +2,7 @@ package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
 
+import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.commons.Category;
@@ -25,7 +26,7 @@ public class ListEventsPresenter extends BasePresenter {
         this.listEventsIface = listEventsIface;
     }
 
-    public static Event eventDummy(){
+    public static Event eventDummy() {
         Event eventDummy = new Event();
 
         eventDummy.setdEndDate(new Date());
@@ -36,16 +37,50 @@ public class ListEventsPresenter extends BasePresenter {
         return eventDummy;
     }
 
-    public void getEventList(){
+
+    public void getEventsByCategory(String categoryId){
+        String query = new QueryBuilder()
+                .addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS, categoryId)
+                .build();
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+    }
+
+    public void getEventsByTitle(String title){
+        String query = new QueryBuilder()
+                .addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "*" + title +"*")
+                .build();
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+    }
+
+    public void getAllEvents(){
+        getEventList();
+    }
+
+    public void getEventsByMEGADEMOQUERY(){
+        String query = new QueryBuilder()
+                .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
+                .addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
+                .addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS, "37")
+                .addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "bib")
+                .build();
+        getEventList(
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, "startDate desc"), // "desc" is optional
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.DISTANCE, 3000), //metros
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE
+        );
+    }
+
+    private void getEventList(final EventInteractor.EventFilter... eventFilter){
 
         observerTask(new Observable.OnSubscribe<List<Event>>() {
             @Override
             public void call(Subscriber suscriber) {
-                try
-                {
-                    suscriber.onNext(EventInteractor.getAllEvent());
-                } catch (Exception e)
-                {
+                try {
+                    suscriber.onNext(EventInteractor.getAllEvent(eventFilter));
+                } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
@@ -71,11 +106,9 @@ public class ListEventsPresenter extends BasePresenter {
         observerTask(new Observable.OnSubscribe<List<Category>>() {
             @Override
             public void call(Subscriber suscriber) {
-                try
-                {
+                try {
                     suscriber.onNext(CategoryInteractor.getCategories());
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
