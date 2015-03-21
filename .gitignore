@@ -27,4 +27,7 @@ proguard/
 
 *.iml
 
+gradlew
+gradlew.bat
+
 /.idea
