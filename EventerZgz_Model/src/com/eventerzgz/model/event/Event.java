@@ -54,7 +54,10 @@ public class Event extends Base {
     @ElementList(name="temas", required = false)
     private List<Category> categoryList;
 
-    private List<SubEvent> subEventList;
+
+    @Element(name="actolugar", required = false)
+    @Path("subEvent")
+    private SubEvent subEvent;
 
     @ElementList(name="poblacion", required = false)
     private List<Poblation> poblationList;
@@ -155,14 +158,6 @@ public class Event extends Base {
         this.categoryList = categoryList;
     }
 
-    public List<SubEvent> getSubEventList() {
-        return subEventList;
-    }
-
-    public void setSubEventList(List<SubEvent> subEventList) {
-        this.subEventList = subEventList;
-    }
-
     public List<Poblation> getPoblationList() {
         return poblationList;
     }
@@ -199,6 +194,13 @@ public class Event extends Base {
     public void setdStartDate(Date dStartDate) {
         this.dStartDate = dStartDate;
     }
+    public SubEvent getSubEvent() {
+        return subEvent;
+    }
+
+    public void setSubEvent(SubEvent subEvent) {
+        this.subEvent = subEvent;
+    }
 
     @Override
     public String toString() {
@@ -211,7 +213,7 @@ public class Event extends Base {
                 ", sTicketType='" + sTicketType + '\'' +
                 ", sImage='" + sImage + '\'' +
                 ", categoryList=" + categoryList +
-                ", subEventList=" + subEventList +
+                ", subEvent=" + subEvent +
                 ", poblationList=" + poblationList +
                 ", extraInfoList=" + extraInfoList +
                 ", objCoordinates=" + objCoordinates +

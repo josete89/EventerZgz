@@ -41,7 +41,7 @@ public class EventerRest extends BaseRest implements EventDatasource
     public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) throws EventZgzException {
         List<Event> eventList = new ArrayList<>();
 
-        String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?q=title==Taller*";
+        String sUrl = "http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?srsname=wgs84";
 
         String content = doHTTPGet(sUrl);
 
