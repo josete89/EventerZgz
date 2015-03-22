@@ -82,11 +82,10 @@ public class QueryBuilder {
     }
 
     public QueryBuilder fromToday() {
-        String today = new DateTime().withTime(0, 0, 0, 0).toString(Base.DATE_FORMAT);
+        String today = DateUtilities.getStartOfToday();
         this.addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, today);
         this.and().addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, today);
         return this;
-
     }
     public String build() {
         return query.toString();
