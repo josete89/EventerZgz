@@ -10,7 +10,9 @@ import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
+import com.eventerzgz.interactor.population.PopulationInteractor;
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
 import rx.Observable;
@@ -190,6 +192,38 @@ public class ListEventsPresenter extends BasePresenter {
             }
         });
 
+    }
+
+    public void getPopulation(){
+
+        observerTask(new Observable.OnSubscribe<List<Category>>() {
+            @Override
+            public void call(Subscriber suscriber) {
+                try
+                {
+                    suscriber.onNext(PopulationInteractor.getPopulations());
+                } catch (Exception e)
+                {
+                    Log.e(TAG, e.getMessage(), e);
+                    suscriber.onError(e);
+                }
+            }
+        }, new Subscriber<List<Population>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listEventsIface.error(e.getMessage());
+            }
+            @Override
+            public void onNext(List<Population> o) {
+                listEventsIface.fetchedPopulation(o);
+                onCompleted();
+            }
+        });
     }
 
 }

@@ -1,6 +1,7 @@
 package com.eventerzgz.presenter.listevents;
 
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenterIface;
 
@@ -13,5 +14,5 @@ public interface ListEventsIface extends BasePresenterIface {
 
     public void fetchedEvents(List<Event> event);
     public void fetchedCategories(List<Category> event);
-
+    public void fetchedPopulation(List<Population> populationList);
 }

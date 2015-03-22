@@ -16,22 +16,28 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.adapter.ExpandableListAdapter;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListEventsActivity extends ActionBarActivity implements ListEventsIface {
@@ -59,7 +65,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private DrawerLayout menuLateral;
     private ListView listMenuLateral;
     private String[] opciones_menu;
-
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, List<String>> listDataChild;
 
 
 
@@ -89,6 +98,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //---------
         showLoading();
         listEventsPresenter.getAllEvents();
+        listEventsPresenter.getPopulation();
 
         // CLick Event
         // -----------
@@ -99,6 +109,100 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
         });
 
+    }
+
+    private void setLateralMenu(){
+        // get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+
+        // Listview Group click listener
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                // Toast.makeText(getApplicationContext(),
+                // "Group Clicked " + listDataHeader.get(groupPosition),
+                // Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        // Listview Group expanded listener
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+/*                Toast.makeText(getApplicationContext(),
+                        listDataHeader.get(groupPosition) + " Expanded",
+                        Toast.LENGTH_SHORT).show();*/
+            }
+        });
+
+        // Listview Group collasped listener
+        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+/*                Toast.makeText(getApplicationContext(),
+                        listDataHeader.get(groupPosition) + " Collapsed",
+                        Toast.LENGTH_SHORT).show();*/
+
+            }
+        });
+
+        // Listview on child click listener
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                // TODO Auto-generated method stub
+/*                Toast.makeText(
+                        getApplicationContext(),
+                        listDataHeader.get(groupPosition)
+                                + " : "
+                                + listDataChild.get(
+                                listDataHeader.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT)
+                        .show();*/
+                if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
+                    listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
+                }
+                return false;
+            }
+        });
+    }
+
+    private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        listDataHeader.add("¿Cuándo?");
+        listDataHeader.add("¿Quién?");
+        listDataHeader.add("¿Qué?");
+
+        // Adding child data
+        List<String> cuando = new ArrayList<String>();
+        cuando.add("Hoy");
+        cuando.add("Mañana");
+        cuando.add("Esta semana");
+
+        List<String> que = new ArrayList<String>();
+        if(EventerZgzApplication.categoryList != null){
+            for(int i=0; i<EventerZgzApplication.categoryList.size();i++){
+                que.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            }
+        }
+
+        listDataChild.put(listDataHeader.get(0), cuando);
+        listDataChild.put(listDataHeader.get(2), que);
 
     }
 
@@ -214,6 +318,21 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         emptyView.setVisibility(View.GONE);
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
+        // preparing list data
+        prepareListData();
+        // EXPANDABLE MENU LATERAL //
+        setLateralMenu();
+    }
+
+    @Override
+    public void fetchedPopulation(List<Population> populationList) {
+        if(populationList!=null){
+            List<String> quien = new ArrayList<String>();
+            for(int i=0; i<populationList.size();i++){
+                quien.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            }
+            listDataChild.put(listDataHeader.get(1), quien);
+        }
     }
 
     @Override

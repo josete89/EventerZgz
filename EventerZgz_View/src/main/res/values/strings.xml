@@ -9,7 +9,7 @@
     <string name="saltar">SALTAR</string>
     <string name="finish">FINALIZAR</string>
     <string name="question_categories">"¿En qué categorías estás interesado?"</string>
-    <string name="question_notif">"¿En que categoría deseas recibir notificaciones?"</string>
+    <string name="question_population">"¿A quién va dirigidos los eventos?"</string>
     <string name="question_map">"¿Sobre que zona deseas ver eventos?"</string>
     <string name="question_perfil">"¿Cuál es tú perfil?"</string>
 
