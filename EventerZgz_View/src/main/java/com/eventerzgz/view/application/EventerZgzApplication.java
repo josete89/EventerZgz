@@ -93,7 +93,6 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
             intent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED,0);
             contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
 
-
         }
 
         NotificationCompat.Builder mBuilder =

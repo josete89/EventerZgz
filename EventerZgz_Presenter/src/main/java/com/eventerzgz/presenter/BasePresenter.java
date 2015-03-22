@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.provider.CalendarContract;
 
 import android.util.Log;
+import com.eventerzgz.interactor.QueryBuilder;
+import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.event.Event;
 
 import java.util.ArrayList;
@@ -132,6 +134,77 @@ public abstract class BasePresenter
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
         return prefs.getString(LOCATION_PUSH_PREFERENCES_KEY, "");
+    }
+
+
+
+    public static void getEventsByPreferencesInOtherThread (final Context context,Subscriber<List<Event>> subscriber){
+
+        Observable.create(new Observable.OnSubscribe<List<Event>>() {
+            @Override
+            public void call(Subscriber<? super List<Event>> subscriber) {
+
+                try
+                {
+                    String location = BasePresenter.getLocationFromPreferences(context);
+                    List<String> categoryIds = BasePresenter.getCategories(context);
+                    List<String> poblations = BasePresenter.getPoblation(context);
+
+                    QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+
+                    composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
+                    composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
+
+
+                    queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-10T00:00:00Z");
+
+                    if(location.length() > 0){
+                        subscriber.onNext(EventInteractor.getAllEvent(
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, queryBuilder.build()),
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.START_DATE + "," + QueryBuilder.FIELD.END_DATE), // "desc" is optional
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50),
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.DISTANCE, 3000), //metros
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.POINT, location)));
+                    }else{
+                        subscriber.onNext(EventInteractor.getAllEvent(
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, queryBuilder.build()),
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.START_DATE + "," + QueryBuilder.FIELD.END_DATE), // "desc" is optional
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50)));
+                    }
+
+
+                }
+                catch (Exception ex){
+                    Log.e(TAG,ex.getMessage(),ex);
+                    subscriber.onError(ex);
+                }
+
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+
+    }
+
+    protected static QueryBuilder composeQueryLIst(QueryBuilder queryBuilder,List<String> list,QueryBuilder.FIELD field){
+
+        if (list != null && list.size() > 0) {
+            boolean first = true;
+            queryBuilder.and().group();
+            for (String categoryId : list) {
+                if (!first) {
+                    queryBuilder.or();
+                } else {
+                    first = false;
+                }
+                queryBuilder.addFilter(field, QueryBuilder.COMPARATOR.EQUALS, categoryId);
+            }
+            queryBuilder.ungroup();
+        }
+
+        return queryBuilder;
     }
 
 }
