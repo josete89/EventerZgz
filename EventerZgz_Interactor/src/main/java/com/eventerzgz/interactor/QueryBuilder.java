@@ -45,7 +45,7 @@ public class QueryBuilder {
         LAST_UPDATED("lastUpdated"),
         START_DATE("startDate"),
         END_DATE("endDate"),
-        CATEGORY("temas.id"),
+        CATEGORY("subtemas.id"),
         POPULATION("poblacion.id"),
         TITLE("title");
 

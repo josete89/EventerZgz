@@ -44,7 +44,7 @@ public class SparqlBaseParser {
                 System.out.println(i);
                 j = i + 1;
                 String id = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result'][" + j + "]/*[name()='binding'][@name='id']/*[name()='literal']/text()").evaluate(xmlDocument);
-                String title = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result'][" + j + "]/*[name()='binding'][@name='tema']/*[name()='literal']/text()").evaluate(xmlDocument);
+                String title = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result'][" + j + "]/*[name()='binding'][@name='desc']/*[name()='literal']/text()").evaluate(xmlDocument);
                 System.out.println(i);
                 base.setId(id);
                 base.setsTitle(title);

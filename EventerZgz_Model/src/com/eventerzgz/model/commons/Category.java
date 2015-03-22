@@ -26,7 +26,7 @@ public class Category extends Base {
     private String sImage;
 
     public static List<Category> doParseList(String sRawObj) throws EventZgzException{
-        return SparqlBaseParser.doParseList(sRawObj, Category.class);
+        return SparqlBaseParser.doParseList(sRawObj, Category.class, "subtema");
     }
 
     //GETTERS & SETTERS
