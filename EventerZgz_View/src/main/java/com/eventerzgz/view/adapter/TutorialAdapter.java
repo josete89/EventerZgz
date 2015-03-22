@@ -44,10 +44,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private View viewPosition;
     private View viewCategories;
     private View viewCategoriesPush;
-    private CheckBox[] listCheckbox;
-    private CheckBox[] listCheckboxPush;
+    private CheckBox[] listCheckboxCat;
+    private CheckBox[] listCheckboxPob;
     ArrayList<String> arrayIdsCategories = new ArrayList<String>();
-    ArrayList<String> arrayIdsCategoriesPush = new ArrayList<String>();
+    ArrayList<String> arrayIdsCategoriesPob = new ArrayList<String>();
 
     private static final int VIEW1 = 0;
     private static final int VIEW2 = 1;
@@ -133,18 +133,25 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             @Override
             public void onClick(View view) {
                 // GUARDAR DATOS //
-                for (int i = 0; i < names.length; i++) {
+
+                // CATEGORIAS //
+                for (int i = 0; i < listCheckboxCat.length; i++) {
                     final int j = i;
-                    if (listCheckbox[i].isChecked()) {
-                        arrayIdsCategories.add("" + listCheckbox[j].getId());
+                    if (listCheckboxCat[i].isChecked()) {
+                        arrayIdsCategories.add("" + listCheckboxCat[j].getId());
                     }
-                    if (listCheckboxPush[i].isChecked()) {
-                        arrayIdsCategoriesPush.add("" + listCheckboxPush[j].getId());
+                }
+
+                // POBLACION //
+                for (int i = 0; i < listCheckboxPob.length; i++) {
+                    final int j = i;
+                    if (listCheckboxPob[i].isChecked()) {
+                        arrayIdsCategoriesPob.add("" + listCheckboxPob[j].getId());
                     }
                 }
 
                 BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
-                BasePresenter.savePoblationSelectedInPreferences(arrayIdsCategoriesPush, context);
+                BasePresenter.savePoblationSelectedInPreferences(arrayIdsCategoriesPob, context);
 
                 ((Activity) context).finish();
                 openListEvents();
@@ -277,16 +284,16 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
 
-        listCheckbox = new CheckBox[categoryList.size()];
+        listCheckboxCat = new CheckBox[categoryList.size()];
 
         for (int i = 0; i < categoryList.size(); i++) {
 
-            listCheckbox[i] = new CheckBox(context);
-             listCheckbox[i].setId(Integer.parseInt(categoryList.get(i).getId()));
+            listCheckboxCat[i] = new CheckBox(context);
+            listCheckboxCat[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
-            listCheckbox[i].setText(categoryList.get(i).getsTitle());
+            listCheckboxCat[i].setText(categoryList.get(i).getsTitle());
 
-            layoutCategories.addView(listCheckbox[i]);
+            layoutCategories.addView(listCheckboxCat[i]);
         }
     }
 
@@ -295,17 +302,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
 
-        listCheckboxPush = new CheckBox[populationList.size()];
+        listCheckboxPob = new CheckBox[populationList.size()];
 
         for (int i = 0; i < populationList.size(); i++) {
 
-            listCheckboxPush[i] = new CheckBox(context);
+            listCheckboxPob[i] = new CheckBox(context);
 
-            listCheckboxPush[i].setId(Integer.parseInt(populationList.get(i).getId()));
+            listCheckboxPob[i].setId(Integer.parseInt(populationList.get(i).getId()));
 
-            listCheckboxPush[i].setText(populationList.get(i).getsTitle());
+            listCheckboxPob[i].setText(populationList.get(i).getsTitle());
 
-            layoutCategoriesPush.addView(listCheckboxPush[i]);
+            layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
     }
 
