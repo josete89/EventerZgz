@@ -26,6 +26,8 @@ import rx.Subscriber;
 public class ListEventsPresenter extends BasePresenter {
 
     public final ListEventsIface listEventsIface;
+    
+    private static final String DEFAULT_SORT = QueryBuilder.FIELD.START_DATE + "," +QueryBuilder.FIELD.END_DATE;
 
     public ListEventsPresenter(ListEventsIface listEventsIface) {
         this.listEventsIface = listEventsIface;
@@ -58,7 +60,8 @@ public class ListEventsPresenter extends BasePresenter {
             queryBuilder.ungroup();
         }
         String query = queryBuilder.build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsToday() {
@@ -78,7 +81,8 @@ public class ListEventsPresenter extends BasePresenter {
                 .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, start)
                 .and().addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, end)
                 .build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsByCategories(String... categoryIds) {
@@ -97,21 +101,25 @@ public class ListEventsPresenter extends BasePresenter {
             queryBuilder.ungroup();
         }
         String query = queryBuilder.build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsByTitle(String title) {
         String query = new QueryBuilder().fromToday()
                 .and().addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "*" + title + "*")
                 .build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getAllEvents() {
-        getEventList();
+        String query = new QueryBuilder().fromToday().build();
+        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
+                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
     }
 
-    public void getEventsByMEGADEMOQUERY() {
+    private void getEventsByMEGADEMOQUERY() {
         String query = new QueryBuilder()
                 .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
                 .addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
