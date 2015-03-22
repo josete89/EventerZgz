@@ -2,21 +2,14 @@ package com.eventerzgz.presenter.service;
 
 import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.events.EventInteractor;
@@ -54,20 +47,22 @@ public class AlarmReciver  extends BroadcastReceiver{
                 try
                 {
                     String location = BasePresenter.getLocationFromPreferences(context);
-                    List<String> categories = BasePresenter.getCategories(context);
+                    List<String> categoryIds = BasePresenter.getCategories(context);
                     List<String> poblations = BasePresenter.getPoblation(context);
 
-                    QueryBuilder query = new QueryBuilder();
-                    for ( String category : categories){
-                        query.addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS,category);
-                    }
-                    query.addFilter(QueryBuilder.FIELD.LAST_UPDATED,QueryBuilder.COMPARATOR.GREATER_EQUALS,"2015-03-10T00:00:00Z");
+                    QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+
+                    composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
+                    composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
+
+
+                    queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-10T00:00:00Z");
 
 
                     subscriber.onNext(EventInteractor.getAllEvent(
-                            EventFilter.createFilter(EventFilter.QUERY_FILTER, query.build()),
+                            EventFilter.createFilter(EventFilter.QUERY_FILTER, queryBuilder.build()),
                             EventFilter.createFilter(EventFilter.START, 0),
-                            EventFilter.createFilter(EventFilter.SORT, "startDate desc"), // "desc" is optional
+                            EventFilter.createFilter(EventFilter.SORT, QueryBuilder.FIELD.START_DATE + "," + QueryBuilder.FIELD.END_DATE), // "desc" is optional
                             EventFilter.createFilter(EventFilter.ROWS, 50),
                             EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
                             EventFilter.createFilter(EventFilter.POINT, location)));
@@ -115,7 +110,26 @@ public class AlarmReciver  extends BroadcastReceiver{
 
     }
 
-    public static void setAlarm(Context context,AlarmIface alarmIface)
+    public QueryBuilder composeQueryLIst(QueryBuilder queryBuilder,List<String> list,QueryBuilder.FIELD field){
+
+        if (list != null && list.size() > 0) {
+            boolean first = true;
+            queryBuilder.and().group();
+            for (String categoryId : list) {
+                if (!first) {
+                    queryBuilder.or();
+                } else {
+                    first = false;
+                }
+                queryBuilder.addFilter(field, QueryBuilder.COMPARATOR.EQUALS, categoryId);
+            }
+            queryBuilder.ungroup();
+        }
+
+        return queryBuilder;
+    }
+
+    public static void setAlarm(Context context,AlarmIface notIface)
     {
 
         AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -124,6 +138,8 @@ public class AlarmReciver  extends BroadcastReceiver{
 
         alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
                 6 * 1000, alarmIntent);
+
+        alarmIface = notIface;
     }
 
 

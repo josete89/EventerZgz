@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import rx.Observable;
@@ -122,7 +123,7 @@ public abstract class BasePresenter
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putString(LOCATION_PUSH_PREFERENCES_KEY, String.format("%f,%f",latitude,longuitude));
+        editor.putString(LOCATION_PUSH_PREFERENCES_KEY, String.format(Locale.ENGLISH,"%f,%f",longuitude,latitude));
         editor.commit();
     }
 

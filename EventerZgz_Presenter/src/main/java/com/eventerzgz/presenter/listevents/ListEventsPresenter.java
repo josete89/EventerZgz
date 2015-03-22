@@ -2,24 +2,17 @@ package com.eventerzgz.presenter.listevents;
 
 
 import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
+import java.util.Date;
+import java.util.List;
 
 import android.util.Log;
-
 import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
-import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
-
-import org.joda.time.DateTime;
-import org.joda.time.Instant;
-
-import java.util.Date;
-import java.util.List;
-
 import rx.Observable;
 import rx.Subscriber;
 
@@ -63,8 +56,8 @@ public class ListEventsPresenter extends BasePresenter {
             queryBuilder.ungroup();
         }
         String query = queryBuilder.build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
+        getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsToday() {
@@ -84,8 +77,8 @@ public class ListEventsPresenter extends BasePresenter {
                 .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, start)
                 .and().addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, end)
                 .build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
+        getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsByCategories(String... categoryIds) {
@@ -104,22 +97,22 @@ public class ListEventsPresenter extends BasePresenter {
             queryBuilder.ungroup();
         }
         String query = queryBuilder.build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
+        getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getEventsByTitle(String title) {
         String query = new QueryBuilder().fromToday()
                 .and().addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "*" + title + "*")
                 .build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
+        getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
     public void getAllEvents() {
         String query = new QueryBuilder().fromToday().build();
-        getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, DEFAULT_SORT));
+        getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
     private void getEventsByMEGADEMOQUERY() {
@@ -139,7 +132,7 @@ public class ListEventsPresenter extends BasePresenter {
         );
     }
 
-    private void getEventList(final EventInteractor.EventFilter... eventFilter) {
+    private void getEventList(final EventFilter... eventFilter) {
 
         observerTask(new Observable.OnSubscribe<List<Event>>() {
             @Override
