@@ -84,8 +84,9 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
             eventsList.add(event);
 
             Intent intent = new Intent(this,DetailEventActivity.class);
-            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
             intent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED,0);
+            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
+
 
         }
 

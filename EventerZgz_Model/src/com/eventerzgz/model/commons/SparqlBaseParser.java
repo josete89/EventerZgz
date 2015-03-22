@@ -41,7 +41,7 @@ public class SparqlBaseParser {
             int j;
             for (int i = 0; i < nodeList.getLength(); i++) {
                 base = klazz.getConstructor().newInstance();
-                System.out.println(i);
+                //System.out.println(i);
                 j = i + 1;
                 String id = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result'][" + j + "]/*[name()='binding'][@name='id']/*[name()='literal']/text()").evaluate(xmlDocument);
                 String title = xPath.compile("/*[name()='sparql']/*[name()='results']/*[name()='result'][" + j + "]/*[name()='binding'][@name='desc']/*[name()='literal']/text()").evaluate(xmlDocument);
