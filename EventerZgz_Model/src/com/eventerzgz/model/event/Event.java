@@ -51,6 +51,9 @@ public class Event extends Base {
     @Element(name="image", required = false)
     private String sImage;
 
+    @Element(name="web", required = false)
+    private String sWeb;
+
     @ElementList(name="temas", required = false)
     private List<Category> categoryList;
 
@@ -62,6 +65,7 @@ public class Event extends Base {
     @ElementList(name="poblacion", required = false)
     private List<Population> populationList;
 
+    @ElementList(name="anexo", required = false)
     private List<ExtraInfo> extraInfoList;
 
     @Element(name="coordinates", required = false)
@@ -98,6 +102,14 @@ public class Event extends Base {
         List<Event> events = doParse(xml);
 
         System.out.println(events);
+    }
+
+    public String getsWeb() {
+        return sWeb;
+    }
+
+    public void setsWeb(String sWeb) {
+        this.sWeb = sWeb;
     }
 
     private static class SparqlEventList {
@@ -217,6 +229,7 @@ public class Event extends Base {
                 ", bHighlighted=" + bHighlighted +
                 ", sTicketType='" + sTicketType + '\'' +
                 ", sImage='" + sImage + '\'' +
+                ", sWeb='" + sWeb + '\'' +
                 ", categoryList=" + categoryList +
                 ", subEvent=" + subEvent +
                 ", populationList=" + populationList +
