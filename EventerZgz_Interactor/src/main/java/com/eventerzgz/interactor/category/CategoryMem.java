@@ -3,7 +3,6 @@ package com.eventerzgz.interactor.category;
 import java.util.List;
 
 import com.eventerzgz.model.commons.Category;
-import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
 
 /**
