@@ -1,3 +1,5 @@
+http://www.zaragoza.es/api/recurso/cultura-ocio/evento-zaragoza.xml?srsname=wgs84&q=startDate%3Dle%3D2015-03-22T00%3A00%3A00Z%3BendDate%3Dle%3D2015-03-22T00%3A00%3A00Z%3B%28temas.id%3D%3D20%29
+
 #SPARQL queries
 
 ## Categories
