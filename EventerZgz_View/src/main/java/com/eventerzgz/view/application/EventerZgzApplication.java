@@ -20,6 +20,7 @@ import com.eventerzgz.presenter.service.AlarmIface;
 import com.eventerzgz.presenter.service.AlarmReciver;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.DetailEventActivity;
+import com.eventerzgz.view.activities.ListEventsActivity;
 import com.eventerzgz.view.activities.SplashScreenActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -76,7 +77,7 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
         PendingIntent contentIntent;
 
         if(event == null){
-            Intent intent = new Intent(this,SplashScreenActivity.class);
+            Intent intent = new Intent(this,ListEventsActivity.class);
             contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
         }else{
             eventsList = new ArrayList<>();
