@@ -53,12 +53,12 @@ public class AlarmReciver  extends BroadcastReceiver{
 
                 try
                 {
-                    Location location = getLocation(context);
-                    List<String> pushCategory = BasePresenter.getPushCategories(context);
-                    Date today = new Date();
+                    String location = BasePresenter.getLocationFromPreferences(context);
+                    List<String> categories = BasePresenter.getCategories(context);
+                    List<String> poblations = BasePresenter.getPoblation(context);
 
                     QueryBuilder query = new QueryBuilder();
-                    for ( String category : pushCategory){
+                    for ( String category : categories){
                         query.addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS,category);
                     }
                     query.addFilter(QueryBuilder.FIELD.LAST_UPDATED,QueryBuilder.COMPARATOR.GREATER_EQUALS,"2015-03-10T00:00:00Z");
@@ -70,7 +70,7 @@ public class AlarmReciver  extends BroadcastReceiver{
                             EventFilter.createFilter(EventFilter.SORT, "startDate desc"), // "desc" is optional
                             EventFilter.createFilter(EventFilter.ROWS, 50),
                             EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
-                            EventFilter.createFilter(EventFilter.POINT, String.format("%f,%f",location.getLongitude(),location.getLatitude()))));
+                            EventFilter.createFilter(EventFilter.POINT, location)));
                 }
                 catch (Exception ex){
                     Log.e(TAG,ex.getMessage(),ex);
@@ -115,10 +115,6 @@ public class AlarmReciver  extends BroadcastReceiver{
 
     }
 
-
-
-
-
     public static void setAlarm(Context context,AlarmIface alarmIface)
     {
 
@@ -129,37 +125,6 @@ public class AlarmReciver  extends BroadcastReceiver{
         alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
                 6 * 1000, alarmIntent);
     }
-
-
-
-
-    //Get location in backgroud
-
-    private Location getLocation(Context context)
-    {
-
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-        if (locationManager != null) {
-            String provider = locationManager.getBestProvider(criteria, true);
-            if (provider != null) {
-                Location location = locationManager.getLastKnownLocation(provider);
-                return location;
-            }
-        }
-
-        return null;
-    }
-
-
-
 
 
 }

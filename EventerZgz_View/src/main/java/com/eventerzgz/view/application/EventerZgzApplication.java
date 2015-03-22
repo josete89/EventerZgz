@@ -28,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+
 /**
  * Created by JavierArroyo on 21/3/15.
  */
@@ -45,9 +46,8 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
 
 
     public void startService(){
-        // TODO - Comprobar que no esté lanzado ya
+        // TODO - Comprobar que no este lanzado ya
         AlarmReciver.setAlarm(getApplicationContext(),this);
-
     }
 
     @Override
@@ -109,9 +109,6 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
 
 
         mNotificationManager.notify(id, mBuilder.build());
-
-
-
 
 
     }

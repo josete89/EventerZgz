@@ -138,7 +138,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                 }
 
                 BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
-                BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategoriesPush, context);
+                BasePresenter.savePoblationSelectedInPreferences(arrayIdsCategoriesPush, context);
 
                 ((Activity) context).finish();
                 openListEvents();
@@ -218,6 +218,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     removeMarkerFromMap(marker);
                 }
                 marker = addMarkerToMap(point.latitude, point.longitude);
+                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude,context);
             }
         });
 
@@ -274,7 +275,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     @Override
-    public void error(String sMessage) {
+    public void error(String sMessage)
+    {
 
     }
 }
