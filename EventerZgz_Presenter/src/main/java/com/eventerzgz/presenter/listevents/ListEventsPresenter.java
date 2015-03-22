@@ -2,6 +2,7 @@ package com.eventerzgz.presenter.listevents;
 
 import android.util.Log;
 
+import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
@@ -61,30 +62,21 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsToday() {
-        DateTime now = new DateTime();
-        DateTime startOfDay = now.withTime(0, 0, 0, 0);
-        DateTime endOfDay = now.withTime(23, 59, 59, 999);
-        getEventsByDateRange(startOfDay, endOfDay);
+        getEventsByDateRange(DateUtilities.getStartOfToday(), DateUtilities.getEndOfToday());
     }
 
     public void getEventsTomorrow() {
-        DateTime tomorrow = new DateTime().plusDays(1);
-        DateTime startOfDay = tomorrow.withTime(0, 0, 0, 0);
-        DateTime endOfDay = tomorrow.withTime(23, 59, 59, 999);
-        getEventsByDateRange(startOfDay, endOfDay);
+        getEventsByDateRange(DateUtilities.getStartOfTomorrow(), DateUtilities.getEndOfTomorrow());
     }
 
     public void getEventsWeek() {
-        DateTime now = new DateTime();
-        DateTime startOfDay = now.withTime(0, 0, 0, 0);
-        DateTime endOfDay = now.plusDays(6).withTime(23, 59, 59, 999);
-        getEventsByDateRange(startOfDay, endOfDay);
+        getEventsByDateRange(DateUtilities.getStartOfToday(), DateUtilities.getEndOfWeek());
     }
 
-    private void getEventsByDateRange(DateTime start, DateTime end) {
+    private void getEventsByDateRange(String start, String end) {
         String query = new QueryBuilder()
-                .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, start.toString(Base.DATE_FORMAT))
-                .and().addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, end.toString(Base.DATE_FORMAT))
+                .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, start)
+                .and().addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, end)
                 .build();
         getEventList(EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query));
     }

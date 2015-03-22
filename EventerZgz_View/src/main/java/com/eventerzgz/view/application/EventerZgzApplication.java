@@ -15,8 +15,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
 import java.util.List;
 
 /**
@@ -55,6 +53,5 @@ public class EventerZgzApplication  extends Application {
 
         // Iniciar ImageLoader
         ImageLoader.getInstance().init(config);
-        JodaTimeAndroid.init(this);
     }
 }

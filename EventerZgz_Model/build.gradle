@@ -24,6 +24,5 @@ dependencies {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
-        exclude module: 'stax-api'
     }
 }
