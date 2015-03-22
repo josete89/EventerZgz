@@ -56,7 +56,7 @@ public class AlarmReciver  extends BroadcastReceiver{
 
                 if (events != null && events.size() > 0) {
 
-                    if (events.size() == 1) {
+                    if (true) {
                         Event event = events.get(0);
                         if (alarmIface != null)
                             alarmIface.deliverNotification(context, event.getsTitle(), event.getId(), event);
