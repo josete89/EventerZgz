@@ -97,16 +97,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
         });
 
-        // EXPANDABLE MENU LATERAL //
-        setLateralMenu();
     }
 
     private void setLateralMenu(){
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-
-        // preparing list data
-        prepareListData();
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
@@ -174,38 +169,29 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("Top 250");
-        listDataHeader.add("Now Showing");
-        listDataHeader.add("Coming Soon..");
+        listDataHeader.add("¿Cuándo?");
+        listDataHeader.add("¿Quién?");
+        listDataHeader.add("¿Qué?");
 
         // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("The Shawshank Redemption");
-        top250.add("The Godfather");
-        top250.add("The Godfather: Part II");
-        top250.add("Pulp Fiction");
-        top250.add("The Good, the Bad and the Ugly");
-        top250.add("The Dark Knight");
-        top250.add("12 Angry Men");
+        List<String> cuando = new ArrayList<String>();
+        cuando.add("Hoy");
+        cuando.add("Mañana");
+        cuando.add("Esta semana");
 
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
+        List<String> quien = new ArrayList<String>();
 
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
 
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
+        List<String> que = new ArrayList<String>();
+        if(EventerZgzApplication.categoryList != null){
+            for(int i=0; i<EventerZgzApplication.categoryList.size();i++){
+                que.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            }
+        }
+
+        listDataChild.put(listDataHeader.get(0), cuando); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), que);
+        listDataChild.put(listDataHeader.get(2), que);
     }
 
     // ------------------------------------------------------------------------------------
@@ -287,6 +273,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     public void fetchedCategories(List<Category> listCategory) {
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
+        // preparing list data
+        prepareListData();
+        // EXPANDABLE MENU LATERAL //
+        setLateralMenu();
     }
 
     @Override

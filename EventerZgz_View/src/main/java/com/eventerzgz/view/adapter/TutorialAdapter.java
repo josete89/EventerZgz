@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,6 +45,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private GoogleMap map;
     private Context context;
     private Marker marker = null;
+    private View viewPosition;
     private View viewCategories;
     private View viewCategoriesPush;
     private CheckBox[] listCheckbox;
@@ -108,8 +110,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     break;
                 case VIEW3:
                     convertView = mInflater.inflate(R.layout.tuto_step3, null);
+                    viewPosition = convertView;
                     configViewPosition(convertView);
-                    Log.e("TAG", "1");
                     break;
                 case VIEW4:
                     convertView = mInflater.inflate(R.layout.tuto_step4, null);
@@ -169,6 +171,22 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         try {
             mapView = (MapView) convertView.findViewById(R.id.mapview);
             mapView.onCreate(null);
+            mapView.setClickable(true);
+            mapView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_MOVE:
+                            viewPosition.getParent().requestDisallowInterceptTouchEvent(true);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
+                            viewPosition.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                    return mapView.onTouchEvent(motionEvent);
+                }
+            });
             configMap(context);
         } catch (Exception e) {
             e.printStackTrace();
