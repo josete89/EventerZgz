@@ -51,6 +51,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //----
     private boolean flagLoading = false;
     private boolean filterSearch = false;
+    private boolean categorySearch = false;
     private List<Event> listEventsToShow;
 
     // Menu lateral
@@ -133,8 +134,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 public boolean onQueryTextChange(String newText) {
                     if (newText == null || newText.equals("")) {
                         filterSearch = false;
-                        listEventsToShow = EventerZgzApplication.allEventsList;
-                        refreshListEvents();
+                        refreshListEvents(EventerZgzApplication.allEventsList);
                     } else {
                     }
 
@@ -145,7 +145,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 public boolean onQueryTextSubmit(String query) {
                     filterSearch = true;
                     listEventsPresenter.getEventsByTitle(query);
-                    refreshListEvents();
                     return true;
                 }
 
@@ -161,6 +160,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            Intent mainIntent = new Intent().setClass(
+                    ListEventsActivity.this, TutorialActivity.class);
+            startActivity(mainIntent);
             return true;
         }
         if(android.R.id.home == id){
@@ -196,12 +198,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         }
 
         if(listEvents.size() > 0){
-            listEventsToShow = listEvents;
+            refreshListEvents(listEvents);
         }else{
-            listEventsToShow = EventerZgzApplication.allEventsList;
+            refreshListEvents(EventerZgzApplication.allEventsList);
         }
 
-        refreshListEvents();
+
     }
 
     @Override
@@ -223,7 +225,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //-------------------------------------------------------------------------
     // REFRESH LIST ADAPTER
     //-------------------------------------------------------------------------
-    private void refreshListEvents() {
+    private void refreshListEvents(List<Event> listEvents) {
+        listEventsToShow = listEvents;
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
@@ -414,5 +417,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_FILTERED, filterSearch);
         startActivity(intentEvent);
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    private void searchCategory(int position) {
+
     }
 }

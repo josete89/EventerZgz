@@ -121,6 +121,11 @@ public class DetailEventActivity extends ActionBarActivity {
             textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());
             textViewConexion.setText(eventSelected.getSubEvent().getWhere().getsBus());
             textViewLugar.setText(eventSelected.getSubEvent().getWhere().getsTitle());
+            if(eventSelected.getsWeb()!=null) {
+                textViewWeb.setText(eventSelected.getsWeb());
+            }else{
+                textViewWeb.setVisibility(View.GONE);
+            }
             Spannable spanna = new SpannableString(eventSelected.getCategoryList().get(0).getsTitle());
             spanna.setSpan(new BackgroundColorSpan(0xBFc0392b), 0, eventSelected.getCategoryList().get(0).getsTitle().length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
