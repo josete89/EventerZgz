@@ -26,7 +26,6 @@ import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
-import com.eventerzgz.presenter.service.EventService;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
@@ -212,6 +211,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     @Override
 
     public void fetchedCategories(List<Category> listCategory) {
+        emptyView.setVisibility(View.GONE);
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
     }
@@ -220,6 +220,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     public void error(String sMessage) {
 
         hideLoading();
+        refreshListEvents(EventerZgzApplication.allEventsList);
         emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
@@ -301,6 +302,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             //Imagen
             //------
             if (event.getsImage() != null && !event.getsImage().equals("")) {
+                viewholder.imageView.setVisibility(View.VISIBLE);
                 ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
                 viewholder.imageView.setVisibility(View.GONE);
@@ -425,7 +427,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     // INTENT EVENT
     // --------------------------------------------------------------------------------------
-    private void searchCategory(int position) {
-
+    public void searchCategory(String id) {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+       listEventsPresenter.getEventsByCategories(id);
     }
 }

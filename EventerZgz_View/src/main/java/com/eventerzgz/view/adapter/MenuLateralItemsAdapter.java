@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.activities.ListEventsActivity;
 import com.eventerzgz.view.application.EventerZgzApplication;
 
 /**
@@ -70,6 +71,14 @@ public class MenuLateralItemsAdapter extends BaseAdapter {
 		}
 
 		textViewCategoria.setText(EventerZgzApplication.categoryList.get(position).getsTitle().trim());
+        textViewCategoria.setTag(position);
+        textViewCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = (int)view.getTag();
+                ((ListEventsActivity)context).searchCategory(EventerZgzApplication.categoryList.get(position).getId());
+            }
+        });
 
 		return convertView;
 	}

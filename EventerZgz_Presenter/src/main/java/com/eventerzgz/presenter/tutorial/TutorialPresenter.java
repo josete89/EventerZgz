@@ -1,13 +1,15 @@
 package com.eventerzgz.presenter.tutorial;
 
-import java.util.ArrayList;
+import android.util.Log;
+
+import com.eventerzgz.interactor.category.CategoryInteractor;
+import com.eventerzgz.interactor.population.PopulationInteractor;
+import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
+import com.eventerzgz.presenter.BasePresenter;
+
 import java.util.List;
 
-import android.util.Log;
-import com.eventerzgz.interactor.category.CategoryInteractor;
-import com.eventerzgz.model.commons.Category;
-import com.eventerzgz.model.event.Event;
-import com.eventerzgz.presenter.BasePresenter;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -56,6 +58,39 @@ public class TutorialPresenter extends BasePresenter
         });
     }
 
+
+    public void getPopulation(){
+
+        observerTask(new Observable.OnSubscribe<List<Category>>() {
+            @Override
+            public void call(Subscriber suscriber) {
+                try
+                {
+                    suscriber.onNext(PopulationInteractor.getPopulations());
+                } catch (Exception e)
+                {
+                    Log.e(TAG, e.getMessage(), e);
+                    suscriber.onError(e);
+                }
+            }
+        }, new Subscriber<List<Population>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                tutorialIface.error(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<Population> o) {
+                tutorialIface.fechedPopulation(o);
+                onCompleted();
+            }
+        });
+    }
 
 
 
