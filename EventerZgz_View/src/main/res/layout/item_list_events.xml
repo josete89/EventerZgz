@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@drawable/abc_menu_dropdown_panel_holo_light"
     android:layout_height="wrap_content" >
 
     <RelativeLayout
@@ -19,7 +20,7 @@
             android:id="@+id/linearLayoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary_color"
+            android:background="@color/primary_color_light"
             android:paddingTop="5dp"
             android:layout_below="@+id/imageView"
             android:paddingBottom="5dp"
@@ -71,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_below="@id/linearLayoutTitle"
-            android:background="@color/primary_color"
+            android:background="@color/primary_color_light"
             android:orientation="horizontal" >
 
             <TextView
@@ -81,7 +82,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
-                android:background="@color/primary_color"
+                android:background="@color/primary_color_light"
                 android:gravity="center"
                 android:text="@string/compartir"
                 android:textColor="#b0b5cf"
@@ -92,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
                 android:layout_weight="2"
-                android:background="@color/primary_color" >
+                android:background="@color/primary_color_light" >
             </LinearLayout>
 
             <TextView
@@ -102,7 +103,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
-                android:background="@color/primary_color"
+                android:background="@color/primary_color_light"
                 android:gravity="center"
                 android:text="@string/verMas"
                 android:textColor="#ffe682"

@@ -25,10 +25,12 @@ public class EventerZgzApplication  extends Application {
     //Data intent
     //-----------
     public static final String INTENT_EVENT_SELECTED = "posEventSelected";
+    public static final String INTENT_EVENT_FILTERED = "eventFiltered";
 
     //Data
     //----
-    public static List<Event> eventsList;
+    public static List<Event> allEventsList;
+    public static List<Event> filterEventsList;
     public static List<Category> categoryList;
 
     //Preferences

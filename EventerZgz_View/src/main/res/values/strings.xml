@@ -20,4 +20,11 @@
     <string name="verMas">Ver más</string>
     <string name="action_search">Search</string>
     <string name="contenido_no_disponible">Contenido no disponible</string>
+
+    <string name="direccion">Dirección:</string>
+    <string name="lugar">Lugar:</string>
+    <string name="telefono">Teléfono:</string>
+    <string name="mail">Mail:</string>
+    <string name="conexion">Conexión:</string>
+    <string name="web">Web:</string>
 </resources>

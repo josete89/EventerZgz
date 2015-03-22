@@ -7,6 +7,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //Data
     //----
     private boolean flagLoading = false;
+    private boolean filterSearch = false;
+    private List<Event> listEventsToShow;
 
     // Menu lateral
     // -------------
@@ -57,10 +60,16 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private String[] opciones_menu;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_events);
+
+        //ActionBar
+        //---------
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         //View
         //----
@@ -123,7 +132,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText == null || newText.equals("")) {
-
+                        filterSearch = false;
+                        listEventsToShow = EventerZgzApplication.allEventsList;
+                        refreshListEvents();
                     } else {
                     }
 
@@ -132,7 +143,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    //listEventsPresenter.
+                    filterSearch = true;
+                    listEventsPresenter.getEventsByTitle(query);
+                    refreshListEvents();
                     return true;
                 }
 
@@ -150,17 +163,44 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if (id == R.id.action_settings) {
             return true;
         }
+        if(android.R.id.home == id){
+            openCloseMenuLateral();
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+    //------------------------------------------------------------------------------------------
+    //Open CLOSE MENU LATERAL
+    //------------------------------------------------------------------------------------------
+    private void openCloseMenuLateral(){
+        if(menuLateral.isDrawerOpen(Gravity.LEFT)){
+            menuLateral.closeDrawer(Gravity.LEFT);
+        }else{
+            menuLateral.openDrawer(Gravity.LEFT);
+        }
+
+
+
+    }
     //------------------------------------------------------------------------------------------
     //Métodos del presenter
     //------------------------------------------------------------------------------------------
     @Override
     public void fetchedEvents(List<Event> listEvents) {
         hideLoading();
-        EventerZgzApplication.eventsList = listEvents;
+        if(filterSearch){
+            EventerZgzApplication.filterEventsList = listEvents;
+        }else{
+            EventerZgzApplication.allEventsList = listEvents;
+        }
+
+        if(listEvents.size() > 0){
+            listEventsToShow = listEvents;
+        }else{
+            listEventsToShow = EventerZgzApplication.allEventsList;
+        }
+
         refreshListEvents();
     }
 
@@ -200,8 +240,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         @Override
         public int getCount() {
-            if (EventerZgzApplication.eventsList != null) {
-                return EventerZgzApplication.eventsList.size();
+            if (listEventsToShow != null) {
+                return listEventsToShow.size();
             }
             return 0;
         }
@@ -240,7 +280,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
             viewholder = (ViewHolder) vi.getTag();
 
-            Event event = EventerZgzApplication.eventsList.get(position);
+            Event event = listEventsToShow.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
@@ -372,6 +412,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private void intentDetailEvent(int position) {
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
+        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_FILTERED, filterSearch);
         startActivity(intentEvent);
     }
 }
