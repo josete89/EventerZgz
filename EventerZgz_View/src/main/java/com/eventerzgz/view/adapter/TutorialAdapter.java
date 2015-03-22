@@ -1,8 +1,5 @@
 package com.eventerzgz.view.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.presenter.BasePresenter;
 import com.eventerzgz.presenter.tutorial.TutorialIface;
 import com.eventerzgz.presenter.tutorial.TutorialPresenter;
@@ -27,7 +26,11 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.taptwo.android.widget.TitleProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TutorialAdapter extends BaseAdapter implements TitleProvider, TutorialIface {
 
@@ -58,6 +61,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         presenter.getCategories();
+        presenter.getPopulation();
     }
 
     @Override
@@ -218,7 +222,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     removeMarkerFromMap(marker);
                 }
                 marker = addMarkerToMap(point.latitude, point.longitude);
-                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude,context);
+                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
             }
         });
 
@@ -270,13 +274,30 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxPush[i].setText(categoryList.get(i).getsTitle());
 
             layoutCategories.addView(listCheckbox[i]);
+        }
+    }
+
+    @Override
+    public void fechedPopulation(List<Population> populationList) {
+        Log.e("TAG", "3: " + populationList.size());
+        LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
+
+        listCheckboxPush = new CheckBox[populationList.size()];
+
+        for (int i = 0; i < populationList.size(); i++) {
+
+            listCheckboxPush[i] = new CheckBox(context);
+
+            listCheckboxPush[i].setId(Integer.parseInt(populationList.get(i).getId()));
+
+            listCheckboxPush[i].setText(populationList.get(i).getsTitle());
+
             layoutCategoriesPush.addView(listCheckboxPush[i]);
         }
     }
 
     @Override
-    public void error(String sMessage)
-    {
+    public void error(String sMessage) {
 
     }
 }

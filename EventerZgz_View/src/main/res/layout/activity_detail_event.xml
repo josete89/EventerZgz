@@ -20,33 +20,16 @@
                 android:id="@+id/imageViewDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/listado_default" />
+                android:scaleType="centerCrop" />
+
 
             <TextView
-                android:id="@+id/textViewCategoriaSlider"
+                android:id="@+id/textViewCategoria"
                 style="@style/textShadow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/transparent"
-                android:fontFamily="light"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:text="Categoria"
-                android:textColor="@color/white"
-                android:textSize="22sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/textViewSubcategoriaSlider"
-                style="@style/textShadow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewCategoriaSlider"
                 android:background="@android:color/transparent"
                 android:fontFamily="bold"
                 android:gravity="left"
@@ -95,64 +78,183 @@
                 android:textSize="22sp"
                 tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/textViewDireccion"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:fontFamily="bold"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:textColor="@color/primary_color"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:fontFamily="bold"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:textColor="@color/primary_color"
-                android:textSize="16sp" />
-            <TextView
-                android:id="@+id/textViewConexion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:fontFamily="bold"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:textColor="@color/primary_color"
-                android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/direccion"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewLugar"
+                <TextView
+                    android:id="@+id/textViewDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dp"
-                android:background="@color/white"
-                android:fontFamily="bold"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:textColor="@color/primary_color"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/telefono"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:onClick="onClickDetail"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:textStyle="bold"
+                    android:text="@string/conexion"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewConexion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/lugar"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewLugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="bold"
+                    android:gravity="left"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/primary_color"
+                    android:textSize="16sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:fontFamily="bold"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="@string/web"
+                        android:textColor="@color/primary_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/textViewWeb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/white"
+                        android:fontFamily="bold"
+                        android:gravity="left"
+                        android:onClick="onClickDetail"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:textColor="@color/primary_color"
+                        android:textSize="16sp" />
+            </LinearLayout>
+
+
             <TextView
                 android:id="@+id/textViewDescription"
                 style="@style/textShadow"
