@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
@@ -221,7 +222,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         hideLoading();
         refreshListEvents(EventerZgzApplication.allEventsList);
-        emptyView.setVisibility(View.VISIBLE);
+        Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        //emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
 
@@ -311,17 +313,20 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
-            viewholder.tvCompartir
-                    .setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                int position = (Integer) v.getTag();
-                                                String url = "www.marca.com";
-                                                SocialShare.share(ListEventsActivity.this, url);
+            if(event.getsWeb() != null) {
+                viewholder.tvCompartir
+                        .setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    int position = (Integer) v.getTag();
+                                                    String url = "Evento enviado a través de EventerZgz: "+listEventsToShow.get(position).getsWeb();
+                                                    SocialShare.share(ListEventsActivity.this, url);
+                                                }
                                             }
-                                        }
-                    );
-
+                        );
+            }else{
+                viewholder.tvCompartir.setVisibility(View.GONE);
+            }
             return vi;
         }
     }

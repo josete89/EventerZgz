@@ -108,8 +108,10 @@ public class DetailEventActivity extends ActionBarActivity {
     //--------------------------------------------------------------------
     private void setInfoEvent(){
         textViewTitle.setText(eventSelected.getsTitle());
-        textViewDescription
-                .setText(Html.fromHtml(eventSelected.getsDescription()));
+        if(eventSelected.getsDescription()!=null) {
+            textViewDescription
+                    .setText(Html.fromHtml(eventSelected.getsDescription()));
+        }
         if(eventSelected.getsImage()!=null && !eventSelected.getsImage().equals("")){
             ImageLoader.getInstance().displayImage((eventSelected.getFieldWithUri(eventSelected.getsImage())), imageViewDetail);
         }else{
