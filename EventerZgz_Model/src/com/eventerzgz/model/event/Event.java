@@ -4,7 +4,7 @@ import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Coordinates;
 import com.eventerzgz.model.commons.ExtraInfo;
-import com.eventerzgz.model.commons.Poblation;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.exception.EventZgzException;
 import com.eventerzgz.model.transformers.CoordinatesTransformer;
 import com.eventerzgz.model.transformers.DateFormatTransformer;
@@ -60,7 +60,7 @@ public class Event extends Base {
     private SubEvent subEvent;
 
     @ElementList(name="poblacion", required = false)
-    private List<Poblation> poblationList;
+    private List<Population> populationList;
 
     private List<ExtraInfo> extraInfoList;
 
@@ -78,7 +78,7 @@ public class Event extends Base {
             m.bind(Date.class, new DateFormatTransformer(format));
             m.bind(Coordinates.class, new CoordinatesTransformer());
             persister = new Persister(m);
-            SparqlEventList sparqlEventList = persister.read(SparqlEventList.class, sRawObj, false);
+            Event.SparqlEventList sparqlEventList = persister.read(Event.SparqlEventList.class, sRawObj, false);
             eventList = sparqlEventList.getList();
         } catch (Exception e) {
             throw new  EventZgzException(e);
@@ -98,6 +98,15 @@ public class Event extends Base {
         List<Event> events = doParse(xml);
 
         System.out.println(events);
+    }
+
+    private static class SparqlEventList {
+        @ElementList
+        private List<Event> result;
+
+        public List<Event> getList() {
+            return result;
+        }
     }
 
 
@@ -158,12 +167,12 @@ public class Event extends Base {
         this.categoryList = categoryList;
     }
 
-    public List<Poblation> getPoblationList() {
-        return poblationList;
+    public List<Population> getPopulationList() {
+        return populationList;
     }
 
-    public void setPoblationList(List<Poblation> poblationList) {
-        this.poblationList = poblationList;
+    public void setPopulationList(List<Population> populationList) {
+        this.populationList = populationList;
     }
 
     public List<ExtraInfo> getExtraInfoList() {
@@ -210,7 +219,7 @@ public class Event extends Base {
                 ", sImage='" + sImage + '\'' +
                 ", categoryList=" + categoryList +
                 ", subEvent=" + subEvent +
-                ", poblationList=" + poblationList +
+                ", populationList=" + populationList +
                 ", extraInfoList=" + extraInfoList +
                 ", objCoordinates=" + objCoordinates +
                 '}'+ super.toString();
