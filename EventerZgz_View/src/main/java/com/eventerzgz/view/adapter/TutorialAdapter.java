@@ -1,11 +1,8 @@
 package com.eventerzgz.view.adapter;
 
-import org.taptwo.android.widget.TitleProvider;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,16 +11,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
+import com.eventerzgz.presenter.BasePresenter;
 import com.eventerzgz.presenter.tutorial.TutorialIface;
 import com.eventerzgz.presenter.tutorial.TutorialPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
-import com.eventerzgz.view.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,10 +28,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.taptwo.android.widget.TitleProvider;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class TutorialAdapter extends BaseAdapter implements TitleProvider, TutorialIface {
 
@@ -67,6 +63,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         presenter.getCategories();
+        presenter.getPopulation();
     }
 
     @Override
@@ -146,8 +143,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     }
                 }
 
-                Utils.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
-                Utils.saveCategoriesSelectedInPreferences(arrayIdsCategoriesPush, context);
+                BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
+                BasePresenter.savePoblationSelectedInPreferences(arrayIdsCategoriesPush, context);
 
                 ((Activity) context).finish();
                 openListEvents();
@@ -243,6 +240,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     removeMarkerFromMap(marker);
                 }
                 marker = addMarkerToMap(point.latitude, point.longitude);
+                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
             }
         });
 
@@ -280,20 +278,33 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
 
         listCheckbox = new CheckBox[categoryList.size()];
-        listCheckboxPush = new CheckBox[categoryList.size()];
 
         for (int i = 0; i < categoryList.size(); i++) {
 
             listCheckbox[i] = new CheckBox(context);
-            listCheckboxPush[i] = new CheckBox(context);
-
-            listCheckbox[i].setId(Integer.parseInt(categoryList.get(i).getId()));
-            listCheckboxPush[i].setId(Integer.parseInt(categoryList.get(i).getId()));
+             listCheckbox[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
             listCheckbox[i].setText(categoryList.get(i).getsTitle());
-            listCheckboxPush[i].setText(categoryList.get(i).getsTitle());
 
             layoutCategories.addView(listCheckbox[i]);
+        }
+    }
+
+    @Override
+    public void fechedPopulation(List<Population> populationList) {
+
+        LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
+
+        listCheckboxPush = new CheckBox[populationList.size()];
+
+        for (int i = 0; i < populationList.size(); i++) {
+
+            listCheckboxPush[i] = new CheckBox(context);
+
+            listCheckboxPush[i].setId(Integer.parseInt(populationList.get(i).getId()));
+
+            listCheckboxPush[i].setText(populationList.get(i).getsTitle());
+
             layoutCategoriesPush.addView(listCheckboxPush[i]);
         }
     }

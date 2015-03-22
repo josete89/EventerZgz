@@ -7,6 +7,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
@@ -54,6 +56,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //Data
     //----
     private boolean flagLoading = false;
+    private boolean filterSearch = false;
+    private boolean categorySearch = false;
+    private List<Event> listEventsToShow;
 
     // Menu lateral
     // -------------
@@ -65,10 +70,16 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_events);
+
+        //ActionBar
+        //---------
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         //View
         //----
@@ -87,6 +98,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //---------
         showLoading();
         listEventsPresenter.getAllEvents();
+        listEventsPresenter.getPopulation();
 
         // CLick Event
         // -----------
@@ -126,9 +138,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
+/*                Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
 
@@ -137,9 +149,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
+/*                Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
 
             }
         });
@@ -151,14 +163,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 // TODO Auto-generated method stub
-                Toast.makeText(
+/*                Toast.makeText(
                         getApplicationContext(),
                         listDataHeader.get(groupPosition)
                                 + " : "
                                 + listDataChild.get(
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
+                if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
+                    listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
+                }
                 return false;
             }
         });
@@ -179,9 +194,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         cuando.add("Mañana");
         cuando.add("Esta semana");
 
-        List<String> quien = new ArrayList<String>();
-
-
         List<String> que = new ArrayList<String>();
         if(EventerZgzApplication.categoryList != null){
             for(int i=0; i<EventerZgzApplication.categoryList.size();i++){
@@ -189,9 +201,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
         }
 
-        listDataChild.put(listDataHeader.get(0), cuando); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), que);
+        listDataChild.put(listDataHeader.get(0), cuando);
         listDataChild.put(listDataHeader.get(2), que);
+
     }
 
     // ------------------------------------------------------------------------------------
@@ -227,7 +239,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText == null || newText.equals("")) {
-
+                        filterSearch = false;
+                        refreshListEvents(EventerZgzApplication.allEventsList);
                     } else {
                     }
 
@@ -236,7 +249,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    //listEventsPresenter.
+                    filterSearch = true;
+                    listEventsPresenter.getEventsByTitle(query);
                     return true;
                 }
 
@@ -252,25 +266,56 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            Intent mainIntent = new Intent().setClass(
+                    ListEventsActivity.this, TutorialActivity.class);
+            startActivity(mainIntent);
             return true;
+        }
+        if(android.R.id.home == id){
+            openCloseMenuLateral();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     //------------------------------------------------------------------------------------------
+    //Open CLOSE MENU LATERAL
+    //------------------------------------------------------------------------------------------
+    private void openCloseMenuLateral(){
+        if(menuLateral.isDrawerOpen(Gravity.LEFT)){
+            menuLateral.closeDrawer(Gravity.LEFT);
+        }else{
+            menuLateral.openDrawer(Gravity.LEFT);
+        }
+
+
+
+    }
+    //------------------------------------------------------------------------------------------
     //Métodos del presenter
     //------------------------------------------------------------------------------------------
     @Override
     public void fetchedEvents(List<Event> listEvents) {
         hideLoading();
-        EventerZgzApplication.eventsList = listEvents;
-        refreshListEvents();
+        if(filterSearch){
+            EventerZgzApplication.filterEventsList = listEvents;
+        }else{
+            EventerZgzApplication.allEventsList = listEvents;
+        }
+
+        if(listEvents.size() > 0){
+            refreshListEvents(listEvents);
+        }else{
+            refreshListEvents(EventerZgzApplication.allEventsList);
+        }
+
+
     }
 
     @Override
 
     public void fetchedCategories(List<Category> listCategory) {
+        emptyView.setVisibility(View.GONE);
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
         // preparing list data
@@ -280,9 +325,21 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     @Override
+    public void fetchedPopulation(List<Population> populationList) {
+        if(populationList!=null){
+            List<String> quien = new ArrayList<String>();
+            for(int i=0; i<populationList.size();i++){
+                quien.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            }
+            listDataChild.put(listDataHeader.get(1), quien);
+        }
+    }
+
+    @Override
     public void error(String sMessage) {
 
         hideLoading();
+        refreshListEvents(EventerZgzApplication.allEventsList);
         emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
@@ -291,7 +348,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //-------------------------------------------------------------------------
     // REFRESH LIST ADAPTER
     //-------------------------------------------------------------------------
-    private void refreshListEvents() {
+    private void refreshListEvents(List<Event> listEvents) {
+        listEventsToShow = listEvents;
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
@@ -308,8 +366,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         @Override
         public int getCount() {
-            if (EventerZgzApplication.eventsList != null) {
-                return EventerZgzApplication.eventsList.size();
+            if (listEventsToShow != null) {
+                return listEventsToShow.size();
             }
             return 0;
         }
@@ -348,7 +406,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
             viewholder = (ViewHolder) vi.getTag();
 
-            Event event = EventerZgzApplication.eventsList.get(position);
+            Event event = listEventsToShow.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
@@ -363,6 +421,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             //Imagen
             //------
             if (event.getsImage() != null && !event.getsImage().equals("")) {
+                viewholder.imageView.setVisibility(View.VISIBLE);
                 ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
                 viewholder.imageView.setVisibility(View.GONE);
@@ -480,6 +539,16 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private void intentDetailEvent(int position) {
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
         intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
+        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_FILTERED, filterSearch);
         startActivity(intentEvent);
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchCategory(String id) {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+       listEventsPresenter.getEventsByCategories(id);
     }
 }

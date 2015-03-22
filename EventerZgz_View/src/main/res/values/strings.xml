@@ -11,6 +11,7 @@
     <string name="question_categories">"¿En qué categorías estás interesado?"</string>
     <string name="question_population">"¿A quién va dirigidos los eventos?"</string>
     <string name="question_map">"¿Sobre que zona deseas ver eventos?"</string>
+    <string name="question_perfil">"¿Cuál es tú perfil?"</string>
 
     <string name="title_activity_detail_event">Detalle eventos</string>
     <string name="title_activity_list_event">Listado eventos</string>
@@ -20,4 +21,11 @@
     <string name="verMas">Ver más</string>
     <string name="action_search">Search</string>
     <string name="contenido_no_disponible">Contenido no disponible</string>
+
+    <string name="direccion">Dirección:</string>
+    <string name="lugar">Lugar:</string>
+    <string name="telefono">Teléfono:</string>
+    <string name="mail">Mail:</string>
+    <string name="conexion">Conexión:</string>
+    <string name="web">Conexión:</string>
 </resources>

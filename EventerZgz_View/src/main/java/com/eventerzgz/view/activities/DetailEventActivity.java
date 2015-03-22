@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,10 +36,14 @@ public class DetailEventActivity extends ActionBarActivity {
     private TextView textViewTelefono;
     private TextView textViewConexion;
     private TextView textViewLugar;
+    private TextView textViewWeb;
+    private TextView textViewCategoria;
+
     //Data intent
     //-----------
     private int posEventSelected;
     private Event eventSelected;
+    private boolean eventFiltered = false;
 
     // Mapa
     // ----
@@ -54,7 +61,12 @@ public class DetailEventActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             posEventSelected = extras.getInt(EventerZgzApplication.INTENT_EVENT_SELECTED);
-            eventSelected = EventerZgzApplication.eventsList.get(posEventSelected);
+            eventFiltered = extras.getBoolean(EventerZgzApplication.INTENT_EVENT_FILTERED);
+            if(eventFiltered) {
+                eventSelected = EventerZgzApplication.filterEventsList.get(posEventSelected);
+            }else{
+                eventSelected = EventerZgzApplication.allEventsList.get(posEventSelected);
+            }
         }
 
         //View
@@ -66,6 +78,8 @@ public class DetailEventActivity extends ActionBarActivity {
         textViewConexion = (TextView) findViewById(R.id.textViewConexion);
         imageViewDetail = (ImageView)findViewById(R.id.imageViewDetail);
         textViewLugar = (TextView)findViewById(R.id.textViewLugar);
+        textViewWeb = (TextView)findViewById(R.id.textViewWeb);
+        textViewCategoria = (TextView)findViewById(R.id.textViewCategoria);
         setInfoEvent();
 
         try {
@@ -102,10 +116,20 @@ public class DetailEventActivity extends ActionBarActivity {
             imageViewDetail.setVisibility(View.GONE);
         }
         try {
+            textViewCategoria.setText(eventSelected.getCategoryList().get(0).getsTitle());
             textViewDireccion.setText(eventSelected.getSubEvent().getWhere().getsAddress());
             textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());
             textViewConexion.setText(eventSelected.getSubEvent().getWhere().getsBus());
             textViewLugar.setText(eventSelected.getSubEvent().getWhere().getsTitle());
+            if(eventSelected.getsWeb()!=null) {
+                textViewWeb.setText(eventSelected.getsWeb());
+            }else{
+                textViewWeb.setVisibility(View.GONE);
+            }
+            Spannable spanna = new SpannableString(eventSelected.getCategoryList().get(0).getsTitle());
+            spanna.setSpan(new BackgroundColorSpan(0xBFc0392b), 0, eventSelected.getCategoryList().get(0).getsTitle().length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textViewCategoria.setText(spanna);
         }catch (Exception e){
 
         }
@@ -177,11 +201,39 @@ public class DetailEventActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    // -----------------------------------------------------------------------------------------------------
+    // ONCLICK DETAIL
+    // -----------------------------------------------------------------------------------------------------
     public void onClickDetail(View view){
         switch (view.getId()){
             case R.id.btnCreate:
                 new DetailEventPresenter().addCalendarEvent(eventSelected, DetailEventActivity.this);
                 break;
+
+            case R.id.textViewTelefono:
+                if (((TextView) view).getText() != null) {
+                    callPhone(((TextView) view).getText().toString());
+                }
+                break;
+        }
+
+    }
+
+    // ----------------------------------------------------------------------
+    // CALL PHONE
+    // ----------------------------------------------------------------------
+    private void callPhone(String telefono) {
+        try {
+
+            if (telefono != null) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+
+                intent.setData(Uri.parse("tel:" + telefono));
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

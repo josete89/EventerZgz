@@ -21,27 +21,5 @@ public class Utils {
         return (int) px;
     }
 
-    public static void saveCategoriesSelectedInPreferences(ArrayList<String> arrayIdsCategories, Context context){
-        SharedPreferences prefs = context.getSharedPreferences(EventerZgzApplication.APP_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
 
-        Set<String> set = new HashSet<String>();
-        set.addAll(arrayIdsCategories);
-
-        editor.putStringSet("categories", set);
-        editor.commit();
-
-    }
-
-    public static void saveCategoriesPushSelectedInPreferences(ArrayList<String> arrayIdsCategories, Context context){
-        SharedPreferences prefs = context.getSharedPreferences(EventerZgzApplication.APP_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        Set<String> set = new HashSet<String>();
-        set.addAll(arrayIdsCategories);
-
-        editor.putStringSet("categoriesPush", set);
-        editor.commit();
-
-    }
 }
