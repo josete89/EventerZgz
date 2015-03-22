@@ -42,6 +42,7 @@ public class QueryBuilder {
     }
 
     public enum FIELD{
+        LAST_UPDATED("lastUpdated"),
         START_DATE("startDate"),
         END_DATE("endDate"),
         CATEGORY("temas.id"),

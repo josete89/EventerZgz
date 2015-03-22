@@ -26,6 +26,7 @@ import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
+import com.eventerzgz.presenter.service.EventService;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
@@ -98,6 +99,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 intentDetailEvent(position);
             }
         });
+
+
     }
 
     // ------------------------------------------------------------------------------------
