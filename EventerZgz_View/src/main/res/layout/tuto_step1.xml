@@ -26,7 +26,7 @@
             android:paddingBottom="60dp"
             android:text="@string/welcome"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FF0b6d5a"
+            android:textColor="@color/primary_color"
             android:textSize="40sp"></TextView>
 
     </LinearLayout>
@@ -42,6 +42,6 @@
         android:textColor="@android:color/white"
         ripple:alphaFactor="0.7"
         android:background="@drawable/card_bk"
-        ripple:rippleColor="#58FAAC"
+        ripple:rippleColor="@color/primary_color"
         ripple:hover="true"/>
 </RelativeLayout>

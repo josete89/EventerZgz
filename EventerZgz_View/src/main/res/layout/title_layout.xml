@@ -19,12 +19,12 @@
             android:layout_marginTop="10dip"
             app:clipPadding="5dp"
             app:customTypeface="fonts/Antic.ttf"
-            app:footerColor="#FF16a085"
+            app:footerColor="@color/primary_color"
             app:footerLineHeight="2dp"
             app:footerTriangleHeight="10dp"
-            app:selectedColor="#FF16a085"
+            app:selectedColor="@color/primary_color"
             app:selectedSize="14sp"
-            app:textColor="#FF1abc9c"
+            app:textColor="@color/primary_color_light"
             app:textSize="12sp"
             app:titlePadding="10dp" >
         </org.taptwo.android.widget.TitleFlowIndicator>
