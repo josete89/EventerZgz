@@ -1,5 +1,8 @@
 package com.eventerzgz.presenter.listevents;
 
+
+import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
+
 import android.util.Log;
 
 import com.eventerzgz.interactor.QueryBuilder;
@@ -64,12 +67,12 @@ public class ListEventsPresenter extends BasePresenter {
                 .addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "bib")
                 .build();
         getEventList(
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, query),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, "startDate desc"), // "desc" is optional
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50),
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.DISTANCE, 3000), //metros
-                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE
+                EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
+                EventFilter.createFilter(EventFilter.START, 0),
+                EventFilter.createFilter(EventFilter.SORT, "startDate desc"), // "desc" is optional
+                EventFilter.createFilter(EventFilter.ROWS, 50),
+                EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
+                EventFilter.createFilter(EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE
         );
     }
 

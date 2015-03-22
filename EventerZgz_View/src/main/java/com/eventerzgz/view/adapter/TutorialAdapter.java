@@ -1,11 +1,11 @@
 package com.eventerzgz.view.adapter;
 
-import org.taptwo.android.widget.TitleProvider;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +13,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import com.eventerzgz.model.commons.Category;
+import com.eventerzgz.presenter.BasePresenter;
 import com.eventerzgz.presenter.tutorial.TutorialIface;
 import com.eventerzgz.presenter.tutorial.TutorialPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
-import com.eventerzgz.view.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -30,11 +27,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.taptwo.android.widget.TitleProvider;
 
 public class TutorialAdapter extends BaseAdapter implements TitleProvider, TutorialIface {
 
@@ -144,8 +137,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     }
                 }
 
-                Utils.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
-                Utils.saveCategoriesSelectedInPreferences(arrayIdsCategoriesPush, context);
+                BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
+                BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategoriesPush, context);
 
                 ((Activity) context).finish();
                 openListEvents();

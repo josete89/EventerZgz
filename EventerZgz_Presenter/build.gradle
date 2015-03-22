@@ -9,7 +9,6 @@ repositories {
 
 evaluationDependsOn(':EventerZgz_Interactor')
 
-
 android {
     compileSdkVersion 21
     buildToolsVersion "20.0.0"

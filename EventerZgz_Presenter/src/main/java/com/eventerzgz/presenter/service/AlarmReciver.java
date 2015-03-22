@@ -1,5 +1,8 @@
 package com.eventerzgz.presenter.service;
 
+import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -9,98 +12,154 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.model.event.Event;
-import com.eventerzgz.model.exception.EventZgzException;
+import com.eventerzgz.presenter.BasePresenter;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by joseluis on 21/3/15.
  */
 public class AlarmReciver  extends BroadcastReceiver{
+
+    private final String TAG = "AlarmReciver";
+    private static AlarmIface alarmIface;
+
     @Override
-    public void onReceive(final Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent)
+    {
         //context.startService(new Intent(context, EventService.class));
 
         if (intent != null && intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Set the alarm here.
+            AlarmReciver.setAlarm(context,alarmIface);
 
-            AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent2 = new Intent(context, AlarmReciver.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent2, 0);
-
-            alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
-                    6 * 1000, alarmIntent);
         }
 
-        try
-        {
 
+        Observable.create(new Observable.OnSubscribe<List<Event>>() {
+            @Override
+            public void call(Subscriber<? super List<Event>> subscriber) {
 
-            final List<Event> eventList = EventInteractor.getAllEvent();
-
-            if( eventList != null && eventList.size() > 0 )
-            {
-                if(eventList.size() == 1)
+                try
                 {
+                    Location location = getLocation(context);
+                    List<String> pushCategory = BasePresenter.getPushCategories(context);
+                    Date today = new Date();
 
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Event event = eventList.get(0);
-                            composeNotification(context,event.getsTitle(),event.getId());
-                        }
-                    });
+                    QueryBuilder query = new QueryBuilder();
+                    for ( String category : pushCategory){
+                        query.addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS,category);
+                    }
+                    query.addFilter(QueryBuilder.FIELD.LAST_UPDATED,QueryBuilder.COMPARATOR.GREATER_EQUALS,"2015-03-10T00:00:00Z");
 
+
+                    subscriber.onNext(EventInteractor.getAllEvent(
+                            EventFilter.createFilter(EventFilter.QUERY_FILTER, query.build()),
+                            EventFilter.createFilter(EventFilter.START, 0),
+                            EventFilter.createFilter(EventFilter.SORT, "startDate desc"), // "desc" is optional
+                            EventFilter.createFilter(EventFilter.ROWS, 50),
+                            EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
+                            EventFilter.createFilter(EventFilter.POINT, String.format("%f,%f",location.getLongitude(),location.getLatitude()))));
                 }
-                else
-                {
-                    final Event event = eventList.get(0);
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            composeNotification(context," Tienes "+eventList.size()+" eventos nuevos",eventList.size()+"");
-                        }
-                    });
-
+                catch (Exception ex){
+                    Log.e(TAG,ex.getMessage(),ex);
+                    subscriber.onError(ex);
                 }
 
             }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Event>>() {
+                    @Override
+                    public void onCompleted() {
+                        AlarmReciver.setAlarm(context,alarmIface);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        AlarmReciver.setAlarm(context,alarmIface);
+                    }
+
+                    @Override
+                    public void onNext(List<Event> events) {
+
+                        if (events != null && events.size() > 0) {
+
+                            if (events.size() == 1) {
+                                Event event = events.get(0);
+                               if(alarmIface != null) alarmIface.deliverNotification(context, event.getsTitle(), event.getId(), event);
+
+                            } else {
+                                if(alarmIface != null) alarmIface.deliverNotification(context, " Tienes " + events.size() + " eventos nuevos", events.size() + "",null);
+                            }
+
+                        }
+
+                        onCompleted();
+                    }
+                });
 
 
 
-        } catch (EventZgzException e)
-        {
-            e.printStackTrace();
-        }
 
     }
 
-    public void composeNotification(Context context,String title,String sId){
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(android.R.drawable.ic_notification_overlay)
-                        .setContentTitle("EventerZgz")
-                        .setContentText(title);
 
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
 
-        int id = 5;
-        try{
-            Integer.parseInt(sId);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            id = new Random().nextInt();
+
+    public static void setAlarm(Context context,AlarmIface alarmIface)
+    {
+
+        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReciver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
+                6 * 1000, alarmIntent);
+    }
+
+
+
+
+    //Get location in backgroud
+
+    private Location getLocation(Context context)
+    {
+
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+        if (locationManager != null) {
+            String provider = locationManager.getBestProvider(criteria, true);
+            if (provider != null) {
+                Location location = locationManager.getLastKnownLocation(provider);
+                return location;
+            }
         }
 
-
-        mNotificationManager.notify(id, mBuilder.build());
+        return null;
     }
+
+
+
+
+
 }

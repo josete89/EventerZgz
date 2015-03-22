@@ -4,17 +4,23 @@ package com.eventerzgz.view.application;
  * Created by JavierArroyo on 21/3/15.
  */
 
-import android.app.AlarmManager;
-import android.app.Application;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
+import android.app.Application;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
+import com.eventerzgz.presenter.service.AlarmIface;
 import com.eventerzgz.presenter.service.AlarmReciver;
-import com.eventerzgz.presenter.service.EventService;
+import com.eventerzgz.view.R;
+import com.eventerzgz.view.activities.DetailEventActivity;
+import com.eventerzgz.view.activities.SplashScreenActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -22,12 +28,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-import java.util.List;
-
 /**
  * Created by JavierArroyo on 21/3/15.
  */
-public class EventerZgzApplication  extends Application {
+public class EventerZgzApplication  extends Application implements AlarmIface {
 
     //Data intent
     //-----------
@@ -38,22 +42,12 @@ public class EventerZgzApplication  extends Application {
     public static List<Event> eventsList;
     public static List<Category> categoryList;
 
-    //Preferences
-    //-----
-    public static final String APP_PREFERENCES = "eventerzgz";
 
 
     public void startService(){
         // TODO - Comprobar que no esté lanzado ya
+        AlarmReciver.setAlarm(getApplicationContext(),this);
 
-
-
-        AlarmManager alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getApplicationContext(), AlarmReciver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
-                        6 * 1000, alarmIntent);
     }
 
     @Override
@@ -73,5 +67,52 @@ public class EventerZgzApplication  extends Application {
         // Iniciar ImageLoader
         ImageLoader.getInstance().init(config);
         startService();
+    }
+
+
+    public void deliverNotification(Context context,String title,String sId,Event event)
+    {
+
+        PendingIntent contentIntent;
+
+        if(event == null){
+            Intent intent = new Intent(this,SplashScreenActivity.class);
+            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
+        }else{
+            eventsList = new ArrayList<>();
+            eventsList.add(event);
+
+            Intent intent = new Intent(this,DetailEventActivity.class);
+            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
+            intent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED,0);
+
+        }
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle("EventerZgz")
+                        .setContentText(title);
+
+        mBuilder.setContentIntent(contentIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        int id = 5;
+        try{
+            Integer.parseInt(sId);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            id = new Random().nextInt();
+        }
+
+
+        mNotificationManager.notify(id, mBuilder.build());
+
+
+
+
+
     }
 }

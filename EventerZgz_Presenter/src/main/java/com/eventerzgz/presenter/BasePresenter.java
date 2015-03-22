@@ -2,11 +2,17 @@ package com.eventerzgz.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.CalendarContract;
 
 import com.eventerzgz.model.event.Event;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -18,6 +24,12 @@ import rx.schedulers.Schedulers;
  */
 public abstract class BasePresenter
 {
+    //Preferences
+    //-----
+    private static final String APP_PREFERENCES = "eventerzgz";
+    private static final String PUSH_CATEGORIES_PREFERENCES_KEY = "categoriesPush";
+    private static final String CATEGORIES_PREFERENCES_KEY = "categories";
+
 
     protected String TAG = "EventerZgz";
 
@@ -57,6 +69,39 @@ public abstract class BasePresenter
                 .putExtra(Intent.EXTRA_EMAIL, email);
 
         ctx.startActivity(intent);
+    }
+
+
+    public static void saveCategoriesSelectedInPreferences(ArrayList<String> arrayIdsCategories, Context context){
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Set<String> set = new HashSet<String>();
+        set.addAll(arrayIdsCategories);
+
+        editor.putStringSet(CATEGORIES_PREFERENCES_KEY, set);
+        editor.commit();
+
+    }
+
+    public static void saveCategoriesPushSelectedInPreferences(ArrayList<String> arrayIdsCategories, Context context){
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Set<String> set = new HashSet<String>();
+        set.addAll(arrayIdsCategories);
+
+        editor.putStringSet(PUSH_CATEGORIES_PREFERENCES_KEY, set);
+        editor.commit();
+
+    }
+
+    public static List<String> getPushCategories(Context context){
+
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        Set stringSet = prefs.getStringSet(PUSH_CATEGORIES_PREFERENCES_KEY,new HashSet<String>());
+
+        return new ArrayList<>(stringSet);
     }
 
 }
