@@ -5,6 +5,7 @@ import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Context;
 import android.util.Log;
 import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
@@ -72,6 +73,27 @@ public class ListEventsPresenter extends BasePresenter {
 
     public void getEventsWeek() {
         getEventsByDateRange(DateUtilities.getStartOfToday(), DateUtilities.getEndOfWeek());
+    }
+
+
+    public void getEventsByUserPreferences(Context context){
+        BasePresenter.getEventsByPreferencesInOtherThread(context,new Subscriber<List<Event>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                listEventsIface.error(e.getMessage());
+            }
+
+            @Override
+            public void onNext(List<Event> events) {
+                listEventsIface.fetchedEvents(events);
+                onCompleted();
+            }
+        });
     }
 
     private void getEventsByDateRange(String start, String end) {
