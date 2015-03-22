@@ -61,6 +61,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         presenter.getCategories();
+        presenter.getPopulation();
     }
 
     @Override
