@@ -1,9 +1,5 @@
 package com.eventerzgz.view.activities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
@@ -38,6 +36,10 @@ import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ListEventsActivity extends ActionBarActivity implements ListEventsIface {
 
@@ -114,55 +116,56 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private void setLateralMenu(){
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        if(listAdapter == null) {
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+            listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
-        // setting list adapter
-        expListView.setAdapter(listAdapter);
+            // setting list adapter
+            expListView.setAdapter(listAdapter);
 
-        // Listview Group click listener
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            // Listview Group click listener
+            expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v,
+                                            int groupPosition, long id) {
+                    // Toast.makeText(getApplicationContext(),
+                    // "Group Clicked " + listDataHeader.get(groupPosition),
+                    // Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
 
-        // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            // Listview Group expanded listener
+            expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
+                @Override
+                public void onGroupExpand(int groupPosition) {
 /*                Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Expanded",
                         Toast.LENGTH_SHORT).show();*/
-            }
-        });
+                }
+            });
 
-        // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            // Listview Group collasped listener
+            expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
-            @Override
-            public void onGroupCollapse(int groupPosition) {
+                @Override
+                public void onGroupCollapse(int groupPosition) {
 /*                Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Collapsed",
                         Toast.LENGTH_SHORT).show();*/
 
-            }
-        });
+                }
+            });
 
-        // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            // Listview on child click listener
+            expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v,
+                                            int groupPosition, int childPosition, long id) {
+                    // TODO Auto-generated method stub
 /*                Toast.makeText(
                         getApplicationContext(),
                         listDataHeader.get(groupPosition)
@@ -212,35 +215,57 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         });
 
 
+           
+        }else{
+            listAdapter.notifyDataSetChanged();
+        }
     }
 
     private void prepareListData() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
+        if(listDataHeader == null) {
+            listDataHeader = new ArrayList<>();
+            listDataChild = new HashMap<>();
 
-        // Adding child data
-        listDataHeader.add("¿Cuándo?");
-        listDataHeader.add("¿Quién?");
-        listDataHeader.add("¿Qué?");
+            // Adding child data
+            listDataHeader.add("¿Cuándo?");
+            listDataHeader.add("¿Quién?");
+            listDataHeader.add("¿Qué?");
 
-        // Adding child data
-        List<String> cuando = new ArrayList<>();
-        cuando.add("Hoy");
-        cuando.add("Mañana");
-        cuando.add("Esta semana");
+            // Adding child data
+            List<String> cuando = new ArrayList<>();
+            cuando.add("Hoy");
+            cuando.add("Mañana");
+            cuando.add("Esta semana");
+
+            listDataChild.put(listDataHeader.get(0), cuando);
+        }
+
+
+    }
+
+    private void prepareCategories(List<Category>categoryList){
 
         List<String> que = new ArrayList<>();
-        if(EventerZgzApplication.categoryList != null){
-            for(Category category : EventerZgzApplication.categoryList){
+        if(categoryList != null){
+            for(Category category : categoryList){
                 que.add(category.getsTitle());
             }
         }
 
-        listDataChild.put(listDataHeader.get(0), cuando);
+
         listDataChild.put(listDataHeader.get(2), que);
-
     }
+    private void preparePopulation(List<Population> populationList) {
+        if (populationList != null) {
+            List<String> quien = new ArrayList<>();
 
+            for (Population population : populationList) {
+                quien.add(population.getsTitle());
+            }
+
+            listDataChild.put(listDataHeader.get(1), quien);
+        }
+    }
     // ------------------------------------------------------------------------------------
     // CONFIGURE MENU LATERAL
     // ------------------------------------------------------------------------------------
@@ -353,24 +378,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         emptyView.setVisibility(View.GONE);
         EventerZgzApplication.categoryList = listCategory;
         configureMenuLateral();
-        // preparing list data
         prepareListData();
-        // EXPANDABLE MENU LATERAL //
+        prepareCategories(listCategory);
         setLateralMenu();
     }
 
     @Override
     public void fetchedPopulation(List<Population> populationList) {
-        if(populationList!=null){
-            List<String> quien = new ArrayList<>();
-
-            for(Population population : populationList){
-                quien.add(population.getsTitle());
-            }
-
-            this.populationList = populationList;
-            listDataChild.put(listDataHeader.get(1), quien);
-        }
+        this.populationList = populationList;
+        prepareListData();
+        preparePopulation(populationList);
+        setLateralMenu();
     }
 
     @Override
@@ -378,7 +396,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         hideLoading();
         refreshListEvents(EventerZgzApplication.allEventsList);
-        emptyView.setVisibility(View.VISIBLE);
+        Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        //emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
 
@@ -388,6 +407,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //-------------------------------------------------------------------------
     private void refreshListEvents(List<Event> listEvents) {
         listEventsToShow = listEvents;
+        /*if(menuLateral != null && menuLateral.isDrawerOpen(Gravity.LEFT)) {
+            menuLateral.closeDrawer(Gravity.LEFT);
+        }*/
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
@@ -468,17 +490,20 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
-            viewholder.tvCompartir
-                    .setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                int position = (Integer) v.getTag();
-                                                String url = "www.marca.com";
-                                                SocialShare.share(ListEventsActivity.this, url);
+            if(event.getsWeb() != null) {
+                viewholder.tvCompartir
+                        .setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    int position = (Integer) v.getTag();
+                                                    String url = "Evento enviado a través de EventerZgz: "+listEventsToShow.get(position).getsWeb();
+                                                    SocialShare.share(ListEventsActivity.this, url);
+                                                }
                                             }
-                                        }
-                    );
-
+                        );
+            }else{
+                viewholder.tvCompartir.setVisibility(View.GONE);
+            }
             return vi;
         }
     }
@@ -589,5 +614,32 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         menuLateral.closeDrawer(Gravity.LEFT);
         categorySearch = true;
        listEventsPresenter.getEventsByCategories(id);
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchToday() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsToday();
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchTomorrow() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsTomorrow();
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchWeek() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsWeek();
     }
 }

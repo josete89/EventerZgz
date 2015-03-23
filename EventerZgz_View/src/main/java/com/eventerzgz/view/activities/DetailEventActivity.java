@@ -95,6 +95,19 @@ public class DetailEventActivity extends ActionBarActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Click WEB
+        //---------
+        textViewWeb.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (((TextView) v).getText() != null) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(((TextView) v).getText().toString())));
+                }
+            }
+        });
     }
 
     @Override
@@ -114,8 +127,10 @@ public class DetailEventActivity extends ActionBarActivity {
     //--------------------------------------------------------------------
     private void setInfoEvent(){
         textViewTitle.setText(eventSelected.getsTitle());
-        textViewDescription
-                .setText(Html.fromHtml(eventSelected.getsDescription()));
+        if(eventSelected.getsDescription()!=null) {
+            textViewDescription
+                    .setText(Html.fromHtml(eventSelected.getsDescription()));
+        }
         if(eventSelected.getsImage()!=null && !eventSelected.getsImage().equals("")){
             ImageLoader.getInstance().displayImage((eventSelected.getFieldWithUri(eventSelected.getsImage())), imageViewDetail);
         }else{
