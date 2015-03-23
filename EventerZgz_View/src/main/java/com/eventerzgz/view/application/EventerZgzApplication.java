@@ -4,31 +4,18 @@ package com.eventerzgz.view.application;
  * Created by JavierArroyo on 21/3/15.
  */
 
-import android.app.Application;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
+import java.util.List;
 
+import android.app.Application;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.event.Event;
-import com.eventerzgz.presenter.service.AlarmIface;
 import com.eventerzgz.presenter.service.AlarmReciver;
-import com.eventerzgz.view.R;
-import com.eventerzgz.view.activities.DetailEventActivity;
-import com.eventerzgz.view.activities.ListEventsActivity;
-import com.eventerzgz.view.activities.SplashScreenActivity;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 
 /**
