@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
@@ -40,7 +39,7 @@ public class AlarmReciver  extends BroadcastReceiver{
         BasePresenter.getEventsByPreferencesInOtherThread(context, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
-                AlarmReciver.setAlarm(context);
+               // AlarmReciver.setAlarm(context);
             }
 
             @Override
@@ -123,20 +122,27 @@ public class AlarmReciver  extends BroadcastReceiver{
     public static void setAlarm(Context context)
     {
 
-        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmReciver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 0,
+                new Intent(AlarmReciver.class.getName()),
+                PendingIntent.FLAG_NO_CREATE) != null);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 30);
+        if(!alarmUp){
+            AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmReciver.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        //RTC -> Real Time Count
-        alarmMgr.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), alarmIntent);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 30);
+
+            //RTC -> Real Time Count
+            alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmIntent);
 
       /*  alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
                 30 * 1000, alarmIntent);*/
+        }
+
+
 
     }
 

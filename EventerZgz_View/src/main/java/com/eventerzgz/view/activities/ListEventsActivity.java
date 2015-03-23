@@ -11,6 +11,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,7 +68,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-
+    private static List<Population> populationList;
 
 
     @Override
@@ -96,6 +97,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //---------
         showLoading();
         listEventsPresenter.getAllEvents();
+        listEventsPresenter.getCategories();
         listEventsPresenter.getPopulation();
 
         // CLick Event
@@ -169,12 +171,47 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();*/
-                if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
-                    listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
+
+                switch (groupPosition){
+                    case 0:
+                        switch (childPosition){
+                            case 0:
+                                listEventsPresenter.getEventsToday();
+                                break;
+                            case 1:
+                                listEventsPresenter.getEventsTomorrow();
+                                break;
+                            case 2:
+                                listEventsPresenter.getEventsWeek();
+                                break;
+
+                            default:
+                                Log.i("EventerZgz","No group position!");
+                        }
+                        break;
+                    case 1:
+
+                        if(ListEventsActivity.populationList !=null && ListEventsActivity.populationList.size() > 0
+                                && ListEventsActivity.populationList.get(childPosition) != null ) {
+                            listEventsPresenter.getEventsByPopulations(ListEventsActivity.populationList.get(childPosition).getId());
+                        }
+                        break;
+                    case 2:
+                        if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
+                            listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
+                        }
+                        break;
+
+                    default:
+                        Log.i("EventerZgz","No group position!");
                 }
+
+
                 return false;
             }
         });
+
+
     }
 
     private void prepareListData() {
@@ -331,6 +368,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 quien.add(population.getsTitle());
             }
 
+            this.populationList = populationList;
             listDataChild.put(listDataHeader.get(1), quien);
         }
     }

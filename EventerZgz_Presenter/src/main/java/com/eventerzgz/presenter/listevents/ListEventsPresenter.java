@@ -185,6 +185,11 @@ public class ListEventsPresenter extends BasePresenter {
             }
         });
 
+    }
+
+    public void getCategories()
+    {
+
         observerTask(new Observable.OnSubscribe<List<Category>>() {
             @Override
             public void call(Subscriber<? super List<Category>> suscriber) {
@@ -212,7 +217,6 @@ public class ListEventsPresenter extends BasePresenter {
                 onCompleted();
             }
         });
-
     }
 
     public void getPopulation(){
