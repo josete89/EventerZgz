@@ -34,7 +34,7 @@ import java.util.Random;
 /**
  * Created by JavierArroyo on 21/3/15.
  */
-public class EventerZgzApplication  extends Application implements AlarmIface {
+public class EventerZgzApplication  extends Application {
 
     //Data intent
     //-----------
@@ -54,7 +54,7 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
 
     public void startService(){
         // TODO - Comprobar que no este lanzado ya
-        AlarmReciver.setAlarm(getApplicationContext(), this);
+        AlarmReciver.setAlarm(getApplicationContext());
     }
 
     @Override
@@ -77,46 +77,5 @@ public class EventerZgzApplication  extends Application implements AlarmIface {
     }
 
 
-    public void deliverNotification(Context context,String title,String sId,Event event)
-    {
 
-        PendingIntent contentIntent;
-
-        if(event == null){
-            Intent intent = new Intent(this,ListEventsActivity.class);
-            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
-        }else{
-            allEventsList = new ArrayList<>();
-            allEventsList.add(event);
-
-            Intent intent = new Intent(this,DetailEventActivity.class);
-            intent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED,0);
-            contentIntent = PendingIntent.getActivity(this, 0,intent , 0);
-
-        }
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("EventerZgz")
-                        .setContentText(title);
-
-        mBuilder.setContentIntent(contentIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-        int id = 5;
-        try{
-            Integer.parseInt(sId);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            id = new Random().nextInt();
-        }
-
-
-        mNotificationManager.notify(id, mBuilder.build());
-
-
-    }
 }

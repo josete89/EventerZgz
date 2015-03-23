@@ -1,11 +1,11 @@
 package com.eventerzgz.interactor.events;
 
+import java.util.List;
+
+import android.util.Log;
 import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by joseluis on 20/3/15.
@@ -15,7 +15,6 @@ public class EventerRest extends BaseRest implements EventDatasource
     protected EventerRest(){
 
     }
-
 
 
 
@@ -51,6 +50,8 @@ public class EventerRest extends BaseRest implements EventDatasource
         }
 
         String content = doHTTPGet(stringBuilder.toString());
+
+        Log.i(TAG,content);
 
         return Event.doParse(content);
     }

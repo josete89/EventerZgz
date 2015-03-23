@@ -60,13 +60,19 @@ public class DetailEventActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            posEventSelected = extras.getInt(EventerZgzApplication.INTENT_EVENT_SELECTED);
-            eventFiltered = extras.getBoolean(EventerZgzApplication.INTENT_EVENT_FILTERED);
-            if(eventFiltered) {
-                eventSelected = EventerZgzApplication.filterEventsList.get(posEventSelected);
+
+            if(extras.containsKey("eventObject")){
+                 eventSelected = (Event) extras.getSerializable("eventObject");
             }else{
-                eventSelected = EventerZgzApplication.allEventsList.get(posEventSelected);
+                posEventSelected = extras.getInt(EventerZgzApplication.INTENT_EVENT_SELECTED);
+                eventFiltered = extras.getBoolean(EventerZgzApplication.INTENT_EVENT_FILTERED);
+                if(eventFiltered) {
+                    eventSelected = EventerZgzApplication.filterEventsList.get(posEventSelected);
+                }else{
+                    eventSelected = EventerZgzApplication.allEventsList.get(posEventSelected);
+                }
             }
+
         }
 
         //View

@@ -1,5 +1,9 @@
 package com.eventerzgz.view.activities;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,8 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
@@ -35,10 +37,6 @@ import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ListEventsActivity extends ActionBarActivity implements ListEventsIface {
 
@@ -180,8 +178,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
         // Adding child data
         listDataHeader.add("¿Cuándo?");
@@ -189,15 +187,15 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listDataHeader.add("¿Qué?");
 
         // Adding child data
-        List<String> cuando = new ArrayList<String>();
+        List<String> cuando = new ArrayList<>();
         cuando.add("Hoy");
         cuando.add("Mañana");
         cuando.add("Esta semana");
 
-        List<String> que = new ArrayList<String>();
+        List<String> que = new ArrayList<>();
         if(EventerZgzApplication.categoryList != null){
-            for(int i=0; i<EventerZgzApplication.categoryList.size();i++){
-                que.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            for(Category category : EventerZgzApplication.categoryList){
+                que.add(category.getsTitle());
             }
         }
 
@@ -327,10 +325,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     @Override
     public void fetchedPopulation(List<Population> populationList) {
         if(populationList!=null){
-            List<String> quien = new ArrayList<String>();
-            for(int i=0; i<populationList.size();i++){
-                quien.add(EventerZgzApplication.categoryList.get(i).getsTitle());
+            List<String> quien = new ArrayList<>();
+
+            for(Population population : populationList){
+                quien.add(population.getsTitle());
             }
+
             listDataChild.put(listDataHeader.get(1), quien);
         }
     }
@@ -492,7 +492,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 if (firstVisibleItem + visibleItemCount == totalItemCount
                         && totalItemCount != 0) {
-                    if (flagLoading == false) {
+                    if (!flagLoading) {
+
                         flagLoading = true;
                         // TODO - ANADIR ITEMS AL LISTADO PARA CARGARLOS //
                         //adapter.notifyDataSetChanged();

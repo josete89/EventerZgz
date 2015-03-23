@@ -1,24 +1,21 @@
 package com.eventerzgz.presenter.service;
 
-import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
-
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
-import com.eventerzgz.interactor.QueryBuilder;
-import com.eventerzgz.interactor.events.EventInteractor;
+import android.support.v4.app.NotificationCompat;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
-import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by joseluis on 21/3/15.
@@ -35,7 +32,7 @@ public class AlarmReciver  extends BroadcastReceiver{
 
         if (intent != null && intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Set the alarm here.
-            AlarmReciver.setAlarm(context,alarmIface);
+            AlarmReciver.setAlarm(context);
 
         }
 
@@ -43,12 +40,12 @@ public class AlarmReciver  extends BroadcastReceiver{
         BasePresenter.getEventsByPreferencesInOtherThread(context, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
-                AlarmReciver.setAlarm(context, alarmIface);
+                AlarmReciver.setAlarm(context);
             }
 
             @Override
             public void onError(Throwable e) {
-                AlarmReciver.setAlarm(context, alarmIface);
+                AlarmReciver.setAlarm(context);
             }
 
             @Override
@@ -56,14 +53,12 @@ public class AlarmReciver  extends BroadcastReceiver{
 
                 if (events != null && events.size() > 0) {
 
-                    if (true) {
+                    if (events.size() == 1) {
                         Event event = events.get(0);
-                        if (alarmIface != null)
-                            alarmIface.deliverNotification(context, event.getsTitle(), event.getId(), event);
+                        deliverNotification(context, event.getsTitle(), event.getId(), event);
 
                     } else {
-                        if (alarmIface != null)
-                            alarmIface.deliverNotification(context, " Tienes " + events.size() + " eventos nuevos", events.size() + "", null);
+                        deliverNotification(context, " Tienes " + events.size() + " eventos nuevos", events.size() + "", null);
                     }
 
                 }
@@ -79,18 +74,69 @@ public class AlarmReciver  extends BroadcastReceiver{
     }
 
 
+    public void deliverNotification(Context context,String title,String sId,Event event)
+    {
 
-    public static void setAlarm(Context context,AlarmIface notIface)
+        final int IC_LAUNCHER = 0x7f020078;
+
+        PendingIntent contentIntent;
+
+        if(event == null){
+            Intent intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.setComponent(new ComponentName("com.eventerzgz.view","com.eventerzgz.view.activities.ListEventsActivity"));
+            contentIntent = PendingIntent.getActivity(context, 0,intent , 0);
+        }else{
+
+            Intent intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.setComponent(new ComponentName("com.eventerzgz.view","com.eventerzgz.view.activities.DetailEventActivity"));
+            intent.putExtra("eventObject",event);
+            contentIntent = PendingIntent.getActivity(context, 0,intent , 0);
+
+        }
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(IC_LAUNCHER)
+                        .setContentTitle("EventerZgz")
+                        .setContentText(title);
+
+        mBuilder.setContentIntent(contentIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        int id = 5;
+        try{
+            Integer.parseInt(sId);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            id = new Random().nextInt();
+        }
+
+
+        mNotificationManager.notify(id, mBuilder.build());
+
+
+    }
+
+
+    public static void setAlarm(Context context)
     {
 
         AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReciver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
-                30 * 1000, alarmIntent);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 30);
 
-        if(notIface != null) alarmIface = notIface;
+        //RTC -> Real Time Count
+        alarmMgr.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), alarmIntent);
+
+      /*  alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
+                30 * 1000, alarmIntent);*/
 
     }
 
