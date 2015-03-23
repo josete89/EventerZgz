@@ -1,23 +1,22 @@
 package com.eventerzgz.presenter;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.provider.CalendarContract;
-
-import android.util.Log;
-import com.eventerzgz.interactor.QueryBuilder;
-import com.eventerzgz.interactor.events.EventInteractor;
-import com.eventerzgz.model.event.Event;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.provider.CalendarContract;
+import android.util.Log;
+import com.eventerzgz.interactor.QueryBuilder;
+import com.eventerzgz.interactor.events.EventInteractor;
+import com.eventerzgz.interactor.population.PopulationInteractor;
+import com.eventerzgz.model.commons.Population;
+import com.eventerzgz.model.event.Event;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,10 +38,27 @@ public abstract class BasePresenter
 
     public void observerTask(Observable.OnSubscribe onSubscribe, Subscriber subscriber)
     {
-        Observable.create(onSubscribe).subscribeOn(Schedulers.io())
+        Observable.create(onSubscribe)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 
+    }
+
+    public void getPopulationinOtherThread(Subscriber<List<Population>> subscriber){
+        observerTask(new Observable.OnSubscribe<List<Population>>() {
+            @Override
+            public void call(Subscriber<? super List<Population>> suscriber) {
+                try
+                {
+                    suscriber.onNext(PopulationInteractor.getPopulations());
+                } catch (Exception e)
+                {
+                    Log.e(TAG, e.getMessage(), e);
+                    suscriber.onError(e);
+                }
+            }
+        },subscriber);
     }
 
     public void addCalendarEvent(Event event,Context ctx)
@@ -59,7 +75,6 @@ public abstract class BasePresenter
         endTime.setTime(event.getdEndDate());
 
         String title = event.getsTitle();
-        String description = event.getsDescription();
         String location = (event.getSubEvent() != null && event.getSubEvent().getWhere() != null) ? event.getSubEvent().getWhere().getsAddress():"";
         String email = (event.getSubEvent() != null && event.getSubEvent().getWhere() != null) ? event.getSubEvent().getWhere().getsMail():"";
 
@@ -80,11 +95,11 @@ public abstract class BasePresenter
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.addAll(arrayIdsCategories);
 
         editor.putStringSet(CATEGORIES_PREFERENCES_KEY, set);
-        editor.commit();
+        editor.apply();
 
     }
 
@@ -96,11 +111,12 @@ public abstract class BasePresenter
         set.addAll(arrayIdsCategories);
 
         editor.putStringSet(POBLATION_PREFERENCES_KEY, set);
-        editor.commit();
+        editor.apply();
 
     }
 
-    public static List<String> getPoblation(Context context){
+    public static List<String> getPoblation(Context context)
+    {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         Set stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY,new HashSet<String>());
@@ -108,7 +124,8 @@ public abstract class BasePresenter
         return new ArrayList<>(stringSet);
     }
 
-    public static List<String> getCategories(Context context){
+    public static List<String> getCategories(Context context)
+    {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         Set stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY,new HashSet<String>());
@@ -126,7 +143,7 @@ public abstract class BasePresenter
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putString(LOCATION_PUSH_PREFERENCES_KEY, String.format(Locale.ENGLISH,"%f,%f",longuitude,latitude));
-        editor.commit();
+        editor.apply();
     }
 
     public static String getLocationFromPreferences(Context context){

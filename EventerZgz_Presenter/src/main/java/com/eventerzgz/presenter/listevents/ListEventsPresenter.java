@@ -11,7 +11,6 @@ import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.category.CategoryInteractor;
 import com.eventerzgz.interactor.events.EventInteractor;
-import com.eventerzgz.interactor.population.PopulationInteractor;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.event.Event;
@@ -160,7 +159,7 @@ public class ListEventsPresenter extends BasePresenter {
 
         observerTask(new Observable.OnSubscribe<List<Event>>() {
             @Override
-            public void call(Subscriber suscriber) {
+            public void call(Subscriber<? super List<Event>> suscriber) {
                 try {
                     suscriber.onNext(EventInteractor.getAllEvent(eventFilter));
                 } catch (Exception e) {
@@ -188,7 +187,7 @@ public class ListEventsPresenter extends BasePresenter {
 
         observerTask(new Observable.OnSubscribe<List<Category>>() {
             @Override
-            public void call(Subscriber suscriber) {
+            public void call(Subscriber<? super List<Category>> suscriber) {
                 try {
                     suscriber.onNext(CategoryInteractor.getCategories());
                 } catch (Exception e) {
@@ -218,19 +217,7 @@ public class ListEventsPresenter extends BasePresenter {
 
     public void getPopulation(){
 
-        observerTask(new Observable.OnSubscribe<List<Category>>() {
-            @Override
-            public void call(Subscriber suscriber) {
-                try
-                {
-                    suscriber.onNext(PopulationInteractor.getPopulations());
-                } catch (Exception e)
-                {
-                    Log.e(TAG, e.getMessage(), e);
-                    suscriber.onError(e);
-                }
-            }
-        }, new Subscriber<List<Population>>() {
+        getPopulationinOtherThread(new Subscriber<List<Population>>() {
             @Override
             public void onCompleted() {
 

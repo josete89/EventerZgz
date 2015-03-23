@@ -1,5 +1,6 @@
 package com.eventerzgz.model.event;
 
+import com.eventerzgz.model.Base;
 import com.eventerzgz.model.commons.Place;
 
 import org.simpleframework.xml.Element;
@@ -8,7 +9,7 @@ import org.simpleframework.xml.Path;
 /**
  * Created by joseluis on 21/3/15.
  */
-public class SubEvent {
+public class SubEvent extends Base {
 
     @Element(name="lugar", required = false)
     @Path("lugar")
@@ -20,8 +21,8 @@ public class SubEvent {
     @Element(name="comentarios", required = false)
     private String comment;
 
-    public static Event doParse(String sRawObj){
-        return new Event();
+    public static SubEvent doParse(String sRawObj){
+        return new SubEvent();
     }
 
     //GETTERS & SETTERS

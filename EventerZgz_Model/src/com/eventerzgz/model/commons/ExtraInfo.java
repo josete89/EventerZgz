@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 /**
  * Created by joseluis on 21/3/15.
  */
-public class ExtraInfo
+public class ExtraInfo extends Base
 {
     @Element(name="codAnexo", required = false)
     private String sCodAnexo;

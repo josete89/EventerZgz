@@ -2,12 +2,13 @@ package com.eventerzgz.model;
 
 import org.simpleframework.xml.Element;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 
 /**
  * Created by joseluis on 20/3/15.
  */
-public abstract class Base
+public abstract class Base implements Serializable
 {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";

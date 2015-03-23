@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by joseluis on 20/3/15.
  */
-public class Event extends Base {
+public class Event extends Base  {
 
     @Element(name="startDate", required = false)
     private Date dStartDate;
@@ -87,6 +87,10 @@ public class Event extends Base {
         } catch (Exception e) {
             throw new  EventZgzException(e);
         }
+        if (eventList == null){
+            return  new ArrayList<>(0);
+        }
+
         return eventList;
 
     }
@@ -113,10 +117,11 @@ public class Event extends Base {
     }
 
     private static class SparqlEventList {
-        @ElementList
+        @ElementList(required = false)
         private List<Event> result;
 
         public List<Event> getList() {
+
             return result;
         }
     }

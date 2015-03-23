@@ -1,9 +1,11 @@
 package com.eventerzgz.model.commons;
 
+import java.io.Serializable;
+
 /**
  * Created by joseluis on 21/3/15.
  */
-public class Coordinates
+public class Coordinates implements Serializable
 {
     private float fLatitude;
     private float fLonguide;
