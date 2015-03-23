@@ -1,24 +1,18 @@
 package com.eventerzgz.presenter.service;
 
-import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
-
-import java.util.List;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
-import com.eventerzgz.interactor.QueryBuilder;
-import com.eventerzgz.interactor.events.EventInteractor;
+
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
-import rx.Observable;
+
+import java.util.List;
+
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by joseluis on 21/3/15.

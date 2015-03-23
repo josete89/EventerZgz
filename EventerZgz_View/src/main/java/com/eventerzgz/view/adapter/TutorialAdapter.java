@@ -54,7 +54,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private static final int VIEW3 = 2;
     private static final int VIEW4 = 3;
     private static final int VIEW_MAX_COUNT = VIEW4 + 1;
-    private final String[] names = {"Bienvenido", "Tus intereses", "Tu Zona", "Notificaciones"};
+    private final String[] names = {"Bienvenido", "Tus intereses", "Tu Zona", "Perfil"};
 
     private LayoutInflater mInflater;
     private TutorialPresenter presenter = new TutorialPresenter(this);

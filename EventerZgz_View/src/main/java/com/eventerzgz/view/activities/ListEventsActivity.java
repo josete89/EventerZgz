@@ -98,6 +98,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //---------
         showLoading();
         listEventsPresenter.getAllEvents();
+        //listEventsPresenter.getEventsByUserPreferences(ListEventsActivity.this);
         listEventsPresenter.getPopulation();
 
         // CLick Event
@@ -171,6 +172,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                                 listDataHeader.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();*/
+                if(groupPosition == 0){
+                    if(childPosition == 0){
+                        searchToday();
+                    }
+                    else if(childPosition == 1){
+                        searchTomorrow();
+                    }
+                    else if(childPosition == 2){
+                        searchWeek();
+                    }
+                }
                 if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
                     listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
                 }
@@ -351,6 +363,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //-------------------------------------------------------------------------
     private void refreshListEvents(List<Event> listEvents) {
         listEventsToShow = listEvents;
+        /*if(menuLateral != null && menuLateral.isDrawerOpen(Gravity.LEFT)) {
+            menuLateral.closeDrawer(Gravity.LEFT);
+        }*/
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
@@ -554,5 +569,32 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         menuLateral.closeDrawer(Gravity.LEFT);
         categorySearch = true;
        listEventsPresenter.getEventsByCategories(id);
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchToday() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsToday();
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchTomorrow() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsTomorrow();
+    }
+
+    // --------------------------------------------------------------------------------------
+    // INTENT EVENT
+    // --------------------------------------------------------------------------------------
+    public void searchWeek() {
+        menuLateral.closeDrawer(Gravity.LEFT);
+        categorySearch = true;
+        listEventsPresenter.getEventsWeek();
     }
 }

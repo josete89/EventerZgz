@@ -84,7 +84,7 @@
                 android:background="@color/primary_color_light"
                 android:gravity="center"
                 android:text="@string/compartir"
-                android:textColor="#b0b5cf"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
                 android:layout_weight="2"
-                android:visibility="invisible"
+
                 android:background="@color/primary_color_light" >
             </LinearLayout>
 
@@ -106,6 +106,7 @@
                 android:background="@color/primary_color_light"
                 android:gravity="center"
                 android:text="@string/verMas"
+                android:visibility="invisible"
                 android:textColor="#ffe682"
                 android:textSize="12sp" />
         </LinearLayout>
