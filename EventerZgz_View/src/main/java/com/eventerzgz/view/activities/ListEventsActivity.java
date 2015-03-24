@@ -298,7 +298,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    if (newText == null || newText.equals("")) {
+                    if (newText == null || newText.isEmpty()) {
                         filterSearch = false;
                         refreshListEvents(EventerZgzApplication.allEventsList);
                     } else {
