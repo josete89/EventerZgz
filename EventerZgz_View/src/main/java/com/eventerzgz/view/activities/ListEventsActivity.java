@@ -71,7 +71,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    private static List<Population> populationList;
+    private List<Population> populationList;
 
 
     @Override
@@ -167,14 +167,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
                     // TODO Auto-generated method stub
-/*                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();*/
 
                     switch (groupPosition) {
                         case 0:
@@ -196,10 +188,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                             break;
                         case 1:
 
-                            if (ListEventsActivity.populationList != null && ListEventsActivity.populationList.size() > 0
-                                    && ListEventsActivity.populationList.get(childPosition) != null) {
+                            if (ListEventsActivity.this.populationList != null && ListEventsActivity.this.populationList.size() > 0
+                                    && ListEventsActivity.this.populationList.get(childPosition) != null) {
 
-                                searchPopulation(ListEventsActivity.populationList.get(childPosition).getId());
+                                searchPopulation(ListEventsActivity.this.populationList.get(childPosition).getId());
 
                             }
                             break;
@@ -670,5 +662,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         showLoading();
         listViewEvents.setVisibility(View.GONE);
 
+    }
+    public List<Population> getPopulationList() {
+        return populationList;
+    }
+
+    public void setPopulationList(List<Population> populationList) {
+        this.populationList = populationList;
     }
 }

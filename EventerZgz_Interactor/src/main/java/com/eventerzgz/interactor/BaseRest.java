@@ -1,55 +1,64 @@
 package com.eventerzgz.interactor;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import android.util.Log;
 import com.eventerzgz.model.exception.EventZgzException;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 
 /**
  * Created by joseluis on 21/3/15.
  */
 public class BaseRest extends BaseInteractor{
 
-    protected final int TIMEOUT = 500;
-
+    private final int TIMEOUT = 20000;
+    private final int DATARETRIEVAL_TIMEOUT = 5000;
 
     protected String doHTTPGet(String sUrl) throws EventZgzException
     {
-        try
-        {
-            DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(sUrl);
-            HttpResponse httpResponse = defaultHttpClient.execute(httpGet);
 
-            Log.i(TAG, "URL" + sUrl + "HTTP Response ->" + httpResponse.getStatusLine().getStatusCode());
+        HttpURLConnection urlConnection = null;
+        try {
+            // create connection
+            URL urlToRequest = new URL(sUrl);
+            urlConnection = (HttpURLConnection)
+                    urlToRequest.openConnection();
+            urlConnection.setConnectTimeout(TIMEOUT);
+            urlConnection.setReadTimeout(DATARETRIEVAL_TIMEOUT);
 
-            if(httpResponse != null
-                    && httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
-            {
-                return getHttpContent(httpResponse.getEntity());
+            // handle issues
+            int statusCode = urlConnection.getResponseCode();
+            if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                // handle unauthorized (if service requires user login)
+                throw new EventZgzException(" return HTTP_UNAUTHORIZED code");
+            } else if (statusCode != HttpURLConnection.HTTP_OK) {
+                // handle any other errors, like 404, 500,..
+                if(urlConnection.getInputStream() != null){
+                    String message  = convertInputStreamToString(new BufferedInputStream(urlConnection.getInputStream()));
+                    throw new EventZgzException(message);
+                }
             }
-            else
-            {
-                String message = httpResponse != null ? getHttpContent(httpResponse.getEntity()):"Respuesta vacia";
-                throw new EventZgzException(message);
-            }
-        }catch (IOException exception)
+
+            return convertInputStreamToString(new BufferedInputStream(urlConnection.getInputStream()));
+
+        } catch (IOException e) {
+
+            throw new EventZgzException(e);
+
+        } finally
         {
-            throw new EventZgzException(exception);
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
 
-    }
 
-    public String getHttpContent(HttpEntity httpEntity) throws IOException{
-        return convertInputStreamToString(httpEntity.getContent());
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException
@@ -70,3 +79,5 @@ public class BaseRest extends BaseInteractor{
         }
     }
 }
+
+

@@ -50,17 +50,12 @@ public class EventerRest extends BaseRest implements EventDatasource
         }
 
         Log.i(TAG,"URL  get events ->"+stringBuilder.toString());
+
         String content = doHTTPGet(stringBuilder.toString());
 
         Log.i(TAG,content);
 
         return Event.doParse(content);
-    }
-
-    public static void main(String[] list) throws Exception {
-        EventerRest eventerRest = new EventerRest();
-        List<Event> eventList = eventerRest.getAllEvents();
-        System.out.println(eventList);
     }
 
 

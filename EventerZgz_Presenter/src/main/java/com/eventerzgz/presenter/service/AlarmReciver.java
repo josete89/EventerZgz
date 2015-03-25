@@ -106,7 +106,7 @@ public class AlarmReciver  extends BroadcastReceiver{
         // mId allows you to update the notification later on.
         int id = 5;
         try{
-            Integer.parseInt(sId);
+            id = Integer.parseInt(sId);
         }catch (Exception ex){
             ex.printStackTrace();
             id = new Random().nextInt();
@@ -127,6 +127,7 @@ public class AlarmReciver  extends BroadcastReceiver{
                 PendingIntent.FLAG_NO_CREATE) != null);
 
         if(!alarmUp){
+
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReciver.class);
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
