@@ -50,6 +50,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ProgressBar progressBarLoading;
     private View emptyView;
     private TextView textViewError;
+
     //Presenter
     //---------
     private final ListEventsPresenter listEventsPresenter = new ListEventsPresenter(this);
@@ -98,7 +99,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //Presenter
         //---------
         showLoading();
-        listEventsPresenter.getAllEvents();
+        listEventsPresenter.getEventsByCategories();
         listEventsPresenter.getCategories();
         listEventsPresenter.getPopulation();
 
@@ -113,10 +114,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     }
 
-    private void setLateralMenu(){
+    private void setLateralMenu() {
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        if(listAdapter == null) {
+        if (listAdapter == null) {
 
             listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
@@ -175,54 +176,56 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();*/
 
-                switch (groupPosition){
-                    case 0:
-                        switch (childPosition){
-                            case 0:
-                                listEventsPresenter.getEventsToday();
-                                break;
-                            case 1:
-                                listEventsPresenter.getEventsTomorrow();
-                                break;
-                            case 2:
-                                listEventsPresenter.getEventsWeek();
-                                break;
+                    switch (groupPosition) {
+                        case 0:
+                            switch (childPosition) {
+                                case 0:
+                                    searchToday();
+                                    break;
+                                case 1:
+                                    searchTomorrow();
 
-                            default:
-                                Log.i("EventerZgz","No group position!");
-                        }
-                        break;
-                    case 1:
+                                    break;
+                                case 2:
+                                    searchWeek();
+                                    break;
 
-                        if(ListEventsActivity.populationList !=null && ListEventsActivity.populationList.size() > 0
-                                && ListEventsActivity.populationList.get(childPosition) != null ) {
-                            listEventsPresenter.getEventsByPopulations(ListEventsActivity.populationList.get(childPosition).getId());
-                        }
-                        break;
-                    case 2:
-                        if(EventerZgzApplication.categoryList.get(childPosition)!=null) {
-                            listEventsPresenter.getEventsByCategories(EventerZgzApplication.categoryList.get(childPosition).getId());
-                        }
-                        break;
+                                default:
+                                    Log.i("EventerZgz", "No group position!");
+                            }
+                            break;
+                        case 1:
 
-                    default:
-                        Log.i("EventerZgz","No group position!");
+                            if (ListEventsActivity.populationList != null && ListEventsActivity.populationList.size() > 0
+                                    && ListEventsActivity.populationList.get(childPosition) != null) {
+
+                                searchPopulation(ListEventsActivity.populationList.get(childPosition).getId());
+
+                            }
+                            break;
+                        case 2:
+                            if (EventerZgzApplication.categoryList.get(childPosition) != null) {
+                                searchCategory(EventerZgzApplication.categoryList.get(childPosition).getId());
+                            }
+                            break;
+
+                        default:
+                            Log.i("EventerZgz", "No group position!");
+                    }
+
+
+                    return false;
                 }
+            });
 
 
-                return false;
-            }
-        });
-
-
-           
-        }else{
+        } else {
             listAdapter.notifyDataSetChanged();
         }
     }
 
     private void prepareListData() {
-        if(listDataHeader == null) {
+        if (listDataHeader == null) {
             listDataHeader = new ArrayList<>();
             listDataChild = new HashMap<>();
 
@@ -243,11 +246,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     }
 
-    private void prepareCategories(List<Category>categoryList){
+    private void prepareCategories(List<Category> categoryList) {
 
         List<String> que = new ArrayList<>();
-        if(categoryList != null){
-            for(Category category : categoryList){
+        if (categoryList != null) {
+            for (Category category : categoryList) {
                 que.add(category.getsTitle());
             }
         }
@@ -255,6 +258,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         listDataChild.put(listDataHeader.get(2), que);
     }
+
     private void preparePopulation(List<Population> populationList) {
         if (populationList != null) {
             List<String> quien = new ArrayList<>();
@@ -266,6 +270,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listDataChild.put(listDataHeader.get(1), quien);
         }
     }
+
     // ------------------------------------------------------------------------------------
     // CONFIGURE MENU LATERAL
     // ------------------------------------------------------------------------------------
@@ -309,6 +314,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+                    showLoading();
+                    listViewEvents.setVisibility(View.GONE);
                     filterSearch = true;
                     listEventsPresenter.getEventsByTitle(query);
                     return true;
@@ -331,7 +338,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             startActivity(mainIntent);
             return true;
         }
-        if(android.R.id.home == id){
+        if (android.R.id.home == id) {
             openCloseMenuLateral();
         }
 
@@ -341,31 +348,35 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //------------------------------------------------------------------------------------------
     //Open CLOSE MENU LATERAL
     //------------------------------------------------------------------------------------------
-    private void openCloseMenuLateral(){
-        if(menuLateral.isDrawerOpen(Gravity.LEFT)){
+    private void openCloseMenuLateral() {
+        if (menuLateral.isDrawerOpen(Gravity.LEFT)) {
             menuLateral.closeDrawer(Gravity.LEFT);
-        }else{
+        } else {
             menuLateral.openDrawer(Gravity.LEFT);
         }
 
 
-
     }
+
     //------------------------------------------------------------------------------------------
     //Métodos del presenter
     //------------------------------------------------------------------------------------------
     @Override
     public void fetchedEvents(List<Event> listEvents) {
+        listViewEvents.setVisibility(View.VISIBLE);
         hideLoading();
-        if(filterSearch){
+        if (filterSearch) {
             EventerZgzApplication.filterEventsList = listEvents;
-        }else{
-            EventerZgzApplication.allEventsList = listEvents;
+        } else {
+            if (listEvents.size() > 0) {
+                EventerZgzApplication.allEventsList = listEvents;
+            }
         }
 
-        if(listEvents.size() > 0){
+        if (listEvents.size() > 0) {
             refreshListEvents(listEvents);
-        }else{
+        } else {
+            Toast.makeText(ListEventsActivity.this, getString(R.string.no_result),Toast.LENGTH_SHORT).show();
             refreshListEvents(EventerZgzApplication.allEventsList);
         }
 
@@ -470,7 +481,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.tvTitle.setText(event.getsTitle());
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             if (event.getdEndDate() != null) {
@@ -490,18 +501,18 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             //CLICK COMPARTIR
             viewholder.tvCompartir.setTag(position);
-            if(event.getsWeb() != null) {
+            if (event.getsWeb() != null) {
                 viewholder.tvCompartir
                         .setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
                                                     int position = (Integer) v.getTag();
-                                                    String url = "Evento enviado a través de EventerZgz: "+listEventsToShow.get(position).getsWeb();
+                                                    String url = "Evento enviado a través de EventerZgz: " + listEventsToShow.get(position).getsWeb();
                                                     SocialShare.share(ListEventsActivity.this, url);
                                                 }
                                             }
                         );
-            }else{
+            } else {
                 viewholder.tvCompartir.setVisibility(View.GONE);
             }
             return vi;
@@ -530,12 +541,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 case 0:
                     // Ocultar menu
 
-                    menuLateral.closeDrawers();
+
                     break;
 
                 default:
                     break;
             }
+
+
         }
 
     }
@@ -608,38 +621,54 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     // --------------------------------------------------------------------------------------
-    // INTENT EVENT
+    // SEARCH POPULATION
     // --------------------------------------------------------------------------------------
-    public void searchCategory(String id) {
-        menuLateral.closeDrawer(Gravity.LEFT);
+    public void searchPopulation(String id) {
+        hideMenuAndLoad();
         categorySearch = true;
-       listEventsPresenter.getEventsByCategories(id);
+        listEventsPresenter.getEventsByPopulations(id);
     }
 
     // --------------------------------------------------------------------------------------
     // INTENT EVENT
     // --------------------------------------------------------------------------------------
+    public void searchCategory(String id) {
+        hideMenuAndLoad();
+        categorySearch = true;
+        listEventsPresenter.getEventsByCategories(id);
+    }
+
+    // --------------------------------------------------------------------------------------
+    // SEARCH TODAY
+    // --------------------------------------------------------------------------------------
     public void searchToday() {
-        menuLateral.closeDrawer(Gravity.LEFT);
+        hideMenuAndLoad();
         categorySearch = true;
         listEventsPresenter.getEventsToday();
     }
 
     // --------------------------------------------------------------------------------------
-    // INTENT EVENT
+    // SEARCH TOMORROW
     // --------------------------------------------------------------------------------------
     public void searchTomorrow() {
-        menuLateral.closeDrawer(Gravity.LEFT);
+        hideMenuAndLoad();
         categorySearch = true;
         listEventsPresenter.getEventsTomorrow();
     }
 
     // --------------------------------------------------------------------------------------
-    // INTENT EVENT
+    // SEARCH WEEK
     // --------------------------------------------------------------------------------------
     public void searchWeek() {
-        menuLateral.closeDrawer(Gravity.LEFT);
+        hideMenuAndLoad();
         categorySearch = true;
         listEventsPresenter.getEventsWeek();
+    }
+
+    private void hideMenuAndLoad() {
+        menuLateral.closeDrawers();
+        showLoading();
+        listViewEvents.setVisibility(View.GONE);
+
     }
 }
