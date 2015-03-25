@@ -25,22 +25,12 @@ public class ListEventsPresenter extends BasePresenter {
 
     public final ListEventsIface listEventsIface;
     
-    private static final String DEFAULT_SORT = QueryBuilder.FIELD.START_DATE + "," +QueryBuilder.FIELD.END_DATE;
+    private static final String DEFAULT_SORT = QueryBuilder.FIELD.END_DATE.toString() +" desc";
 
     public ListEventsPresenter(ListEventsIface listEventsIface) {
         this.listEventsIface = listEventsIface;
     }
 
-    public static Event eventDummy() {
-        Event eventDummy = new Event();
-
-        eventDummy.setdEndDate(new Date());
-        eventDummy.setdLastUpdate(new Date());
-        eventDummy.setsDescription("Description");
-        eventDummy.setsTicketType("Libre");
-        eventDummy.setsTitle("Titulo");
-        return eventDummy;
-    }
 
     public void getEventsByPopulations(String... populationIds) {
         QueryBuilder queryBuilder = new QueryBuilder().fromToday();
@@ -148,7 +138,7 @@ public class ListEventsPresenter extends BasePresenter {
         getEventList(
                 EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
                 EventFilter.createFilter(EventFilter.START, 0),
-                EventFilter.createFilter(EventFilter.SORT, "startDate desc"), // "desc" is optional
+                EventFilter.createFilter(EventFilter.SORT, "startDate asc"), // "desc" is optional
                 EventFilter.createFilter(EventFilter.ROWS, 50),
                 EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
                 EventFilter.createFilter(EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE

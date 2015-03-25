@@ -70,7 +70,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    private static List<Population> populationList;
+    private List<Population> populationList;
 
 
     @Override
@@ -193,10 +193,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                         }
                         break;
                     case 1:
-
-                        if(ListEventsActivity.populationList !=null && ListEventsActivity.populationList.size() > 0
-                                && ListEventsActivity.populationList.get(childPosition) != null ) {
-                            listEventsPresenter.getEventsByPopulations(ListEventsActivity.populationList.get(childPosition).getId());
+                        if(getPopulationList() !=null && getPopulationList() .size() > 0
+                                && getPopulationList() .get(childPosition) != null ) {
+                            listEventsPresenter.getEventsByPopulations(getPopulationList().get(childPosition).getId());
                         }
                         break;
                     case 2:
@@ -641,5 +640,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         menuLateral.closeDrawer(Gravity.LEFT);
         categorySearch = true;
         listEventsPresenter.getEventsWeek();
+    }
+
+
+    public List<Population> getPopulationList() {
+        return populationList;
+    }
+
+    public void setPopulationList(List<Population> populationList) {
+        this.populationList = populationList;
     }
 }
