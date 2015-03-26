@@ -1,22 +1,5 @@
 package com.eventerzgz.interactor;
 
-import android.util.Log;
-
-import com.eventerzgz.model.Base;
-import com.eventerzgz.model.exception.EventZgzException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.joda.time.DateTime;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 /**
  * Created by joseluis on 21/3/15.
  */
@@ -78,6 +61,12 @@ public class QueryBuilder {
     }
     public QueryBuilder ungroup() {
         query.append(')');
+        return this;
+    }
+
+    public QueryBuilder startToday() {
+        String today = DateUtilities.getStartOfToday();
+        this.addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, today);
         return this;
     }
 

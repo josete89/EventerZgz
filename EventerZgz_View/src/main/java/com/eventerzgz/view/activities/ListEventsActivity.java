@@ -414,7 +414,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listViewEvents.setAdapter(adapterListEvents);
         } else {
             adapterListEvents.notifyDataSetChanged();
-            ;
         }
     }
 
@@ -470,7 +469,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
             }catch (Exception e){
-
+                e.printStackTrace();
             }
             if (event.getdEndDate() != null) {
                 viewholder.textViewFecha.setText(event.getdEndDate().toString());

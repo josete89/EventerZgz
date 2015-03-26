@@ -115,7 +115,7 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsByTitle(String title) {
-        String query = new QueryBuilder().fromToday()
+        String query = new QueryBuilder().startToday()
                 .and().addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "*" + title + "*")
                 .build();
         getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
