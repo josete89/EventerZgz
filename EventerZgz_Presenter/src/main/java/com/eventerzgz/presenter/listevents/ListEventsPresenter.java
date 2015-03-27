@@ -170,7 +170,9 @@ public class ListEventsPresenter extends BasePresenter {
 
             @Override
             public void onNext(List<Event> o) {
+               // List<Event> aux = filterListByDateBeforeToday(o);
                 listEventsIface.fetchedEvents(o);
+                listEventsIface.fetchedEventsOrder(populateMapFromListEvents(o));
                 onCompleted();
             }
         });

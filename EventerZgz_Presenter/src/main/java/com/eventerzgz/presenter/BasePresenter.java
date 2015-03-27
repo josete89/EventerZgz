@@ -2,9 +2,14 @@ package com.eventerzgz.presenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import android.content.Context;
@@ -49,16 +54,14 @@ public abstract class BasePresenter
         observerTask(new Observable.OnSubscribe<List<Population>>() {
             @Override
             public void call(Subscriber<? super List<Population>> suscriber) {
-                try
-                {
+                try {
                     suscriber.onNext(PopulationInteractor.getPopulations());
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                     suscriber.onError(e);
                 }
             }
-        },subscriber);
+        }, subscriber);
     }
 
     public void addCalendarEvent(Event event,Context ctx)
@@ -119,7 +122,7 @@ public abstract class BasePresenter
     {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        Set stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY,new HashSet<String>());
+        Set stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY, new HashSet<String>());
 
         return new ArrayList<>(stringSet);
     }
@@ -222,6 +225,96 @@ public abstract class BasePresenter
         }
 
         return queryBuilder;
+    }
+
+    /**
+     * Translate list Events into
+     * @param eventList List of events
+     * @return Map by dates
+     */
+    protected Map<Date,List<Event>> populateMapFromListEvents(List<Event> eventList)
+    {
+        Map<Date,List<Event>> dateListMap = new HashMap<>();
+        List<Event> listAux;
+        Date key;
+        for(Event event:eventList)
+        {
+
+            key = event.getdEndDate();
+
+            if(dateListMap.containsKey(key)){
+
+                listAux = dateListMap.get(key);
+                listAux.add(event);
+
+            }else{
+                listAux = Collections.emptyList();
+                listAux.add(event);
+
+                dateListMap.put(key,listAux);
+            }
+        }
+
+
+        return dateListMap;
+    }
+
+    protected List<Event> filterListByDateBeforeToday(List<Event>eventList){
+
+        List<Event> events = new ArrayList<>(0);
+
+        if ( eventList == null || eventList.size() == 0)
+            return  eventList;
+
+        for (Event event:eventList){
+            if(!isBeforeToday(event.getdStartDate(),event) || isAfterToday(event.getdStartDate(),event)){
+                events.add(event);
+            }
+        }
+
+
+        return events;
+
+    }
+
+    private boolean isBeforeToday(Date dateToCheck,Event event){
+
+        if (dateToCheck == null) {
+            Log.e(TAG,"NULL date for event"+event.toString());
+            return true;
+        }
+
+        Calendar c = Calendar.getInstance();
+
+        // set the calendar to start of today
+        c.set(Calendar.HOUR_OF_DAY, 00);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+
+        // and get that as a Date
+        Date today = c.getTime();
+
+        return dateToCheck.before(today);
+    }
+
+    private boolean isAfterToday(Date dateToCheck,Event event){
+
+        if (dateToCheck == null) {
+            Log.e(TAG,"NULL date for event"+event.toString());
+            return true;
+        }
+
+        Calendar c = Calendar.getInstance();
+
+        // set the calendar to start of today
+        c.set(Calendar.HOUR_OF_DAY, 00);
+        c.set(Calendar.MINUTE, 00);
+        c.set(Calendar.SECOND, 00);
+
+        // and get that as a Date
+        Date today = c.getTime();
+
+        return  dateToCheck.after(today);
     }
 
 }

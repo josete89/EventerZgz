@@ -224,6 +224,11 @@ public class Event extends Base  {
         this.subEvent = subEvent;
     }
 
+    public String getEndDateForPresentation(){
+        DateFormat format =  SimpleDateFormat.getDateInstance();
+        return format.format(getdEndDate());
+    }
+
     @Override
     public String toString() {
         return "\nEvent{" +

@@ -38,8 +38,10 @@ import com.eventerzgz.view.share.SocialShare;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListEventsActivity extends ActionBarActivity implements ListEventsIface {
 
@@ -61,6 +63,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private boolean filterSearch = false;
     private boolean categorySearch = false;
     private List<Event> listEventsToShow;
+    private List<Event> allEventsList;
+    private List<Event> filterEventsList;
+    private List<Category> categoryList;
 
     // Menu lateral
     // -------------
@@ -196,9 +201,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                             }
                             break;
                         case 2:
-                            if (EventerZgzApplication.categoryList.get(childPosition) != null) {
-                                searchCategory(EventerZgzApplication.categoryList.get(childPosition).getId());
+
+                            List<Category> categoryList = getCategoryList();
+
+                            if (categoryList.get(childPosition) != null) {
+                                searchCategory(categoryList.get(childPosition).getId());
                             }
+
                             break;
 
                         default:
@@ -266,14 +275,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // ------------------------------------------------------------------------------------
     // CONFIGURE MENU LATERAL
     // ------------------------------------------------------------------------------------
-    private void configureMenuLateral() {
+    private void configureMenuLateral(List<Category> categoryList) {
         opciones_menu = getResources().getStringArray(R.array.opciones_menu);
         menuLateral = (DrawerLayout) findViewById(R.id.menu_lateral);
         listMenuLateral = (ListView) findViewById(R.id.menu_lateral_list);
 
         // Set the adapter for the list view
         listMenuLateral.setAdapter(new MenuLateralItemsAdapter(
-                ListEventsActivity.this));
+                ListEventsActivity.this,categoryList));
         // Set the list's click listener
         listMenuLateral.setOnItemClickListener(new DrawerItemClickListener());
     }
@@ -297,7 +306,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 public boolean onQueryTextChange(String newText) {
                     if (newText == null || newText.isEmpty()) {
                         filterSearch = false;
-                        refreshListEvents(EventerZgzApplication.allEventsList);
+                        refreshListEvents(getAllEventsList());
                     } else {
                     }
 
@@ -358,10 +367,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents.setVisibility(View.VISIBLE);
         hideLoading();
         if (filterSearch) {
-            EventerZgzApplication.filterEventsList = listEvents;
+            setFilterEventsList(listEvents);
         } else {
             if (listEvents.size() > 0) {
-                EventerZgzApplication.allEventsList = listEvents;
+                setAllEventsList(listEvents);
             }
         }
 
@@ -369,18 +378,24 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             refreshListEvents(listEvents);
         } else {
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result),Toast.LENGTH_SHORT).show();
-            refreshListEvents(EventerZgzApplication.allEventsList);
+            refreshListEvents(getAllEventsList());
         }
 
 
     }
 
     @Override
+    public void fetchedEventsOrder(Map<Date, List<Event>> orderEvents) {
+        //TODO: JARROYO IMPLEMENTAR
+        Log.i("EventerZgz",orderEvents.toString());
+    }
+
+    @Override
 
     public void fetchedCategories(List<Category> listCategory) {
         emptyView.setVisibility(View.GONE);
-        EventerZgzApplication.categoryList = listCategory;
-        configureMenuLateral();
+        setCategoryList(listCategory);
+        configureMenuLateral(listCategory);
         prepareListData();
         prepareCategories(listCategory);
         setLateralMenu();
@@ -398,7 +413,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     public void error(String sMessage) {
 
         hideLoading();
-        refreshListEvents(EventerZgzApplication.allEventsList);
+        refreshListEvents(getAllEventsList());
         Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
         //emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
@@ -476,13 +491,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 e.printStackTrace();
             }
             if (event.getdEndDate() != null) {
-                viewholder.textViewFecha.setText(event.getdEndDate().toString());
+                viewholder.textViewFecha.setText(event.getEndDateForPresentation());
             } else {
                 viewholder.textViewFecha.setVisibility(View.GONE);
             }
             //Imagen
             //------
-            if (event.getsImage() != null && !event.getsImage().equals("")) {
+            if (event.getsImage() != null && !event.getsImage().isEmpty()) {
                 viewholder.imageView.setVisibility(View.VISIBLE);
                 ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
@@ -606,8 +621,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     private void intentDetailEvent(int position) {
         Intent intentEvent = new Intent(ListEventsActivity.this, DetailEventActivity.class);
-        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED, position);
-        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_FILTERED, filterSearch);
+        Event event;
+        if (filterSearch){
+            event = getFilterEventsList().get(position);
+        }else {
+           event = getAllEventsList().get(position);
+        }
+        intentEvent.putExtra(EventerZgzApplication.INTENT_EVENT_SELECTED,event );
+
         startActivity(intentEvent);
     }
 
@@ -662,11 +683,37 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         listViewEvents.setVisibility(View.GONE);
 
     }
+
+    //SETTERS AND GETTERS
     public List<Population> getPopulationList() {
         return populationList;
     }
 
     public void setPopulationList(List<Population> populationList) {
         this.populationList = populationList;
+    }
+
+    public List<Event> getAllEventsList() {
+        return allEventsList;
+    }
+
+    public void setAllEventsList(List<Event> allEventsList) {
+        this.allEventsList = allEventsList;
+    }
+
+    public List<Event> getFilterEventsList() {
+        return filterEventsList;
+    }
+
+    public void setFilterEventsList(List<Event> filterEventsList) {
+        this.filterEventsList = filterEventsList;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 }
