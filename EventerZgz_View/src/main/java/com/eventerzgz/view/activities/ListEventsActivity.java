@@ -35,7 +35,7 @@ import com.eventerzgz.view.adapter.ExpandableListAdapter;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.eventerzgz.view.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -450,7 +450,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             ViewHolder viewholder;
             View vi = contentView;
 
-            if (contentView == null) {
+            //if (contentView == null) {
                 LayoutInflater inflater = (LayoutInflater)
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 vi = inflater.inflate(R.layout.item_list_events, viewGroup, false);
@@ -464,10 +464,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.tvCompartir = (TextView) vi
                         .findViewById(R.id.tvCompartir);
                 viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
-
+                viewholder.progressBarLoading = vi.findViewById(R.id.progressBarLoading);
                 vi.setTag(viewholder);
-            }
-            viewholder = (ViewHolder) vi.getTag();
+            //}
+            //viewholder = (ViewHolder) vi.getTag();
 
             Event event = listEventsToShow.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
@@ -485,7 +485,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             //------
             if (event.getsImage() != null && !event.getsImage().equals("")) {
                 viewholder.imageView.setVisibility(View.VISIBLE);
-                ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
+                Utils.displayImageLoading((event.getFieldWithUri(event.getsImage())), viewholder.imageView, viewholder.progressBarLoading);
+
+                //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
                 viewholder.imageView.setVisibility(View.GONE);
             }
@@ -518,6 +520,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView tvVerMas;
         TextView tvCompartir;
         ImageView imageView;
+        View progressBarLoading;
         LinearLayout linearLayoutClip;
     }
 
