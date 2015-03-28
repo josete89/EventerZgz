@@ -491,7 +491,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 e.printStackTrace();
             }
             if (event.getdEndDate() != null) {
-                viewholder.textViewFecha.setText(event.getEndDateForPresentation());
+                String dateStringfy = String.format("De %s a %s",event.getStartDateForPresentantion(),event.getEndDateForPresentation());
+                viewholder.textViewFecha.setText(dateStringfy);
             } else {
                 viewholder.textViewFecha.setVisibility(View.GONE);
             }

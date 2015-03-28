@@ -25,14 +25,6 @@ public class EventerZgzApplication  extends Application {
     //-----------
     public static final String INTENT_EVENT_SELECTED = "eventObject";
 
-    //Data
-    //----
-    /*public static List<Event> allEventsList;
-    public static List<Event> filterEventsList;
-    public static List<Category> categoryList;*/
-
-
-
 
     public void startService(){
         // TODO - Comprobar que no este lanzado ya

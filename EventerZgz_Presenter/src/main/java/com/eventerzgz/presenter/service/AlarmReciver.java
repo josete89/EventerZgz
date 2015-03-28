@@ -78,12 +78,14 @@ public class AlarmReciver  extends BroadcastReceiver{
 
         final int IC_LAUNCHER = 0x7f020078;
 
-        PendingIntent contentIntent;
+        PendingIntent contentIntent = null;
 
         if(event == null){
+
             Intent intent = new Intent(Intent.ACTION_MAIN, null);
             intent.setComponent(new ComponentName("com.eventerzgz.view","com.eventerzgz.view.activities.ListEventsActivity"));
             contentIntent = PendingIntent.getActivity(context, 0,intent , 0);
+
         }else{
 
             Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -122,7 +124,7 @@ public class AlarmReciver  extends BroadcastReceiver{
     public static void setAlarm(Context context)
     {
 
-        boolean alarmUp = (PendingIntent.getBroadcast(context, 0,
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 1234,
                 new Intent(AlarmReciver.class.getName()),
                 PendingIntent.FLAG_NO_CREATE) != null);
 
@@ -130,7 +132,7 @@ public class AlarmReciver  extends BroadcastReceiver{
 
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReciver.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 1234, intent, 0);
 
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 8);

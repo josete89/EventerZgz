@@ -2,7 +2,6 @@ package com.eventerzgz.presenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public abstract class BasePresenter
 
     protected static String TAG = "EventerZgz";
 
-    public void observerTask(Observable.OnSubscribe onSubscribe, Subscriber subscriber)
+    public <T> void observerTask(Observable.OnSubscribe<T> onSubscribe, Subscriber<T> subscriber)
     {
         Observable.create(onSubscribe)
                 .subscribeOn(Schedulers.io())
@@ -110,7 +109,7 @@ public abstract class BasePresenter
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.addAll(arrayIdsCategories);
 
         editor.putStringSet(POBLATION_PREFERENCES_KEY, set);
@@ -122,7 +121,7 @@ public abstract class BasePresenter
     {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        Set stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY, new HashSet<String>());
+        Set<String> stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY, new HashSet<String>());
 
         return new ArrayList<>(stringSet);
     }
@@ -131,7 +130,7 @@ public abstract class BasePresenter
     {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        Set stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY,new HashSet<String>());
+        Set<String> stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY,new HashSet<String>());
 
         return new ArrayList<>(stringSet);
     }
@@ -267,7 +266,7 @@ public abstract class BasePresenter
             return  eventList;
 
         for (Event event:eventList){
-            if(!isBeforeToday(event.getdStartDate(),event) || isAfterToday(event.getdStartDate(),event)){
+            if(!isBeforeToday(event.getdEndDate(),event)){
                 events.add(event);
             }
         }
@@ -279,6 +278,8 @@ public abstract class BasePresenter
 
     private boolean isBeforeToday(Date dateToCheck,Event event){
 
+        Log.i(TAG,"Date To evaluate ->"+dateToCheck.toString());
+
         if (dateToCheck == null) {
             Log.e(TAG,"NULL date for event"+event.toString());
             return true;
@@ -287,14 +288,22 @@ public abstract class BasePresenter
         Calendar c = Calendar.getInstance();
 
         // set the calendar to start of today
-        c.set(Calendar.HOUR_OF_DAY, 00);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
 
         // and get that as a Date
         Date today = c.getTime();
 
-        return dateToCheck.before(today);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(dateToCheck);
+
+
+        if (c.get(Calendar.ERA) < c2.get(Calendar.ERA)) return true;
+        if (c.get(Calendar.ERA) > c2.get(Calendar.ERA)) return true;
+        if (c.get(Calendar.YEAR) < c2.get(Calendar.YEAR)) return true;
+        if (c.get(Calendar.YEAR) > c2.get(Calendar.YEAR)) return true;
+        return c.get(Calendar.DAY_OF_YEAR) > c2.get(Calendar.DAY_OF_YEAR);
     }
 
     private boolean isAfterToday(Date dateToCheck,Event event){
@@ -307,9 +316,9 @@ public abstract class BasePresenter
         Calendar c = Calendar.getInstance();
 
         // set the calendar to start of today
-        c.set(Calendar.HOUR_OF_DAY, 00);
-        c.set(Calendar.MINUTE, 00);
-        c.set(Calendar.SECOND, 00);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
 
         // and get that as a Date
         Date today = c.getTime();

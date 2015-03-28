@@ -2,7 +2,6 @@ package com.eventerzgz.presenter.listevents;
 
 
 import static com.eventerzgz.interactor.events.EventInteractor.EventFilter;
-import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -170,7 +169,7 @@ public class ListEventsPresenter extends BasePresenter {
 
             @Override
             public void onNext(List<Event> o) {
-               // List<Event> aux = filterListByDateBeforeToday(o);
+                List<Event> aux = filterListByDateBeforeToday(o);
                 listEventsIface.fetchedEvents(o);
                 listEventsIface.fetchedEventsOrder(populateMapFromListEvents(o));
                 onCompleted();

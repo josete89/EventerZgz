@@ -229,6 +229,11 @@ public class Event extends Base  {
         return format.format(getdEndDate());
     }
 
+    public String getStartDateForPresentantion(){
+        DateFormat format =  SimpleDateFormat.getDateInstance();
+        return format.format(getdStartDate());
+    }
+
     @Override
     public String toString() {
         return "\nEvent{" +
