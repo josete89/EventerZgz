@@ -115,7 +115,7 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsByTitle(String title) {
-        String query = new QueryBuilder().fromToday()
+        String query = new QueryBuilder().startToday()
                 .and().addFilter(QueryBuilder.FIELD.TITLE, QueryBuilder.COMPARATOR.EQUALS, "*" + title + "*")
                 .build();
         getEventList(EventFilter.createFilter(EventFilter.QUERY_FILTER, query),
@@ -170,7 +170,9 @@ public class ListEventsPresenter extends BasePresenter {
 
             @Override
             public void onNext(List<Event> o) {
+               // List<Event> aux = filterListByDateBeforeToday(o);
                 listEventsIface.fetchedEvents(o);
+                listEventsIface.fetchedEventsOrder(populateMapFromListEvents(o));
                 onCompleted();
             }
         });

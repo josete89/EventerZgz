@@ -10,6 +10,8 @@
  */
 package com.eventerzgz.view.adapter;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
 import com.eventerzgz.view.application.EventerZgzApplication;
@@ -29,15 +32,17 @@ import com.eventerzgz.view.application.EventerZgzApplication;
 public class MenuLateralItemsAdapter extends BaseAdapter {
 
 	private Context context;
+	private List<Category> categoryList;
 
-	public MenuLateralItemsAdapter(Context context) {
+	public MenuLateralItemsAdapter(Context context,List<Category> categoryList) {
 		this.context = context;
+		this.categoryList = categoryList;
 	}
 
 	@Override
 	public int getCount() {
-		if(EventerZgzApplication.categoryList!=null){
-            return EventerZgzApplication.categoryList.size();
+		if(categoryList!=null){
+            return categoryList.size();
         }
         return 0;
 	}
@@ -70,13 +75,13 @@ public class MenuLateralItemsAdapter extends BaseAdapter {
 			break;
 		}
 
-		textViewCategoria.setText(EventerZgzApplication.categoryList.get(position).getsTitle().trim());
+		textViewCategoria.setText(categoryList.get(position).getsTitle().trim());
         textViewCategoria.setTag(position);
         textViewCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = (int)view.getTag();
-                ((ListEventsActivity)context).searchCategory(EventerZgzApplication.categoryList.get(position).getId());
+                ((ListEventsActivity)context).searchCategory(categoryList.get(position).getId());
             }
         });
 

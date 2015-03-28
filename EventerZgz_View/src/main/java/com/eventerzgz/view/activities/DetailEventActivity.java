@@ -60,19 +60,7 @@ public class DetailEventActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-
-            if(extras.containsKey("eventObject")){
-                 eventSelected = (Event) extras.getSerializable("eventObject");
-            }else{
-                posEventSelected = extras.getInt(EventerZgzApplication.INTENT_EVENT_SELECTED);
-                eventFiltered = extras.getBoolean(EventerZgzApplication.INTENT_EVENT_FILTERED);
-                if(eventFiltered) {
-                    eventSelected = EventerZgzApplication.filterEventsList.get(posEventSelected);
-                }else{
-                    eventSelected = EventerZgzApplication.allEventsList.get(posEventSelected);
-                }
-            }
-
+            eventSelected = (Event) extras.getSerializable("eventObject");
         }
 
         //View
@@ -152,7 +140,7 @@ public class DetailEventActivity extends ActionBarActivity {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textViewCategoria.setText(spanna);
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
