@@ -35,7 +35,7 @@ import com.eventerzgz.view.adapter.ExpandableListAdapter;
 import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.eventerzgz.view.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -377,6 +377,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if (listEvents.size() > 0) {
             refreshListEvents(listEvents);
         } else {
+            filterSearch = false;
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result),Toast.LENGTH_SHORT).show();
             refreshListEvents(getAllEventsList());
         }
@@ -414,7 +415,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         hideLoading();
         refreshListEvents(getAllEventsList());
-        Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        if(sMessage!=null && !"".equals(sMessage)) {
+            Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        }
         //emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
@@ -464,7 +467,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             ViewHolder viewholder;
             View vi = contentView;
 
-            if (contentView == null) {
+            //if (contentView == null) {
                 LayoutInflater inflater = (LayoutInflater)
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 vi = inflater.inflate(R.layout.item_list_events, viewGroup, false);
@@ -478,10 +481,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.tvCompartir = (TextView) vi
                         .findViewById(R.id.tvCompartir);
                 viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
-
+                viewholder.progressBarLoading = vi.findViewById(R.id.progressBarLoading);
+                viewholder.layoutImage = vi.findViewById(R.id.layoutImage);
                 vi.setTag(viewholder);
-            }
-            viewholder = (ViewHolder) vi.getTag();
+            //}
+            //viewholder = (ViewHolder) vi.getTag();
 
             Event event = listEventsToShow.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
@@ -499,10 +503,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             //Imagen
             //------
             if (event.getsImage() != null && !event.getsImage().isEmpty()) {
+                viewholder.layoutImage.setVisibility(View.VISIBLE);
                 viewholder.imageView.setVisibility(View.VISIBLE);
-                ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
+                Utils.displayImageLoading((event.getFieldWithUri(event.getsImage())), viewholder.imageView, viewholder.progressBarLoading);
+
+                //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
-                viewholder.imageView.setVisibility(View.GONE);
+                viewholder.layoutImage.setVisibility(View.GONE);
+                //viewholder.imageView.setVisibility(View.GONE);
             }
 
 
@@ -533,6 +541,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView tvVerMas;
         TextView tvCompartir;
         ImageView imageView;
+        View progressBarLoading;
+        View layoutImage;
         LinearLayout linearLayoutClip;
     }
 
