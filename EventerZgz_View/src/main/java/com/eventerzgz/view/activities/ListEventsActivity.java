@@ -479,6 +479,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                         .findViewById(R.id.tvCompartir);
                 viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
                 viewholder.progressBarLoading = vi.findViewById(R.id.progressBarLoading);
+                viewholder.layoutImage = vi.findViewById(R.id.layoutImage);
                 vi.setTag(viewholder);
             //}
             //viewholder = (ViewHolder) vi.getTag();
@@ -498,12 +499,14 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             //Imagen
             //------
             if (event.getsImage() != null && !event.getsImage().isEmpty()) {
+                viewholder.layoutImage.setVisibility(View.VISIBLE);
                 viewholder.imageView.setVisibility(View.VISIBLE);
                 Utils.displayImageLoading((event.getFieldWithUri(event.getsImage())), viewholder.imageView, viewholder.progressBarLoading);
 
                 //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
-                viewholder.imageView.setVisibility(View.GONE);
+                viewholder.layoutImage.setVisibility(View.GONE);
+                //viewholder.imageView.setVisibility(View.GONE);
             }
 
 
@@ -535,6 +538,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView tvCompartir;
         ImageView imageView;
         View progressBarLoading;
+        View layoutImage;
         LinearLayout linearLayoutClip;
     }
 

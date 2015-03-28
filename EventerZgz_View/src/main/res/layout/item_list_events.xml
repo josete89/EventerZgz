@@ -8,10 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--<RelativeLayout
+        <RelativeLayout
             android:id="@+id/layoutImage"
             android:layout_width="match_parent"
-            android:layout_height="85dp">-->
+            android:layout_height="85dp">
 
             <ProgressBar
                 android:id="@+id/progressBarLoading"
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 android:scaleType="centerCrop" />
-        <!--</RelativeLayout>-->
+        </RelativeLayout>
 
 
         <LinearLayout
