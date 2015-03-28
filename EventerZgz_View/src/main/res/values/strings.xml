@@ -22,6 +22,7 @@
     <string name="action_search">Search</string>
     <string name="contenido_no_disponible">Contenido no disponible</string>
 
+    <string name="fecha">Fecha:</string>
     <string name="direccion">Dirección:</string>
     <string name="lugar">Lugar:</string>
     <string name="telefono">Teléfono:</string>

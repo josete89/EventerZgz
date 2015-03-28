@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.detail.DetailEventPresenter;
 import com.eventerzgz.view.R;
-import com.eventerzgz.view.application.EventerZgzApplication;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,6 +28,7 @@ public class DetailEventActivity extends ActionBarActivity {
 
     //View
     //----
+    private TextView textViewFecha;
     private TextView textViewTitle;
     private TextView textViewDescription;
     private ImageView imageViewDetail;
@@ -66,6 +66,7 @@ public class DetailEventActivity extends ActionBarActivity {
         //View
         //----
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
+        textViewFecha = (TextView) findViewById(R.id.textViewFecha);
         textViewDescription = (TextView) findViewById(R.id.textViewDescription);
         textViewDireccion = (TextView) findViewById(R.id.textViewDireccion);
         textViewTelefono = (TextView) findViewById(R.id.textViewTelefono);
@@ -125,6 +126,7 @@ public class DetailEventActivity extends ActionBarActivity {
             imageViewDetail.setVisibility(View.GONE);
         }
         try {
+            textViewFecha.setText(eventSelected.getEndDateForPresentation());
             textViewCategoria.setText(eventSelected.getCategoryList().get(0).getsTitle());
             textViewDireccion.setText(eventSelected.getSubEvent().getWhere().getsAddress());
             textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());

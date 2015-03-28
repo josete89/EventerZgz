@@ -377,6 +377,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if (listEvents.size() > 0) {
             refreshListEvents(listEvents);
         } else {
+            filterSearch = false;
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result),Toast.LENGTH_SHORT).show();
             refreshListEvents(getAllEventsList());
         }
@@ -414,7 +415,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         hideLoading();
         refreshListEvents(getAllEventsList());
-        Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        if(sMessage!=null && !"".equals(sMessage)) {
+            Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
+        }
         //emptyView.setVisibility(View.VISIBLE);
         textViewError.setText(sMessage);
     }
