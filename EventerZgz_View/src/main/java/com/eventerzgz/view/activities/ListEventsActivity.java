@@ -51,6 +51,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private AdapterListEvents adapterListEvents;
     private ProgressBar progressBarLoading;
     private View emptyView;
+    private Date startDate = null;
     private TextView textViewError;
 
     //Presenter
@@ -466,11 +467,26 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         public View getView(int position, View contentView, ViewGroup viewGroup) {
             ViewHolder viewholder;
             View vi = contentView;
+            LayoutInflater inflater;
+            Event event = listEventsToShow.get(position);
+            Boolean newDate = false;
 
-            //if (contentView == null) {
-            LayoutInflater inflater = (LayoutInflater)
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = inflater.inflate(R.layout.item_list_events, viewGroup, false);
+            if (event.getdStartDate() != null) {
+                if(startDate == null || !startDate.equals(event.getStartDateForPresentantion())){
+                    inflater = (LayoutInflater)
+                            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    vi = inflater.inflate(R.layout.item_list_events_with_title, viewGroup, false);
+                    startDate = event.getdStartDate();
+                    newDate = true;
+                }
+
+            }
+
+            if (!newDate){
+                inflater = (LayoutInflater)
+                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                vi = inflater.inflate(R.layout.item_list_events, viewGroup, false);
+            }
 
             viewholder = new ViewHolder();
             viewholder.tvTitle = (TextView) vi.findViewById(R.id.tvTitle);
@@ -483,12 +499,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
             viewholder.progressBarLoading = vi.findViewById(R.id.progressBarLoading);
             viewholder.layoutImage = vi.findViewById(R.id.layoutImage);
+            if (newDate){
+                viewholder.header_title_date = (TextView) vi.findViewById(R.id.header_title_date);
+            }
             vi.setTag(viewholder);
             //}
             //viewholder = (ViewHolder) vi.getTag();
 
-            Event event = listEventsToShow.get(position);
             viewholder.tvTitle.setText(event.getsTitle());
+            if(newDate){
+                viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+            }
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
             } catch (Exception e) {
@@ -544,6 +565,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         TextView tvTitle;
         TextView tvLugar;
         TextView textViewFecha;
+        TextView header_title_date;
         TextView tvVerMas;
         TextView tvCompartir;
         ImageView imageView;

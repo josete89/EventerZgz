@@ -10,19 +10,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.util.Date;
+
 /**
  * Created by JavierArroyo on 21/3/15.
  */
 public class Utils {
 
-    public static int dpToPx(float dp, Resources resources){
+    public static int dpToPx(float dp, Resources resources) {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
         return (int) px;
     }
+
     //-----------------------------------------------------------------------------
     // DISPLAY IMAGES WITH LOADING
     //-----------------------------------------------------------------------------
-    public static void displayImageLoading(String path, ImageView imageView,final View progressView){
+    public static void displayImageLoading(String path, ImageView imageView, final View progressView) {
         ImageLoader.getInstance().displayImage(path, imageView, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -39,6 +42,15 @@ public class Utils {
                 progressView.setVisibility(View.GONE);
             }
         });
+    }
+
+    public static String getDate(Date date) {
+        String dia = (String) android.text.format.DateFormat.format("dd", date);
+        String mes = (String) android.text.format.DateFormat.format("MM", date);
+        String anio = (String) android.text.format.DateFormat.format("yyyy",
+                date);
+
+        return dia + "/" + mes + "/" + anio;
     }
 
 }
