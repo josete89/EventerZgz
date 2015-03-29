@@ -36,8 +36,8 @@ public class EventerZgzApplication  extends Application {
         super.onCreate();
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.sin_contenido) // resource or drawable
-                .showImageOnFail(R.drawable.sin_contenido) // resource or drawable
+                .showImageForEmptyUri(R.drawable.imagen_cabecera) // resource or drawable
+                .showImageOnFail(R.drawable.imagen_cabecera) // resource or drawable
                 .resetViewBeforeLoading(false)  // default
                 .delayBeforeLoading(1000)
                 .cacheInMemory(true) // default

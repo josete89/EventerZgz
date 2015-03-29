@@ -51,5 +51,5 @@
         android:textSize="20sp"
         ripple:alphaFactor="0.7"
         ripple:hover="true"
-        ripple:rippleColor="#58FAAC" />
+        ripple:rippleColor="@color/primary_color" />
 </RelativeLayout>

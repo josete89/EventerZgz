@@ -20,6 +20,7 @@
                 android:id="@+id/imageViewDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/imagen_cabecera"
                 android:scaleType="centerCrop" />
 
 
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="50dp"
+                android:layout_marginTop="40dp"
                 android:background="@color/white"
                 android:fontFamily="bold"
                 android:gravity="left"
@@ -325,6 +327,18 @@
             android:background="@drawable/btn_fab_default"
             android:onClick="onClickDetail"
             android:src="@drawable/calendar"
+            android:textSize="28sp" />
+        <ImageButton
+            android:id="@+id/btnShare"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_toLeftOf="@id/btnCreate"
+            android:layout_below="@+id/layoutImage"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="-30dp"
+            android:background="@drawable/btn_fab_default"
+            android:onClick="onClickDetail"
+            android:src="@drawable/ic_share"
             android:textSize="28sp" />
     </RelativeLayout>
 </ScrollView>

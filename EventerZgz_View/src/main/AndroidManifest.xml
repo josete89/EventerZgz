@@ -43,6 +43,7 @@
         <activity
             android:name=".activities.ListEventsActivity"
             android:label="@string/title_activity_list_event"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
 

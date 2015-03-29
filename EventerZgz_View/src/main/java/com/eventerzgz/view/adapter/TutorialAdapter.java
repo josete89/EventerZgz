@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.eventerzgz.model.commons.Category;
@@ -176,19 +177,14 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             mapView = (MapView) convertView.findViewById(R.id.mapview);
             mapView.onCreate(null);
             mapView.setClickable(true);
-            mapView.setOnTouchListener(new View.OnTouchListener() {
+            ImageView transparentImageView = (ImageView) convertView.findViewById(R.id.transparent_image);
+
+            transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
                 @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_MOVE:
-                            viewPosition.getParent().requestDisallowInterceptTouchEvent(true);
-                            break;
-                        case MotionEvent.ACTION_UP:
-                        case MotionEvent.ACTION_CANCEL:
-                            viewPosition.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-                    return mapView.onTouchEvent(motionEvent);
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
                 }
             });
             configMap(context);

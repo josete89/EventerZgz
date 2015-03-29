@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.detail.DetailEventPresenter;
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.share.SocialShare;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -123,7 +124,7 @@ public class DetailEventActivity extends ActionBarActivity {
         if(eventSelected.getsImage()!=null && !eventSelected.getsImage().equals("")){
             ImageLoader.getInstance().displayImage((eventSelected.getFieldWithUri(eventSelected.getsImage())), imageViewDetail);
         }else{
-            imageViewDetail.setVisibility(View.GONE);
+            imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
         try {
             textViewFecha.setText(eventSelected.getEndDateForPresentation());
@@ -221,6 +222,15 @@ public class DetailEventActivity extends ActionBarActivity {
                 new DetailEventPresenter().addCalendarEvent(eventSelected, DetailEventActivity.this);
                 break;
 
+            case R.id.btnShare:
+                String url;
+                if (eventSelected.getsWeb() != null) {
+                    url = "Evento enviado a través de EventerZgz: " + eventSelected.getsWeb();
+                } else {
+                    url = "¡¿Qué te parece este evento?!\r\n" + eventSelected.getsTitle() + "\r\n" + eventSelected.getsDescription();
+                }
+                SocialShare.share(DetailEventActivity.this, url);
+                break;
             case R.id.textViewTelefono:
                 if (((TextView) view).getText() != null) {
                     callPhone(((TextView) view).getText().toString());

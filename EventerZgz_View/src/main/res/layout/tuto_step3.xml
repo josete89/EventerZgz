@@ -22,15 +22,29 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
-
-        <include
-            android:id="@+id/layoutMap"
-            layout="@layout/view_map"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="70dp"
-            android:layout_below="@+id/layoutInfo" />
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:background="@color/primary_color"
+            android:padding="5dp"
+            android:layout_marginBottom="95dp">
+            <include
+                android:id="@+id/layoutMap"
+                layout="@layout/view_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layoutInfo" />
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:color/transparent" />
+        </RelativeLayout>
+
+
 
     </LinearLayout>
 
@@ -38,7 +52,7 @@
         android:id="@+id/buttonClose"
         ripple:alphaFactor="0.7"
         ripple:hover="true"
-        ripple:rippleColor="#58FAAC"
+        ripple:rippleColor="@color/primary_color"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
