@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.eventerzgz.model.exception.EventZgzException;
-import org.apache.http.HttpEntity;
 
 
 /**
@@ -17,11 +16,12 @@ import org.apache.http.HttpEntity;
  */
 public class BaseRest extends BaseInteractor{
 
-    private final int TIMEOUT = 20000;
-    private final int DATARETRIEVAL_TIMEOUT = 5000;
+    private final int TIMEOUT = 30_000;
+    private final int DATARETRIEVAL_TIMEOUT = 20_000;
 
     protected String doHTTPGet(String sUrl) throws EventZgzException
     {
+        String response = "";
 
         HttpURLConnection urlConnection = null;
         try {
@@ -45,7 +45,12 @@ public class BaseRest extends BaseInteractor{
                 }
             }
 
-            return convertInputStreamToString(new BufferedInputStream(urlConnection.getInputStream()));
+            if(urlConnection.getInputStream() != null)
+            {
+                response =  convertInputStreamToString(new BufferedInputStream(urlConnection.getInputStream()));
+            }
+
+            return response;
 
         } catch (IOException e) {
 

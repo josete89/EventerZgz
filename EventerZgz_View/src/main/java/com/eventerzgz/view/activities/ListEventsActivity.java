@@ -104,7 +104,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //Presenter
         //---------
         showLoading();
-        listEventsPresenter.getEventsByCategories();
+        listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         listEventsPresenter.getCategories();
         listEventsPresenter.getPopulation();
 
