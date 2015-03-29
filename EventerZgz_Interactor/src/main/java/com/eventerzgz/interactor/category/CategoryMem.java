@@ -18,8 +18,8 @@ public class CategoryMem implements CategoryDataSource {
     }
 
     public static CategoryMem getInstance(){
-        synchronized (CategoryMem.class){
-            if(instance == null){
+        if(instance == null){
+            synchronized (CategoryMem.class){
                 if(instance == null){
                     instance  = new CategoryMem();
                 }

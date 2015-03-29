@@ -18,8 +18,8 @@ public class PopulationMem implements PopulationDataSource {
     }
 
     public static PopulationMem getInstance(){
-        synchronized (PopulationMem.class){
-            if(instance == null){
+        if(instance == null){
+            synchronized (PopulationMem.class){
                 if(instance == null){
                     instance  = new PopulationMem();
                 }

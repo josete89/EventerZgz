@@ -53,7 +53,7 @@ public class EventerRest extends BaseRest implements EventDatasource
 
         String content = doHTTPGet(stringBuilder.toString());
 
-        Log.i(TAG,content);
+        Log.i(TAG,"Events response -> "+content);
 
         return Event.doParse(content);
     }
