@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.eventerzgz.model.commons.Category;
@@ -42,6 +43,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private Context context;
     private Marker marker = null;
     private View viewPosition;
+    private CheckBox checkBoxAdjuntarGeoPosicion;
     private View viewCategories;
     private View viewCategoriesPush;
     private CheckBox[] listCheckboxCat;
@@ -123,7 +125,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     private void openListEvents() {
+        BasePresenter.saveTutorialMade(context);
         Intent intent = new Intent(context, ListEventsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
@@ -174,6 +178,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private void configViewPosition(View convertView) {
         try {
             mapView = (MapView) convertView.findViewById(R.id.mapview);
+            checkBoxAdjuntarGeoPosicion = (CheckBox)convertView.findViewById(R.id.checkBoxAdjuntarGeoPosicion);
             mapView.onCreate(null);
             mapView.setClickable(true);
             mapView.setOnTouchListener(new View.OnTouchListener() {
@@ -247,7 +252,20 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     removeMarkerFromMap(marker);
                 }
                 marker = addMarkerToMap(point.latitude, point.longitude);
-                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
+                if(checkBoxAdjuntarGeoPosicion.isChecked()) {
+                    BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
+                }
+            }
+        });
+
+        checkBoxAdjuntarGeoPosicion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!checkBoxAdjuntarGeoPosicion.isChecked()){
+                    if(marker!=null) {
+                        removeMarkerFromMap(marker);
+                    }
+                }
             }
         });
 
@@ -261,7 +279,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(
                 latitude, longitude)));
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-                latitude, longitude), 18));
+                latitude, longitude), 15));
         mapView.invalidate();
         return marker;
 
@@ -286,12 +304,18 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
         listCheckboxCat = new CheckBox[categoryList.size()];
 
+        List<String> categoryListPreferences = BasePresenter.getCategories(context);
+
         for (int i = 0; i < categoryList.size(); i++) {
 
             listCheckboxCat[i] = new CheckBox(context);
             listCheckboxCat[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
             listCheckboxCat[i].setText(categoryList.get(i).getsTitle());
+
+            if(categoryListPreferences.contains(categoryList.get(i).getId())){
+                listCheckboxCat[i].setChecked(true);
+            }
 
             layoutCategories.addView(listCheckboxCat[i]);
         }
@@ -304,6 +328,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
         listCheckboxPob = new CheckBox[populationList.size()];
 
+        List<String> poblationListPreferences = BasePresenter.getPoblation(context);
+
         for (int i = 0; i < populationList.size(); i++) {
 
             listCheckboxPob[i] = new CheckBox(context);
@@ -311,6 +337,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxPob[i].setId(Integer.parseInt(populationList.get(i).getId()));
 
             listCheckboxPob[i].setText(populationList.get(i).getsTitle());
+
+            if(poblationListPreferences.contains(populationList.get(i).getId())){
+                listCheckboxPob[i].setChecked(true);
+            }
 
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }

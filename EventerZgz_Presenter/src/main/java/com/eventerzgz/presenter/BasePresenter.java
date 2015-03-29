@@ -1,5 +1,17 @@
 package com.eventerzgz.presenter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.provider.CalendarContract;
+import android.util.Log;
+
+import com.eventerzgz.interactor.QueryBuilder;
+import com.eventerzgz.interactor.events.EventInteractor;
+import com.eventerzgz.interactor.population.PopulationInteractor;
+import com.eventerzgz.model.commons.Population;
+import com.eventerzgz.model.event.Event;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,16 +23,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.provider.CalendarContract;
-import android.util.Log;
-import com.eventerzgz.interactor.QueryBuilder;
-import com.eventerzgz.interactor.events.EventInteractor;
-import com.eventerzgz.interactor.population.PopulationInteractor;
-import com.eventerzgz.model.commons.Population;
-import com.eventerzgz.model.event.Event;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,6 +37,7 @@ public abstract class BasePresenter
     //-----
     private static final String APP_PREFERENCES = "eventerzgz";
     private static final String POBLATION_PREFERENCES_KEY = "poblation";
+    private static final String TUTORIAL_MADE_KEY = "tutorialMade";
     private static final String CATEGORIES_PREFERENCES_KEY = "categories";
     private static final String LOCATION_PUSH_PREFERENCES_KEY = "locationPush";
 
@@ -90,6 +93,22 @@ public abstract class BasePresenter
                 .putExtra(Intent.EXTRA_EMAIL, email);
 
         ctx.startActivity(intent);
+    }
+
+    public static void saveTutorialMade( Context context){
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putBoolean(TUTORIAL_MADE_KEY, true);
+        editor.apply();
+
+    }
+
+    public static boolean getTutorialMade( Context context){
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        return prefs.getBoolean(TUTORIAL_MADE_KEY, false);
+
     }
 
 

@@ -23,6 +23,12 @@
             android:layout_marginTop="20dp"
             android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 
+        <CheckBox
+            android:id="@+id/checkBoxAdjuntarGeoPosicion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/adjuntarPosicion"/>
+
         <include
             android:id="@+id/layoutMap"
             layout="@layout/view_map"

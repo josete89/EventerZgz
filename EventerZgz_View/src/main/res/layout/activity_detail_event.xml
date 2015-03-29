@@ -80,6 +80,8 @@
 
 
             <LinearLayout
+                android:id="@+id/layoutFecha"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -115,6 +117,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutDireccion"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -150,6 +154,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutTelefono"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -186,6 +192,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutConexion"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -221,6 +229,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutLugar"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -255,6 +265,8 @@
                     android:textSize="16sp" />
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/layoutWeb"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
