@@ -129,14 +129,29 @@ public class DetailEventActivity extends ActionBarActivity {
         try {
             textViewFecha.setText(eventSelected.getEndDateForPresentation());
             textViewCategoria.setText(eventSelected.getCategoryList().get(0).getsTitle());
-            textViewDireccion.setText(eventSelected.getSubEvent().getWhere().getsAddress());
-            textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());
-            textViewConexion.setText(eventSelected.getSubEvent().getWhere().getsBus());
-            textViewLugar.setText(eventSelected.getSubEvent().getWhere().getsTitle());
+            if(eventSelected.getSubEvent().getWhere().getsAddress()!= null && !"".equals(eventSelected.getSubEvent().getWhere().getsAddress())){
+                findViewById(R.id.layoutFecha).setVisibility(View.VISIBLE);
+                textViewDireccion.setText(eventSelected.getSubEvent().getWhere().getsAddress());
+            }
+
+            if(eventSelected.getSubEvent().getWhere().getsTelephone()!= null && !"".equals(eventSelected.getSubEvent().getWhere().getsTelephone())){
+                findViewById(R.id.layoutTelefono).setVisibility(View.VISIBLE);
+                textViewTelefono.setText(eventSelected.getSubEvent().getWhere().getsTelephone());
+            }
+
+            if(eventSelected.getSubEvent().getWhere().getsBus()!= null && !"".equals(eventSelected.getSubEvent().getWhere().getsBus())){
+                findViewById(R.id.layoutConexion).setVisibility(View.VISIBLE);
+                textViewConexion.setText(eventSelected.getSubEvent().getWhere().getsBus());
+            }
+
+            if(eventSelected.getSubEvent().getWhere().getsTitle()!= null && !"".equals(eventSelected.getSubEvent().getWhere().getsTitle())){
+                findViewById(R.id.layoutLugar).setVisibility(View.VISIBLE);
+                textViewLugar.setText(eventSelected.getSubEvent().getWhere().getsTitle());
+            }
+
             if(eventSelected.getsWeb()!=null) {
+                findViewById(R.id.layoutWeb).setVisibility(View.VISIBLE);
                 textViewWeb.setText(eventSelected.getsWeb());
-            }else{
-                textViewWeb.setVisibility(View.GONE);
             }
             Spannable spanna = new SpannableString(eventSelected.getCategoryList().get(0).getsTitle());
             spanna.setSpan(new BackgroundColorSpan(0xBFc0392b), 0, eventSelected.getCategoryList().get(0).getsTitle().length(),

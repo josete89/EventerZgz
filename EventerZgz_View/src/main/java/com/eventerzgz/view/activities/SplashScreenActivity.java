@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 
+import com.eventerzgz.presenter.BasePresenter;
 import com.eventerzgz.view.R;
 
 import java.util.Timer;
@@ -31,10 +32,18 @@ public class SplashScreenActivity extends ActionBarActivity {
             public void run() {
 
                 // Start the next activity
-                Intent mainIntent = new Intent().setClass(
-                        SplashScreenActivity.this, TutorialActivity.class);
-                startActivity(mainIntent);
+                boolean tutorialMade = BasePresenter.getTutorialMade(SplashScreenActivity.this);
+                Intent mainIntent;
+                if(!tutorialMade) {
+                    mainIntent = new Intent().setClass(
+                            SplashScreenActivity.this, TutorialActivity.class);
 
+                }
+                else{
+                    mainIntent = new Intent().setClass(
+                            SplashScreenActivity.this, ListEventsActivity.class);
+                }
+                startActivity(mainIntent);
                 // Close the activity so the user won't able to go back this
                 // activity pressing Back button
                 finish();

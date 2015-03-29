@@ -62,7 +62,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private boolean flagLoading = false;
     private boolean filterSearch = false;
     private boolean categorySearch = false;
-    private List<Event> listEventsToShow;
+    private static List<Event> listEventsToShow;
     private List<Event> allEventsList;
     private List<Event> filterEventsList;
     private List<Category> categoryList;
@@ -104,7 +104,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //Presenter
         //---------
         showLoading();
-        listEventsPresenter.getEventsByCategories();
+        listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         listEventsPresenter.getCategories();
         listEventsPresenter.getPopulation();
 
