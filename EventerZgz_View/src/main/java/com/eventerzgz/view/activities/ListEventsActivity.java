@@ -51,7 +51,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private AdapterListEvents adapterListEvents;
     private ProgressBar progressBarLoading;
     private View emptyView;
-    private Date startDate = null;
+    private String startDate = null;
     private TextView textViewError;
 
     //Presenter
@@ -476,7 +476,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                     inflater = (LayoutInflater)
                             getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     vi = inflater.inflate(R.layout.item_list_events_with_title, viewGroup, false);
-                    startDate = event.getdStartDate();
+                    startDate = event.getStartDateForPresentantion();
                     newDate = true;
                 }
 
@@ -503,8 +503,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.header_title_date = (TextView) vi.findViewById(R.id.header_title_date);
             }
             vi.setTag(viewholder);
-            //}
-            //viewholder = (ViewHolder) vi.getTag();
+
 
             viewholder.tvTitle.setText(event.getsTitle());
             if(newDate){
@@ -541,7 +540,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.tvCompartir.setTag(position);
             final String url;
             if (event.getsWeb() != null) {
-                url = "Evento enviado a través de EventerZgz: " + listEventsToShow.get(position).getsWeb();
+                url = "Información compartida a través de #EventerZgz: " + listEventsToShow.get(position).getsWeb();
             } else {
                 url = "¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle() + "\r\n" + listEventsToShow.get(position).getsDescription();
             }

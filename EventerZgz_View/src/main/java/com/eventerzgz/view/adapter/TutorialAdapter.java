@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
@@ -45,6 +47,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private View viewPosition;
     private View viewCategories;
     private View viewCategoriesPush;
+    private CheckBox checkBoxAdjuntarPosicion;
     private CheckBox[] listCheckboxCat;
     private CheckBox[] listCheckboxPob;
     ArrayList<String> arrayIdsCategories = new ArrayList<String>();
@@ -175,6 +178,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private void configViewPosition(View convertView) {
         try {
             mapView = (MapView) convertView.findViewById(R.id.mapview);
+            checkBoxAdjuntarPosicion = (CheckBox)convertView.findViewById(R.id.checkBoxAdjuntarPosicion);
             mapView.onCreate(null);
             mapView.setClickable(true);
             ImageView transparentImageView = (ImageView) convertView.findViewById(R.id.transparent_image);
@@ -201,12 +205,27 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             }
         });
 
+        if(BasePresenter.getLocationFromPreferences(context) != null){
+            checkBoxAdjuntarPosicion.setChecked(true);
+        }
+
+        checkBoxAdjuntarPosicion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!checkBoxAdjuntarPosicion.isChecked()){
+                    BasePresenter.removeLocationFromPreferences(context);
+                }
+            }
+        });
+
     }
     // -----------------------------------------------------------------------------------------------------
     // CONFIG MAP
     // -----------------------------------------------------------------------------------------------------
 
     private void configMap(final Context context) {
+
+
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -239,11 +258,18 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
             @Override
             public void onMapClick(LatLng point) {
-                if (marker != null) {
-                    removeMarkerFromMap(marker);
+                if (checkBoxAdjuntarPosicion.isChecked()) {
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
+                    marker = addMarkerToMap(point.latitude, point.longitude);
+                    BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
+                }else{
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
+                    Toast.makeText(context,context.getResources().getString(R.string.error_indique_check_posicion),Toast.LENGTH_SHORT).show();
                 }
-                marker = addMarkerToMap(point.latitude, point.longitude);
-                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
             }
         });
 
