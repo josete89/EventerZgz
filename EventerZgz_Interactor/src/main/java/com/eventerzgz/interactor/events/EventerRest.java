@@ -7,9 +7,7 @@ import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
 
-/**
- * Created by joseluis on 20/3/15.
- */
+
 public class EventerRest extends BaseRest implements EventDatasource
 {
     protected EventerRest(){

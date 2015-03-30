@@ -9,9 +9,6 @@ import com.eventerzgz.model.event.Event;
 import com.eventerzgz.model.exception.EventZgzException;
 
 
-/**
- * Created by joseluis on 20/3/15.
- */
 public class EventInteractor extends BaseInteractor{
 
     public static enum EventFilter{

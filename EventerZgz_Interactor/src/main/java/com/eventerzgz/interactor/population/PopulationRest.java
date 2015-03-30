@@ -7,9 +7,7 @@ import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.exception.EventZgzException;
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class PopulationRest extends BaseRest implements PopulationDataSource {
 
     @Override

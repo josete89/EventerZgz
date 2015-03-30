@@ -1,14 +1,11 @@
 package com.eventerzgz.interactor.population;
 
+import java.util.List;
+
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.exception.EventZgzException;
 
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by Omar on 21/03/2015.
- */
 public class PopulationInteractor {
 
     public static List<Population> getPopulations() throws EventZgzException
@@ -19,7 +16,7 @@ public class PopulationInteractor {
             populationsList = PopulationMem.getInstance().getAllPopulations();
         }else{
             populationsList = new PopulationRest().getAllPopulations();
-            PopulationMem.getInstance().setPopulationsCached(populationsList);
+            PopulationMem.setPopulationsCached(populationsList);
         }
 
         return populationsList;

@@ -1,14 +1,11 @@
 package com.eventerzgz.interactor.category;
 
+import java.util.List;
+
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.exception.EventZgzException;
 
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by Omar on 21/03/2015.
- */
 public class CategoryInteractor {
 
     public static List<Category> getCategories() throws EventZgzException
@@ -19,7 +16,7 @@ public class CategoryInteractor {
             categoriesList = CategoryMem.getInstance().getAllCategories();
         }else{
             categoriesList = new CategoryRest().getAllCategories();
-            CategoryMem.getInstance().setCategoriesCached(categoriesList);
+            CategoryMem.setCategoriesCached(categoriesList);
         }
 
         return categoriesList;

@@ -12,12 +12,12 @@ public interface EventDatasource
 {
 
 
-    public void createEvent(Event objEvent) throws EventZgzException;
-    public void updateEvent(Event objEvent) throws EventZgzException;
-    public void deleteEvent(String sId) throws EventZgzException;
+     void createEvent(Event objEvent) throws EventZgzException;
+     void updateEvent(Event objEvent) throws EventZgzException;
+     void deleteEvent(String sId) throws EventZgzException;
 
-    public List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) throws EventZgzException;
-    public Event findEventById(String sId) throws EventZgzException;
+     List<Event> getAllEvents(EventInteractor.EventFilter... eventFilter) throws EventZgzException;
+     Event findEventById(String sId) throws EventZgzException;
 
 
 }
