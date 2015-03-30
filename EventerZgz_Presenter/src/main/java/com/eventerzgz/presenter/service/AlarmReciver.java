@@ -12,6 +12,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
 import rx.Subscriber;
@@ -29,8 +30,9 @@ public class AlarmReciver  extends BroadcastReceiver{
     {
         //context.startService(new Intent(context, EventService.class));
 
-        if (intent != null && intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+        if (intent != null && intent.getAction() != null && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             // Set the alarm here.
+            Log.i(TAG,"Entra al arracnar ----------------------!");
             AlarmReciver.setAlarm(context);
 
         }
@@ -125,7 +127,7 @@ public class AlarmReciver  extends BroadcastReceiver{
     {
 
         boolean alarmUp = (PendingIntent.getBroadcast(context, 1234,
-                new Intent(AlarmReciver.class.getName()),
+                new Intent(context,AlarmReciver.class),
                 PendingIntent.FLAG_NO_CREATE) != null);
 
         if(!alarmUp){

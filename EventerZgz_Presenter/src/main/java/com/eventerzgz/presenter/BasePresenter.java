@@ -35,11 +35,11 @@ public abstract class BasePresenter
 {
     //Preferences
     //-----
-    private static final String APP_PREFERENCES = "eventerzgz";
-    private static final String POBLATION_PREFERENCES_KEY = "poblation";
-    private static final String TUTORIAL_MADE_KEY = "tutorialMade";
-    private static final String CATEGORIES_PREFERENCES_KEY = "categories";
-    private static final String LOCATION_PUSH_PREFERENCES_KEY = "locationPush";
+    private static final String APP_PREFERENCES                 = "eventerzgz";
+    private static final String POBLATION_PREFERENCES_KEY       = "poblation";
+    private static final String TUTORIAL_MADE_KEY               = "tutorialMade";
+    private static final String CATEGORIES_PREFERENCES_KEY      = "categories";
+    private static final String LOCATION_PUSH_PREFERENCES_KEY   = "locationPush";
 
     protected static String TAG = "EventerZgz";
 
@@ -149,7 +149,7 @@ public abstract class BasePresenter
     {
 
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        Set<String> stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY,new HashSet<String>());
+        Set<String> stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY, new HashSet<String>());
 
         return new ArrayList<>(stringSet);
     }
@@ -200,7 +200,7 @@ public abstract class BasePresenter
                         subscriber.onNext(EventInteractor.getAllEvent(
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, queryBuilder.build()),
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
-                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.START_DATE + "," + QueryBuilder.FIELD.END_DATE), // "desc" is optional
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.END_DATE + " desc"), // "desc" is optional
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50),
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.DISTANCE, 3000), //metros
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.POINT, location)));
@@ -208,7 +208,7 @@ public abstract class BasePresenter
                         subscriber.onNext(EventInteractor.getAllEvent(
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.QUERY_FILTER, queryBuilder.build()),
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.START, 0),
-                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.START_DATE + "," + QueryBuilder.FIELD.END_DATE), // "desc" is optional
+                                EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.SORT, QueryBuilder.FIELD.END_DATE + " desc" ), // "desc" is optional
                                 EventInteractor.EventFilter.createFilter(EventInteractor.EventFilter.ROWS, 50)));
                     }
 
@@ -269,7 +269,7 @@ public abstract class BasePresenter
                 listAux = Collections.emptyList();
                 listAux.add(event);
 
-                dateListMap.put(key,listAux);
+                dateListMap.put(key, listAux);
             }
         }
 
@@ -295,12 +295,12 @@ public abstract class BasePresenter
 
     }
 
-    private boolean isBeforeToday(Date dateToCheck,Event event){
+    private boolean isBeforeToday(Date dateToCheck,Event event) {
 
-        Log.i(TAG,"Date To evaluate ->"+dateToCheck.toString());
+        //Log.i(TAG,"Date To evaluate ->"+dateToCheck.toString());
 
         if (dateToCheck == null) {
-            Log.e(TAG,"NULL date for event"+event.toString());
+            Log.e(TAG, "NULL date for event" + event.toString());
             return true;
         }
 
@@ -311,38 +311,18 @@ public abstract class BasePresenter
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
 
-        // and get that as a Date
-        Date today = c.getTime();
 
         Calendar c2 = Calendar.getInstance();
         c2.setTime(dateToCheck);
 
 
-        if (c.get(Calendar.ERA) < c2.get(Calendar.ERA)) return true;
-        if (c.get(Calendar.ERA) > c2.get(Calendar.ERA)) return true;
-        if (c.get(Calendar.YEAR) < c2.get(Calendar.YEAR)) return true;
-        if (c.get(Calendar.YEAR) > c2.get(Calendar.YEAR)) return true;
-        return c.get(Calendar.DAY_OF_YEAR) > c2.get(Calendar.DAY_OF_YEAR);
+        return  c.get(Calendar.ERA) < c2.get(Calendar.ERA) ||
+                c.get(Calendar.ERA) > c2.get(Calendar.ERA) ||
+                c.get(Calendar.YEAR) < c2.get(Calendar.YEAR) ||
+                c.get(Calendar.YEAR) > c2.get(Calendar.YEAR) ||
+                c.get(Calendar.DAY_OF_YEAR) > c2.get(Calendar.DAY_OF_YEAR);
     }
 
-    private boolean isAfterToday(Date dateToCheck,Event event){
 
-        if (dateToCheck == null) {
-            Log.e(TAG,"NULL date for event"+event.toString());
-            return true;
-        }
-
-        Calendar c = Calendar.getInstance();
-
-        // set the calendar to start of today
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-
-        // and get that as a Date
-        Date today = c.getTime();
-
-        return  dateToCheck.after(today);
-    }
 
 }
