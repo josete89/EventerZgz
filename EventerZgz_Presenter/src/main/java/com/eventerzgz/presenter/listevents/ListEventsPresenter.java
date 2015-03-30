@@ -78,7 +78,9 @@ public class ListEventsPresenter extends BasePresenter {
 
             @Override
             public void onNext(List<Event> events) {
-                listEventsIface.fetchedEvents(events);
+                List<Event> aux = filterListByDateBeforeToday(events);
+                listEventsIface.fetchedEvents(aux);
+                listEventsIface.fetchedEventsOrder(populateMapFromListEvents(aux));
                 onCompleted();
             }
         });
@@ -170,8 +172,8 @@ public class ListEventsPresenter extends BasePresenter {
             @Override
             public void onNext(List<Event> o) {
                 List<Event> aux = filterListByDateBeforeToday(o);
-                listEventsIface.fetchedEvents(o);
-                listEventsIface.fetchedEventsOrder(populateMapFromListEvents(o));
+                listEventsIface.fetchedEvents(aux);
+                listEventsIface.fetchedEventsOrder(populateMapFromListEvents(aux));
                 onCompleted();
             }
         });

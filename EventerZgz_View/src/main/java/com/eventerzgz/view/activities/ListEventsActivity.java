@@ -72,7 +72,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // -------------
     private DrawerLayout menuLateral;
     private ListView listMenuLateral;
-    private String[] opciones_menu;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
@@ -277,7 +276,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // CONFIGURE MENU LATERAL
     // ------------------------------------------------------------------------------------
     private void configureMenuLateral(List<Category> categoryList) {
-        opciones_menu = getResources().getStringArray(R.array.opciones_menu);
         menuLateral = (DrawerLayout) findViewById(R.id.menu_lateral);
         listMenuLateral = (ListView) findViewById(R.id.menu_lateral_list);
 
