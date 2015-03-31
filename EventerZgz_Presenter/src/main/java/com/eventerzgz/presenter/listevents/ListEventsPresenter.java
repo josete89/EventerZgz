@@ -96,7 +96,7 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsByCategories(String... categoryIds) {
-        QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+        QueryBuilder queryBuilder = new QueryBuilder().isInToday();
         if (categoryIds != null && categoryIds.length > 0) {
             boolean first = true;
             queryBuilder.and().group();
