@@ -21,7 +21,7 @@
             android:gravity="center_horizontal"
             android:text="@string/question_categories"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="25sp"></TextView>
+            android:textSize="25sp"/>
 
         <ScrollView
             android:id="@+id/scrollView"
@@ -34,7 +34,7 @@
                 android:id="@+id/layoutCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"/>
         </ScrollView>
 
     </LinearLayout>
@@ -52,4 +52,5 @@
         ripple:alphaFactor="0.7"
         ripple:hover="true"
         ripple:rippleColor="@color/primary_color" />
+
 </RelativeLayout>

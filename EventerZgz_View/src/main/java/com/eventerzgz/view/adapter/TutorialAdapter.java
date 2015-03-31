@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import android.widget.Toast;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.presenter.BasePresenter;
@@ -42,13 +43,12 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private GoogleMap map;
     private Context context;
     private Marker marker = null;
-    private View viewPosition;
     private View viewCategories;
     private View viewCategoriesPush;
     private CheckBox[] listCheckboxCat;
     private CheckBox[] listCheckboxPob;
-    ArrayList<String> arrayIdsCategories = new ArrayList<String>();
-    ArrayList<String> arrayIdsCategoriesPob = new ArrayList<String>();
+    ArrayList<String> arrayIdsCategories = new ArrayList<>();
+    ArrayList<String> arrayIdsCategoriesPob = new ArrayList<>();
 
     private static final int VIEW1 = 0;
     private static final int VIEW2 = 1;
@@ -58,7 +58,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private final String[] names = {"Bienvenido", "Tus intereses", "Tu Zona", "Perfil"};
 
     private LayoutInflater mInflater;
-    private TutorialPresenter presenter = new TutorialPresenter(this);
+    private final TutorialPresenter presenter = new TutorialPresenter(this);
 
     public TutorialAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,7 +108,6 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     break;
                 case VIEW3:
                     convertView = mInflater.inflate(R.layout.tuto_step3, null);
-                    viewPosition = convertView;
                     configViewPosition(convertView);
                     break;
                 case VIEW4:
@@ -137,17 +136,15 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
                 // CATEGORIAS //
                 for (int i = 0; i < listCheckboxCat.length; i++) {
-                    final int j = i;
                     if (listCheckboxCat[i].isChecked()) {
-                        arrayIdsCategories.add("" + listCheckboxCat[j].getId());
+                        arrayIdsCategories.add("" + listCheckboxCat[i].getId());
                     }
                 }
 
                 // POBLACION //
                 for (int i = 0; i < listCheckboxPob.length; i++) {
-                    final int j = i;
                     if (listCheckboxPob[i].isChecked()) {
-                        arrayIdsCategoriesPob.add("" + listCheckboxPob[j].getId());
+                        arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
                     }
                 }
 
@@ -276,9 +273,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
     @Override
     public void fechedCategories(List<Category> categoryList) {
-        Log.e("TAG", "3: " + categoryList.size());
+        Log.i("TAG", "Category list size: " + categoryList.size());
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
-        LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
+
 
         listCheckboxCat = new CheckBox[categoryList.size()];
 
@@ -314,6 +311,6 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
     @Override
     public void error(String sMessage) {
-
+        Toast.makeText(context,sMessage,Toast.LENGTH_SHORT).show();
     }
 }
