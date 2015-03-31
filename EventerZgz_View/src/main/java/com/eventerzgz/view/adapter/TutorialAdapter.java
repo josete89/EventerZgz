@@ -214,6 +214,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!checkBoxAdjuntarPosicion.isChecked()){
                     BasePresenter.removeLocationFromPreferences(context);
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
                 }
             }
         });
@@ -307,6 +310,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
 
         listCheckboxCat = new CheckBox[categoryList.size()];
+        List<String> listaPreferences = BasePresenter.getCategories(context);
 
         for (int i = 0; i < categoryList.size(); i++) {
 
@@ -314,6 +318,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxCat[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
             listCheckboxCat[i].setText(categoryList.get(i).getsTitle());
+
+            if(listaPreferences.contains(categoryList.get(i).getId())){
+                listCheckboxCat[i].setChecked(true);
+            }
 
             layoutCategories.addView(listCheckboxCat[i]);
         }
@@ -326,6 +334,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
         listCheckboxPob = new CheckBox[populationList.size()];
 
+        List<String> listaPreferences = BasePresenter.getPoblation(context);
+
         for (int i = 0; i < populationList.size(); i++) {
 
             listCheckboxPob[i] = new CheckBox(context);
@@ -333,7 +343,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxPob[i].setId(Integer.parseInt(populationList.get(i).getId()));
 
             listCheckboxPob[i].setText(populationList.get(i).getsTitle());
-
+            if(listaPreferences.contains(populationList.get(i).getId())){
+                listCheckboxPob[i].setChecked(true);
+            }
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
     }

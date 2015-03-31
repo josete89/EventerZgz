@@ -527,8 +527,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
-                viewholder.imageView.setVisibility(View.VISIBLE);
-                viewholder.layoutImage.setVisibility(View.VISIBLE);
+                viewholder.imageView.setVisibility(View.GONE);
+                viewholder.layoutImage.setVisibility(View.GONE);
                 viewholder.imageView.setImageResource(R.drawable.imagen_cabecera);
                 //viewholder.imageView.setVisibility(View.GONE);
             }
