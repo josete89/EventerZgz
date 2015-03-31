@@ -41,7 +41,7 @@ public class AlarmReciver  extends BroadcastReceiver{
         BasePresenter.getEventsByPreferencesInOtherThread(context, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
-               // AlarmReciver.setAlarm(context);
+                AlarmReciver.setAlarm(context);
             }
 
             @Override

@@ -5,13 +5,11 @@ import java.util.List;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.exception.EventZgzException;
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class CategoryMem implements CategoryDataSource {
 
     private static CategoryMem instance;
-    private static List<Category> eventCached;
+    private List<Category> eventCached;
 
     private CategoryMem(){
 
@@ -29,7 +27,7 @@ public class CategoryMem implements CategoryDataSource {
     }
 
     public static void setCategoriesCached(List<Category> eventCached) {
-        CategoryMem.eventCached = eventCached;
+        getInstance().eventCached = eventCached;
     }
 
     @Override

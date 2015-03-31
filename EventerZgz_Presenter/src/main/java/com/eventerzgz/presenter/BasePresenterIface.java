@@ -6,6 +6,6 @@ package com.eventerzgz.presenter;
 public interface BasePresenterIface {
 
 
-    public void error(String sMessage);
+    void error(String sMessage);
 
 }

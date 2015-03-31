@@ -4,9 +4,7 @@ import com.eventerzgz.model.Base;
 
 import org.joda.time.DateTime;
 
-/**
- * Created by Omar on 22/03/2015.
- */
+
 public class DateUtilities {
 
     public static String getStartOfToday() {

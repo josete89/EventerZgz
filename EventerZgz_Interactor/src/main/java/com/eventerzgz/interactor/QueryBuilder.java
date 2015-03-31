@@ -1,8 +1,6 @@
 package com.eventerzgz.interactor;
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class QueryBuilder {
 
     private StringBuffer query = new StringBuffer();

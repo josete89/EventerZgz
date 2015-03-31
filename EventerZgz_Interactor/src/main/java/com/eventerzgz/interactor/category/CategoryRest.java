@@ -7,9 +7,7 @@ import com.eventerzgz.interactor.BaseRest;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.exception.EventZgzException;
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class CategoryRest extends BaseRest implements CategoryDataSource {
     @Override
     public List<Category> getAllCategories()  throws EventZgzException

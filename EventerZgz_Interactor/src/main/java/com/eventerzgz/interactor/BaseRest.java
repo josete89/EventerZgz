@@ -11,9 +11,7 @@ import java.net.URL;
 import com.eventerzgz.model.exception.EventZgzException;
 
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class BaseRest extends BaseInteractor{
 
     private final int TIMEOUT = 30_000;

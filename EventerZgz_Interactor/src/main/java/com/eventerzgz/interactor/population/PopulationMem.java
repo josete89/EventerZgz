@@ -5,13 +5,11 @@ import java.util.List;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.model.exception.EventZgzException;
 
-/**
- * Created by joseluis on 21/3/15.
- */
+
 public class PopulationMem implements PopulationDataSource {
 
     private static PopulationMem instance;
-    private static List<Population> eventCached;
+    private List<Population> eventCached;
 
     private PopulationMem(){
 
@@ -29,7 +27,7 @@ public class PopulationMem implements PopulationDataSource {
     }
 
     public static void setPopulationsCached(List<Population> eventCached) {
-        PopulationMem.eventCached = eventCached;
+        getInstance().eventCached = eventCached;
     }
 
     @Override
