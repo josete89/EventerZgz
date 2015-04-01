@@ -20,6 +20,9 @@
 
     <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
 
+    <!-- to be activated service on boot is completed -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <!-- Permiso render Map -->
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -73,8 +76,6 @@
                 android:value=".activities.ListEventsActivity" />
         </activity>
 
-        <!-- to be activated service on boot is completed -->
-        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
         <receiver android:name="com.eventerzgz.presenter.service.AlarmReciver">
             <intent-filter>

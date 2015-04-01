@@ -46,6 +46,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private Marker marker = null;
     private View viewCategories;
     private View viewCategoriesPush;
+    private View emptyViewCategories;
+    private View emptyViewPopulation;
     private CheckBox checkBoxAdjuntarPosicion;
     private CheckBox[] listCheckboxCat;
     private CheckBox[] listCheckboxPob;
@@ -304,6 +306,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     @Override
     public void fechedCategories(List<Category> categoryList) {
         Log.i("TAG", "Category list size: " + categoryList.size());
+        emptyViewCategories = viewCategories.findViewById(R.id.emptyView);
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
 
 
@@ -323,10 +326,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
             layoutCategories.addView(listCheckboxCat[i]);
         }
+
+        if(categoryList == null || categoryList.size()==0){
+            emptyViewCategories.setVisibility(View.VISIBLE);
+        }else{
+            emptyViewCategories.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void fechedPopulation(List<Population> populationList) {
+        emptyViewPopulation = viewCategoriesPush.findViewById(R.id.emptyView);
 
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
 
@@ -345,6 +355,12 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                 listCheckboxPob[i].setChecked(true);
             }
             layoutCategoriesPush.addView(listCheckboxPob[i]);
+        }
+
+        if(populationList == null || populationList.size()==0){
+            emptyViewPopulation.setVisibility(View.VISIBLE);
+        }else{
+            emptyViewPopulation.setVisibility(View.GONE);
         }
     }
 

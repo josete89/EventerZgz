@@ -225,11 +225,15 @@ public class Event extends Base  {
     }
 
     public String getEndDateForPresentation(){
+        if (getdEndDate() == null) return "";
+
         DateFormat format =  SimpleDateFormat.getDateInstance();
         return format.format(getdEndDate());
     }
 
     public String getStartDateForPresentantion(){
+        if (getdStartDate() == null) return "";
+
         DateFormat format =  SimpleDateFormat.getDateInstance();
         return format.format(getdStartDate());
     }

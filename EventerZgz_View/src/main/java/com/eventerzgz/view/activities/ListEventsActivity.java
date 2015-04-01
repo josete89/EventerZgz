@@ -500,21 +500,22 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (event.getdStartDate() != null && event.getdEndDate() != null) {
-                if (event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())) {
-                    String dateStringfy = String.format("Fecha: %s", event.getStartDateForPresentantion());
-                    viewholder.textViewFecha.setText(dateStringfy);
-                } else {
-                    String dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
-                    viewholder.textViewFecha.setText(dateStringfy);
+            if (event.getdEndDate() != null || event.getdStartDate() != null) {
+
+                String dateStringfy = "";
+
+                if(event.getdEndDate() != null && event.getdStartDate() != null){
+                    dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
+                }else if(event.getdEndDate() != null){
+                    dateStringfy = String.format("Termina %s", event.getEndDateForPresentation());
+                }else if (event.getdStartDate() != null){
+                    dateStringfy = String.format("Empieza %s", event.getdStartDate());
                 }
+
+                viewholder.textViewFecha.setText(dateStringfy);
             } else {
-                if (event.getdEndDate() != null) {
-                    String dateStringfy = String.format("Fecha: %s", event.getEndDateForPresentation());
-                    viewholder.textViewFecha.setText(dateStringfy);
-                } else {
-                    viewholder.textViewFecha.setVisibility(View.GONE);
-                }
+
+                viewholder.textViewFecha.setVisibility(View.GONE);
             }
             //Imagen
             //------

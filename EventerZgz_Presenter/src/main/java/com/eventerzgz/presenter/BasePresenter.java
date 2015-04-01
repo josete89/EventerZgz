@@ -197,10 +197,28 @@ public abstract class BasePresenter
                     List<String> categoryIds = BasePresenter.getCategories(context);
                     List<String> poblations = BasePresenter.getPoblation(context);
 
-                    QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+                    QueryBuilder queryBuilder = new QueryBuilder().isInToday();
 
-                    composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
-                    composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
+                    /*composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
+                    composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);*/
+                    boolean isCompleteList =  categoryIds != null
+                                                && poblations != null
+                                                && categoryIds.size() > 0
+                                                && poblations.size() > 0;
+
+                    if(isCompleteList){
+                        queryBuilder.and().group()
+                                .addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS,categoryIds.get(0))
+                                .or()
+                                .addFilter(QueryBuilder.FIELD.POPULATION, QueryBuilder.COMPARATOR.EQUALS,poblations.get(0))
+                                .ungroup();
+                    }else{
+                        if (categoryIds != null  && categoryIds.size() > 0 ){
+                            queryBuilder.and().addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS, categoryIds.get(0));
+                        }else if(poblations != null  && poblations.size() > 0){
+                            queryBuilder.and().addFilter(QueryBuilder.FIELD.POPULATION, QueryBuilder.COMPARATOR.EQUALS, poblations.get(0));
+                        }
+                    }
 
 
                     if(filterByLastUpdated) queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS,DateUtilities.getStartOfToday());

@@ -98,6 +98,10 @@ public class DetailEventActivity extends ActionBarActivity {
                 }
             }
         });
+
+        //AdView mAdView = (AdView) findViewById(R.id.adView);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -248,9 +252,9 @@ public class DetailEventActivity extends ActionBarActivity {
             case R.id.btnShare:
                 String url;
                 if (eventSelected.getsWeb() != null) {
-                    url = "Evento enviado a través de EventerZgz: " + eventSelected.getsWeb();
+                    url = eventSelected.getsTitle()+" #EventerZgz: " + eventSelected.getsWeb();
                 } else {
-                    url = "¡¿Qué te parece este evento?!\r\n" + eventSelected.getsTitle() + "\r\n" + eventSelected.getsDescription();
+                    url = "¡¿Qué te parece este evento?! #EventerZgz\r\n" + eventSelected.getsTitle() + "\r\n" + eventSelected.getsDescription();
                 }
                 SocialShare.share(DetailEventActivity.this, url);
                 break;

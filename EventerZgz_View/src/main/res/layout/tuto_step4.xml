@@ -22,6 +22,12 @@
             android:text="@string/question_population"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25sp"></TextView>
+
+        <include
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/layout_empty_listview" />
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
