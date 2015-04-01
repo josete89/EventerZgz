@@ -32,10 +32,11 @@ public class ListEventsPresenter extends BasePresenter {
 
 
     public void getEventsByPopulations(String... populationIds) {
-        QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+        QueryBuilder queryBuilder = new QueryBuilder();/*.fromToday();*/
         if (populationIds != null && populationIds.length > 0) {
             boolean first = true;
-            queryBuilder.and().group();
+            //queryBuilder.and().group();
+            queryBuilder.group();
             for (String populationId : populationIds) {
                 if (!first) {
                     queryBuilder.or();
@@ -96,10 +97,11 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsByCategories(String... categoryIds) {
-        QueryBuilder queryBuilder = new QueryBuilder().isInToday();
+        QueryBuilder queryBuilder = new QueryBuilder();/*.isInToday();*/
         if (categoryIds != null && categoryIds.length > 0) {
             boolean first = true;
-            queryBuilder.and().group();
+            //queryBuilder.and().group();
+            queryBuilder.group();
             for (String categoryId : categoryIds) {
                 if (!first) {
                     queryBuilder.or();
@@ -129,7 +131,7 @@ public class ListEventsPresenter extends BasePresenter {
                 EventFilter.createFilter(EventFilter.SORT, DEFAULT_SORT));
     }
 
-    private void getEventsByMEGADEMOQUERY() {
+   /* private void getEventsByMEGADEMOQUERY() {
         String query = new QueryBuilder()
                 .addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
                 .addFilter(QueryBuilder.FIELD.END_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-01T00:00:00Z")
@@ -144,7 +146,7 @@ public class ListEventsPresenter extends BasePresenter {
                 EventFilter.createFilter(EventFilter.DISTANCE, 3000), //metros
                 EventFilter.createFilter(EventFilter.POINT, "-0.8830288063687367,41.62968403793101") // va de la mano de DISTANCE
         );
-    }
+    }*/
 
     private void getEventList(final EventFilter... eventFilter) {
 
