@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import android.widget.Toast;
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.presenter.BasePresenter;
@@ -126,6 +125,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     private void openListEvents() {
+        BasePresenter.saveTutorialMade(context);
         Intent intent = new Intent(context, ListEventsActivity.class);
         context.startActivity(intent);
     }
@@ -166,6 +166,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             @Override
             public void onClick(View view) {
                 ((Activity) context).finish();
+
                 openListEvents();
             }
         });
