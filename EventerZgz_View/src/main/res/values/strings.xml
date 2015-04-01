@@ -33,4 +33,8 @@
     <string name="conexion">Conexión:</string>
     <string name="web">Web:</string>
     <string name="no_result">No se han encontrado resultados</string>
+
+
+    <string name="banner_ad_unit_id">ca-app-pub-6263790234186060/8952290830</string>
+    <string name="banner_ad_unit_id_detalle">ca-app-pub-6263790234186060/2766156432</string>
 </resources>

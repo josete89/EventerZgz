@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,10 +31,11 @@ import com.eventerzgz.presenter.listevents.ListEventsIface;
 import com.eventerzgz.presenter.listevents.ListEventsPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.adapter.ExpandableListAdapter;
-import com.eventerzgz.view.adapter.MenuLateralItemsAdapter;
 import com.eventerzgz.view.application.EventerZgzApplication;
 import com.eventerzgz.view.share.SocialShare;
 import com.eventerzgz.view.utils.Utils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,10 +97,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
         configPaginacionListView();
 
-        // Menu lateral
-        // ------------
-        //configureMenuLateral();
-
         //Presenter
         //---------
         showLoading();
@@ -123,31 +119,33 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             }
         });
 
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
     }
 
+    //----------------------------------------------------------------------------------------------
+    // SET LATERAL MENU
+    //----------------------------------------------------------------------------------------------
     private void setLateralMenu() {
-        // get the listview
+        menuLateral = (DrawerLayout) findViewById(R.id.menu_lateral);
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
         if (listAdapter == null) {
 
             listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-
-            // setting list adapter
             expListView.setAdapter(listAdapter);
-
-            // Listview Group click listener
             expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
                 @Override
-                public boolean onGroupClick(ExpandableListView parent, View v,
-                                            int groupPosition, long id) {
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     return false;
                 }
             });
 
             // Listview Group expanded listener
             expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
                 @Override
                 public void onGroupExpand(int groupPosition) {
                 }
@@ -168,7 +166,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-                    // TODO Auto-generated method stub
 
                     switch (groupPosition) {
                         case 0:
@@ -222,6 +219,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         }
     }
 
+    //----------------------------------------------------------------------------------------------
+    // PREPARE LIST DATA
+    //----------------------------------------------------------------------------------------------
     private void prepareListData() {
         if (listDataHeader == null) {
             listDataHeader = new ArrayList<>();
@@ -244,6 +244,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     }
 
+    //----------------------------------------------------------------------------------------------
+    // PREPARE CATEGORIES
+    //----------------------------------------------------------------------------------------------
     private void prepareCategories(List<Category> categoryList) {
 
         List<String> que = new ArrayList<>();
@@ -252,11 +255,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 que.add(category.getsTitle());
             }
         }
-
-
         listDataChild.put(listDataHeader.get(2), que);
     }
 
+    //----------------------------------------------------------------------------------------------
+    // PREPARE POPULATION
+    //----------------------------------------------------------------------------------------------
     private void preparePopulation(List<Population> populationList) {
         if (populationList != null) {
             List<String> quien = new ArrayList<>();
@@ -269,19 +273,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         }
     }
 
-    // ------------------------------------------------------------------------------------
-    // CONFIGURE MENU LATERAL
-    // ------------------------------------------------------------------------------------
-    private void configureMenuLateral(List<Category> categoryList) {
-        menuLateral = (DrawerLayout) findViewById(R.id.menu_lateral);
-        listMenuLateral = (ListView) findViewById(R.id.menu_lateral_list);
-
-        // Set the adapter for the list view
-        listMenuLateral.setAdapter(new MenuLateralItemsAdapter(
-                ListEventsActivity.this, categoryList));
-        // Set the list's click listener
-        listMenuLateral.setOnItemClickListener(new DrawerItemClickListener());
-    }
 
     //-------------------------------------------------------------------------
     //MENU
@@ -360,6 +351,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //------------------------------------------------------------------------------------------
     @Override
     public void fetchedEvents(List<Event> listEvents) {
+        emptyView.setVisibility(View.GONE);
         listViewEvents.setVisibility(View.VISIBLE);
         hideLoading();
         if (filterSearch) {
@@ -375,6 +367,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         } else {
             filterSearch = false;
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result), Toast.LENGTH_SHORT).show();
+            if (allEventsList == null) {
+                emptyView.setVisibility(View.VISIBLE);
+            }
             refreshListEvents(getAllEventsList());
         }
 
@@ -392,7 +387,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     public void fetchedCategories(List<Category> listCategory) {
         emptyView.setVisibility(View.GONE);
         setCategoryList(listCategory);
-        configureMenuLateral(listCategory);
+        //configureMenuLateral(listCategory);
         prepareListData();
         prepareCategories(listCategory);
         setLateralMenu();
@@ -424,9 +419,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     //-------------------------------------------------------------------------
     private void refreshListEvents(List<Event> listEvents) {
         listEventsToShow = listEvents;
-        /*if(menuLateral != null && menuLateral.isDrawerOpen(Gravity.LEFT)) {
-            menuLateral.closeDrawer(Gravity.LEFT);
-        }*/
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
@@ -467,9 +459,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             Boolean newDate = false;
 
             if (event.getdStartDate() != null) {
-                if(startDate == null || !startDate.equals(event.getStartDateForPresentantion())){
-                    inflater = (LayoutInflater)
-                            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if (startDate == null || !startDate.equals(event.getStartDateForPresentantion())) {
+                    inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     vi = inflater.inflate(R.layout.item_list_events_with_title, viewGroup, false);
                     startDate = event.getStartDateForPresentantion();
                     newDate = true;
@@ -477,39 +468,36 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             }
 
-            if (!newDate){
-                inflater = (LayoutInflater)
-                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (!newDate) {
+                inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 vi = inflater.inflate(R.layout.item_list_events, viewGroup, false);
             }
 
             viewholder = new ViewHolder();
             viewholder.tvTitle = (TextView) vi.findViewById(R.id.tvTitle);
             viewholder.tvLugar = (TextView) vi.findViewById(R.id.tvLugar);
-            viewholder.textViewFecha = (TextView) vi
-                    .findViewById(R.id.textViewFecha);
+            viewholder.textViewFecha = (TextView) vi.findViewById(R.id.textViewFecha);
             viewholder.tvVerMas = (TextView) vi.findViewById(R.id.tvVerMas);
-            viewholder.tvCompartir = (TextView) vi
-                    .findViewById(R.id.tvCompartir);
+            viewholder.tvCompartir = (TextView) vi.findViewById(R.id.tvCompartir);
             viewholder.imageView = (ImageView) vi.findViewById(R.id.imageView);
             viewholder.progressBarLoading = vi.findViewById(R.id.progressBarLoading);
             viewholder.layoutImage = vi.findViewById(R.id.layoutImage);
-            if (newDate){
+            if (newDate) {
                 viewholder.header_title_date = (TextView) vi.findViewById(R.id.header_title_date);
             }
             vi.setTag(viewholder);
 
 
             viewholder.tvTitle.setText(event.getsTitle());
-            if(newDate){
-                if(event.getdStartDate()!=null && event.getdEndDate()!=null){
-                    if(event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())){
+            if (newDate) {
+                if (event.getdStartDate() != null && event.getdEndDate() != null) {
+                    if (event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())) {
                         viewholder.header_title_date.setText(event.getStartDateForPresentantion());
-                    }else{
+                    } else {
 
-                        viewholder.header_title_date.setText(event.getStartDateForPresentantion()+" - "+event.getEndDateForPresentation());
+                        viewholder.header_title_date.setText(event.getStartDateForPresentantion() + " - " + event.getEndDateForPresentation());
                     }
-                }else {
+                } else {
                     viewholder.header_title_date.setText(event.getStartDateForPresentantion());
                 }
             }
@@ -532,6 +520,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 viewholder.textViewFecha.setText(dateStringfy);
             } else {
+
                 viewholder.textViewFecha.setVisibility(View.GONE);
             }
             //Imagen
@@ -541,12 +530,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.imageView.setVisibility(View.VISIBLE);
                 Utils.displayImageLoading((event.getFieldWithUri(event.getsImage())), viewholder.imageView, viewholder.progressBarLoading);
 
-                //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
                 viewholder.imageView.setVisibility(View.GONE);
                 viewholder.layoutImage.setVisibility(View.GONE);
                 viewholder.imageView.setImageResource(R.drawable.imagen_cabecera);
-                //viewholder.imageView.setVisibility(View.GONE);
             }
 
 
@@ -564,7 +551,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                                             @Override
                                             public void onClick(View v) {
                                                 int position = (Integer) v.getTag();
-
                                                 SocialShare.share(ListEventsActivity.this, url);
                                             }
                                         }
@@ -584,32 +570,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         ImageView imageView;
         View progressBarLoading;
         View layoutImage;
-        LinearLayout linearLayoutClip;
     }
 
-    // --------------------------------------------------------------------------------------
-    // DRAWER ITEM CLICK LISTENER
-    // --------------------------------------------------------------------------------------
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position,
-                                long id) {
-            switch (position) {
-                case 0:
-                    // Ocultar menu
-
-
-                    break;
-
-                default:
-                    break;
-            }
-
-
-        }
-
-    }
 
     // --------------------------------------------------------------------------------------
     // CONFIG PAGINACION

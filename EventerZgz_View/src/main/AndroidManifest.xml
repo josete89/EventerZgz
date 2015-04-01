@@ -20,6 +20,9 @@
 
     <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
 
+    <!-- to be activated service on boot is completed -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <!-- Permiso render Map -->
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -38,8 +41,9 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDraYZiDrobvAIUe9-4FX-8DcRie9ZPjO8" />
-
+            android:value="AIzaSyAuZUaIEndARri7Eq1eKv4UNF1uPUW6084" />
+<!--Arroyo AIzaSyDraYZiDrobvAIUe9-4FX-8DcRie9ZPjO8 -->
+        <!--Prod: AIzaSyAuZUaIEndARri7Eq1eKv4UNF1uPUW6084-->
         <activity
             android:name=".activities.ListEventsActivity"
             android:label="@string/title_activity_list_event"
@@ -73,8 +77,6 @@
                 android:value=".activities.ListEventsActivity" />
         </activity>
 
-        <!-- to be activated service on boot is completed -->
-        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
         <receiver android:name="com.eventerzgz.presenter.service.AlarmReciver">
             <intent-filter>
@@ -85,6 +87,11 @@
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="effb4d4291d1152f695fb2688b057118579f0a68" />
+
+        <!--Include the AdActivity configChanges and theme. -->
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>
