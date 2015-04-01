@@ -199,29 +199,37 @@ public abstract class BasePresenter
 
                     QueryBuilder queryBuilder = new QueryBuilder().isInToday();
 
-                    /*composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
-                    composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);*/
+                   // composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
+                    //composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
                     boolean isCompleteList =  categoryIds != null
                                                 && poblations != null
                                                 && categoryIds.size() > 0
                                                 && poblations.size() > 0;
 
                     if(isCompleteList){
-                        queryBuilder.and().group()
-                                .addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS,categoryIds.get(0))
-                                .or()
-                                .addFilter(QueryBuilder.FIELD.POPULATION, QueryBuilder.COMPARATOR.EQUALS,poblations.get(0))
-                                .ungroup();
+                        queryBuilder.and().group();
+                        composeQueryLIst(queryBuilder,categoryIds, QueryBuilder.FIELD.CATEGORY);
+                        queryBuilder.or();
+                        composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
+                        queryBuilder.ungroup();
                     }else{
                         if (categoryIds != null  && categoryIds.size() > 0 ){
-                            queryBuilder.and().addFilter(QueryBuilder.FIELD.CATEGORY, QueryBuilder.COMPARATOR.EQUALS, categoryIds.get(0));
+
+                            queryBuilder.and().group();
+                            composeQueryLIst(queryBuilder, categoryIds, QueryBuilder.FIELD.CATEGORY);
+                            queryBuilder.ungroup();
+
                         }else if(poblations != null  && poblations.size() > 0){
-                            queryBuilder.and().addFilter(QueryBuilder.FIELD.POPULATION, QueryBuilder.COMPARATOR.EQUALS, poblations.get(0));
+                            queryBuilder.and().group();
+                            composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
+                            queryBuilder.ungroup();
                         }
                     }
 
 
-                    if(filterByLastUpdated) queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS,DateUtilities.getStartOfToday());
+                    if(filterByLastUpdated){
+                        queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS,DateUtilities.getStartOfToday());
+                    }
 
                     if(location.length() > 0){
                         subscriber.onNext(EventInteractor.getAllEvent(
@@ -257,7 +265,7 @@ public abstract class BasePresenter
 
         if (list != null && list.size() > 0) {
             boolean first = true;
-            queryBuilder.and().group();
+            //queryBuilder.and().group();
             for (String categoryId : list) {
                 if (!first) {
                     queryBuilder.or();
@@ -266,7 +274,7 @@ public abstract class BasePresenter
                 }
                 queryBuilder.addFilter(field, QueryBuilder.COMPARATOR.EQUALS, categoryId);
             }
-            queryBuilder.ungroup();
+            //queryBuilder.ungroup();
         }
 
         return queryBuilder;
