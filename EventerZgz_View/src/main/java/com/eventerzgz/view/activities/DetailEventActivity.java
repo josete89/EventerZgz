@@ -127,7 +127,15 @@ public class DetailEventActivity extends ActionBarActivity {
             imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
         try {
-            textViewFecha.setText(eventSelected.getEndDateForPresentation());
+            if(eventSelected.getdStartDate()!=null && eventSelected.getdEndDate()!=null){
+                if(eventSelected.getStartDateForPresentantion().equals(eventSelected.getEndDateForPresentation())){
+                    textViewFecha.setText(eventSelected.getEndDateForPresentation());
+                }else{
+                    textViewFecha.setText(eventSelected.getStartDateForPresentantion()+" - "+eventSelected.getEndDateForPresentation());
+                }
+            }else {
+                textViewFecha.setText(eventSelected.getEndDateForPresentation());
+            }
             textViewCategoria.setText(eventSelected.getCategoryList().get(0).getsTitle());
             if(eventSelected.getSubEvent().getWhere().getsAddress()!= null && !"".equals(eventSelected.getSubEvent().getWhere().getsAddress())){
                 findViewById(R.id.layoutFecha).setVisibility(View.VISIBLE);

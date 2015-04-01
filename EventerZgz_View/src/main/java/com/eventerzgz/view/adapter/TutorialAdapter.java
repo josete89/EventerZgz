@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import android.widget.Toast;
 import com.eventerzgz.model.commons.Category;
@@ -45,6 +47,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private Marker marker = null;
     private View viewCategories;
     private View viewCategoriesPush;
+    private CheckBox checkBoxAdjuntarPosicion;
     private CheckBox[] listCheckboxCat;
     private CheckBox[] listCheckboxPob;
     ArrayList<String> arrayIdsCategories = new ArrayList<>();
@@ -172,6 +175,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     private void configViewPosition(View convertView) {
         try {
             mapView = (MapView) convertView.findViewById(R.id.mapview);
+            checkBoxAdjuntarPosicion = (CheckBox)convertView.findViewById(R.id.checkBoxAdjuntarPosicion);
             mapView.onCreate(null);
             mapView.setClickable(true);
             ImageView transparentImageView = (ImageView) convertView.findViewById(R.id.transparent_image);
@@ -198,12 +202,30 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             }
         });
 
+        if(BasePresenter.getLocationFromPreferences(context) != null){
+            checkBoxAdjuntarPosicion.setChecked(true);
+        }
+
+        checkBoxAdjuntarPosicion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!checkBoxAdjuntarPosicion.isChecked()){
+                    BasePresenter.removeLocationFromPreferences(context);
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
+                }
+            }
+        });
+
     }
     // -----------------------------------------------------------------------------------------------------
     // CONFIG MAP
     // -----------------------------------------------------------------------------------------------------
 
     private void configMap(final Context context) {
+
+
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -236,11 +258,18 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
             @Override
             public void onMapClick(LatLng point) {
-                if (marker != null) {
-                    removeMarkerFromMap(marker);
+                if (checkBoxAdjuntarPosicion.isChecked()) {
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
+                    marker = addMarkerToMap(point.latitude, point.longitude);
+                    BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
+                }else{
+                    if (marker != null) {
+                        removeMarkerFromMap(marker);
+                    }
+                    Toast.makeText(context,context.getResources().getString(R.string.error_indique_check_posicion),Toast.LENGTH_SHORT).show();
                 }
-                marker = addMarkerToMap(point.latitude, point.longitude);
-                BasePresenter.saveLocationPushInPreferences(point.latitude, point.longitude, context);
             }
         });
 
@@ -278,6 +307,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
 
         listCheckboxCat = new CheckBox[categoryList.size()];
+        List<String> listaPreferences = BasePresenter.getCategories(context);
 
         for (int i = 0; i < categoryList.size(); i++) {
 
@@ -285,6 +315,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxCat[i].setId(Integer.parseInt(categoryList.get(i).getId()));
 
             listCheckboxCat[i].setText(categoryList.get(i).getsTitle());
+
+            if(listaPreferences.contains(categoryList.get(i).getId())){
+                listCheckboxCat[i].setChecked(true);
+            }
 
             layoutCategories.addView(listCheckboxCat[i]);
         }
@@ -297,6 +331,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
         listCheckboxPob = new CheckBox[populationList.size()];
 
+        List<String> listaPreferences = BasePresenter.getPoblation(context);
+
         for (int i = 0; i < populationList.size(); i++) {
 
             listCheckboxPob[i] = new CheckBox(context);
@@ -304,7 +340,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             listCheckboxPob[i].setId(Integer.parseInt(populationList.get(i).getId()));
 
             listCheckboxPob[i].setText(populationList.get(i).getsTitle());
-
+            if(listaPreferences.contains(populationList.get(i).getId())){
+                listCheckboxPob[i].setChecked(true);
+            }
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
     }

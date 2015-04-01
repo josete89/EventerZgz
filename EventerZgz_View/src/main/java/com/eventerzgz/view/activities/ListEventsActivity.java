@@ -51,7 +51,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private AdapterListEvents adapterListEvents;
     private ProgressBar progressBarLoading;
     private View emptyView;
-    private Date startDate = null;
+    private String startDate = null;
     private TextView textViewError;
 
     //Presenter
@@ -135,9 +135,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onGroupClick(ExpandableListView parent, View v,
                                             int groupPosition, long id) {
-                    // Toast.makeText(getApplicationContext(),
-                    // "Group Clicked " + listDataHeader.get(groupPosition),
-                    // Toast.LENGTH_SHORT).show();
                     return false;
                 }
             });
@@ -147,9 +144,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public void onGroupExpand(int groupPosition) {
-/*                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();*/
                 }
             });
 
@@ -158,9 +152,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public void onGroupCollapse(int groupPosition) {
-/*                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();*/
 
                 }
             });
@@ -474,7 +465,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                     inflater = (LayoutInflater)
                             getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     vi = inflater.inflate(R.layout.item_list_events_with_title, viewGroup, false);
-                    startDate = event.getdStartDate();
+                    startDate = event.getStartDateForPresentantion();
                     newDate = true;
                 }
 
@@ -501,12 +492,20 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 viewholder.header_title_date = (TextView) vi.findViewById(R.id.header_title_date);
             }
             vi.setTag(viewholder);
-            //}
-            //viewholder = (ViewHolder) vi.getTag();
+
 
             viewholder.tvTitle.setText(event.getsTitle());
             if(newDate){
-                viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                if(event.getdStartDate()!=null && event.getdEndDate()!=null){
+                    if(event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())){
+                        viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                    }else{
+
+                        viewholder.header_title_date.setText(event.getStartDateForPresentantion()+" - "+event.getEndDateForPresentation());
+                    }
+                }else {
+                    viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                }
             }
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
@@ -538,8 +537,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 //ImageLoader.getInstance().displayImage((event.getFieldWithUri(event.getsImage())), viewholder.imageView);
             } else {
-                viewholder.imageView.setVisibility(View.VISIBLE);
-                viewholder.layoutImage.setVisibility(View.VISIBLE);
+                viewholder.imageView.setVisibility(View.GONE);
+                viewholder.layoutImage.setVisibility(View.GONE);
                 viewholder.imageView.setImageResource(R.drawable.imagen_cabecera);
                 //viewholder.imageView.setVisibility(View.GONE);
             }
@@ -549,7 +548,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.tvCompartir.setTag(position);
             final String url;
             if (event.getsWeb() != null) {
-                url = "Evento enviado a través de EventerZgz: " + listEventsToShow.get(position).getsWeb();
+                url = "Información compartida a través de #EventerZgz: " + listEventsToShow.get(position).getsWeb();
             } else {
                 url = "¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle() + "\r\n" + listEventsToShow.get(position).getsDescription();
             }

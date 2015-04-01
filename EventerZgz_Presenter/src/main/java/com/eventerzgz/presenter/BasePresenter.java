@@ -175,6 +175,14 @@ public abstract class BasePresenter
         return prefs.getString(LOCATION_PUSH_PREFERENCES_KEY, "");
     }
 
+    public static void removeLocationFromPreferences(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.remove(LOCATION_PUSH_PREFERENCES_KEY);
+        editor.commit();
+    }
+
 
 
     public static void getEventsByPreferencesInOtherThread (final Context context, final boolean filterByLastUpdated,Subscriber<List<Event>> subscriber){

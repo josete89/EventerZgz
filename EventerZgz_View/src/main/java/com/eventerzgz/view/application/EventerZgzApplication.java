@@ -5,6 +5,7 @@ package com.eventerzgz.view.application;
  */
 
 import android.app.Application;
+import com.crashlytics.android.Crashlytics;
 import com.eventerzgz.presenter.service.AlarmReciver;
 import com.eventerzgz.view.R;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -34,6 +35,7 @@ public class EventerZgzApplication  extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Crashlytics.start(this);
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.imagen_cabecera) // resource or drawable
