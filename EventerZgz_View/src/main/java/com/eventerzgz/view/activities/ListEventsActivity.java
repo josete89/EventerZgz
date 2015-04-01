@@ -135,9 +135,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onGroupClick(ExpandableListView parent, View v,
                                             int groupPosition, long id) {
-                    // Toast.makeText(getApplicationContext(),
-                    // "Group Clicked " + listDataHeader.get(groupPosition),
-                    // Toast.LENGTH_SHORT).show();
                     return false;
                 }
             });
@@ -147,9 +144,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public void onGroupExpand(int groupPosition) {
-/*                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();*/
                 }
             });
 
@@ -158,9 +152,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 @Override
                 public void onGroupCollapse(int groupPosition) {
-/*                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();*/
 
                 }
             });
@@ -505,18 +496,37 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
             viewholder.tvTitle.setText(event.getsTitle());
             if(newDate){
-                viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                if(event.getdStartDate()!=null && event.getdEndDate()!=null){
+                    if(event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())){
+                        viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                    }else{
+
+                        viewholder.header_title_date.setText(event.getStartDateForPresentantion()+" - "+event.getEndDateForPresentation());
+                    }
+                }else {
+                    viewholder.header_title_date.setText(event.getStartDateForPresentantion());
+                }
             }
             try {
                 viewholder.tvLugar.setText(event.getSubEvent().getWhere().getsTitle());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (event.getdEndDate() != null) {
-                String dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
-                viewholder.textViewFecha.setText(dateStringfy);
+            if(event.getdStartDate()!=null && event.getdEndDate()!=null){
+                if(event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())) {
+                    String dateStringfy = String.format("Fecha: %s", event.getStartDateForPresentantion());
+                    viewholder.textViewFecha.setText(dateStringfy);
+                }else {
+                    String dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
+                    viewholder.textViewFecha.setText(dateStringfy);
+                }
             } else {
-                viewholder.textViewFecha.setVisibility(View.GONE);
+                if(event.getdEndDate()!=null) {
+                    String dateStringfy = String.format("Fecha: %s", event.getEndDateForPresentation());
+                    viewholder.textViewFecha.setText(dateStringfy);
+                }else{
+                    viewholder.textViewFecha.setVisibility(View.GONE);
+                }
             }
             //Imagen
             //------
