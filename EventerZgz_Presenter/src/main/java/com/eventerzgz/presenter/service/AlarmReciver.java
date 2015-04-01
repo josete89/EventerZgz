@@ -38,7 +38,7 @@ public class AlarmReciver  extends BroadcastReceiver{
         }
 
 
-        BasePresenter.getEventsByPreferencesInOtherThread(context, new Subscriber<List<Event>>() {
+        BasePresenter.getEventsByPreferencesInOtherThread(context,true, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
                 AlarmReciver.setAlarm(context);
@@ -80,7 +80,7 @@ public class AlarmReciver  extends BroadcastReceiver{
 
         final int IC_LAUNCHER = 0x7f020078;
 
-        PendingIntent contentIntent = null;
+        PendingIntent contentIntent;
 
         if(event == null){
 

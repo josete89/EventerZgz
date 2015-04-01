@@ -26,7 +26,7 @@ public class QueryBuilder {
         LAST_UPDATED("lastUpdated"),
         START_DATE("startDate"),
         END_DATE("endDate"),
-        CATEGORY("subtemas.id"),
+        CATEGORY("temas.id"),
         POPULATION("poblacion.id"),
         TITLE("title");
 
@@ -65,6 +65,13 @@ public class QueryBuilder {
     public QueryBuilder startToday() {
         String today = DateUtilities.getStartOfToday();
         this.addFilter(QueryBuilder.FIELD.START_DATE, QueryBuilder.COMPARATOR.GREATER_EQUALS, today);
+        return this;
+    }
+
+    public QueryBuilder isInToday() {
+        String today = DateUtilities.getStartOfToday();
+        this.addFilter(QueryBuilder.FIELD.START_DATE, COMPARATOR.LESSER_EQUALS, today);
+        this.and().addFilter(FIELD.END_DATE, COMPARATOR.GREATER_EQUALS, today);
         return this;
     }
 

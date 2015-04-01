@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.provider.CalendarContract;
 import android.util.Log;
 
+import com.eventerzgz.interactor.DateUtilities;
 import com.eventerzgz.interactor.QueryBuilder;
 import com.eventerzgz.interactor.events.EventInteractor;
 import com.eventerzgz.interactor.population.PopulationInteractor;
@@ -184,7 +185,7 @@ public abstract class BasePresenter
 
 
 
-    public static void getEventsByPreferencesInOtherThread (final Context context,Subscriber<List<Event>> subscriber){
+    public static void getEventsByPreferencesInOtherThread (final Context context, final boolean filterByLastUpdated,Subscriber<List<Event>> subscriber){
 
         Observable.create(new Observable.OnSubscribe<List<Event>>() {
             @Override
@@ -202,7 +203,7 @@ public abstract class BasePresenter
                     composeQueryLIst(queryBuilder, poblations, QueryBuilder.FIELD.POPULATION);
 
 
-                    queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS, "2015-03-10T00:00:00Z");
+                    if(filterByLastUpdated) queryBuilder.and().addFilter(QueryBuilder.FIELD.LAST_UPDATED, QueryBuilder.COMPARATOR.GREATER_EQUALS,DateUtilities.getStartOfToday());
 
                     if(location.length() > 0){
                         subscriber.onNext(EventInteractor.getAllEvent(

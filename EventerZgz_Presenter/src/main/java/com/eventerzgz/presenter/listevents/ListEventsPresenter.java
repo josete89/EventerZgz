@@ -65,7 +65,7 @@ public class ListEventsPresenter extends BasePresenter {
 
 
     public void getEventsByUserPreferences(Context context){
-        BasePresenter.getEventsByPreferencesInOtherThread(context,new Subscriber<List<Event>>() {
+        BasePresenter.getEventsByPreferencesInOtherThread(context,false,new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
 
@@ -96,7 +96,7 @@ public class ListEventsPresenter extends BasePresenter {
     }
 
     public void getEventsByCategories(String... categoryIds) {
-        QueryBuilder queryBuilder = new QueryBuilder().fromToday();
+        QueryBuilder queryBuilder = new QueryBuilder().isInToday();
         if (categoryIds != null && categoryIds.length > 0) {
             boolean first = true;
             queryBuilder.and().group();
