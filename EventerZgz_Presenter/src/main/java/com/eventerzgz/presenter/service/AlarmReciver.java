@@ -1,5 +1,6 @@
 package com.eventerzgz.presenter.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -38,7 +39,7 @@ public class AlarmReciver  extends BroadcastReceiver{
         }
 
 
-        BasePresenter.getEventsByPreferencesInOtherThread(context,true, new Subscriber<List<Event>>() {
+        BasePresenter.getEventsByPreferencesInOtherThread(context, true, new Subscriber<List<Event>>() {
             @Override
             public void onCompleted() {
                 AlarmReciver.setAlarm(context);
@@ -56,10 +57,10 @@ public class AlarmReciver  extends BroadcastReceiver{
 
                     if (events.size() == 1) {
                         Event event = events.get(0);
-                        deliverNotification(context, event.getsTitle(), event.getId(), event);
+                        deliverNotification(context, event.getsTitle(), event.getId(), event, null);
 
                     } else {
-                        deliverNotification(context, " Tienes " + events.size() + " eventos nuevos", events.size() + "", null);
+                        deliverNotification(context, " Tienes " + events.size() + " eventos nuevos", events.size() + "", null, events);
                     }
 
                 }
@@ -75,7 +76,7 @@ public class AlarmReciver  extends BroadcastReceiver{
     }
 
 
-    public void deliverNotification(Context context,String title,String sId,Event event)
+    public void deliverNotification(Context context,String title,String sId,Event event,List<Event> eventList)
     {
 
         final int IC_LAUNCHER = 0x7f020078;
@@ -85,7 +86,13 @@ public class AlarmReciver  extends BroadcastReceiver{
         if(event == null){
 
             Intent intent = new Intent(Intent.ACTION_MAIN, null);
-            intent.setComponent(new ComponentName("com.eventerzgz.view","com.eventerzgz.view.activities.ListEventsActivity"));
+            intent.setComponent(new ComponentName("com.eventerzgz.view", "com.eventerzgz.view.activities.ListEventsActivity"));
+            if(eventList != null && eventList instanceof  ArrayList){
+                intent.putExtra("list", (ArrayList<Event>) eventList);
+            }else{
+                Log.e(TAG,"Tipo no serializable");
+            }
+
             contentIntent = PendingIntent.getActivity(context, 0,intent , 0);
 
         }else{
@@ -132,6 +139,7 @@ public class AlarmReciver  extends BroadcastReceiver{
 
         if(!alarmUp){
 
+
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmReciver.class);
             PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 1234, intent, 0);
@@ -143,8 +151,8 @@ public class AlarmReciver  extends BroadcastReceiver{
             //RTC -> Real Time Count
             alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, alarmIntent);
 
-      /*  alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
-                30 * 1000, alarmIntent);*/
+        //alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() +
+        //        30 * 1000, alarmIntent);
         }
 
 
