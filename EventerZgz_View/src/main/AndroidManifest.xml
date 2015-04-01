@@ -41,8 +41,9 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDraYZiDrobvAIUe9-4FX-8DcRie9ZPjO8" />
-
+            android:value="AIzaSyAuZUaIEndARri7Eq1eKv4UNF1uPUW6084" />
+<!--Arroyo AIzaSyDraYZiDrobvAIUe9-4FX-8DcRie9ZPjO8 -->
+        <!--Prod: AIzaSyAuZUaIEndARri7Eq1eKv4UNF1uPUW6084-->
         <activity
             android:name=".activities.ListEventsActivity"
             android:label="@string/title_activity_list_event"

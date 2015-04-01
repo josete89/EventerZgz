@@ -254,7 +254,7 @@ public class DetailEventActivity extends ActionBarActivity {
                 if (eventSelected.getsWeb() != null) {
                     url = eventSelected.getsTitle()+" #EventerZgz: " + eventSelected.getsWeb();
                 } else {
-                    url = "¡¿Qué te parece este evento?! #EventerZgz\r\n" + eventSelected.getsTitle() + "\r\n" + eventSelected.getsDescription();
+                    url = "¡¿Qué te parece este evento?! #EventerZgz\r\n" + eventSelected.getsTitle() + "\r\n" + Html.fromHtml(eventSelected.getsDescription());
                 }
                 SocialShare.share(DetailEventActivity.this, url);
                 break;
