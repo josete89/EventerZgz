@@ -67,6 +67,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     public TutorialAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+
         presenter.getCategories();
         presenter.getPopulation();
     }
@@ -108,6 +109,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                 case VIEW2:
                     convertView = mInflater.inflate(R.layout.tuto_step2, null);
                     viewCategories = convertView;
+                    viewCategories.findViewById(R.id.progressBarLoadingTut2).setVisibility(View.VISIBLE);
                     configViewStart(convertView);
                     break;
                 case VIEW3:
@@ -117,6 +119,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                 case VIEW4:
                     convertView = mInflater.inflate(R.layout.tuto_step4, null);
                     viewCategoriesPush = convertView;
+                    viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.VISIBLE);
                     configViewFinish(convertView);
                     Log.e("TAG", "2");
                     break;
@@ -139,20 +142,22 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             public void onClick(View view) {
                 // GUARDAR DATOS //
 
-                // CATEGORIAS //
-                for (int i = 0; i < listCheckboxCat.length; i++) {
-                    if (listCheckboxCat[i].isChecked()) {
-                        arrayIdsCategories.add("" + listCheckboxCat[i].getId());
+                if(listCheckboxCat!=null) {
+                    // CATEGORIAS //
+                    for (int i = 0; i < listCheckboxCat.length; i++) {
+                        if (listCheckboxCat[i].isChecked()) {
+                            arrayIdsCategories.add("" + listCheckboxCat[i].getId());
+                        }
                     }
                 }
-
                 // POBLACION //
-                for (int i = 0; i < listCheckboxPob.length; i++) {
-                    if (listCheckboxPob[i].isChecked()) {
-                        arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
+                if(listCheckboxPob!=null) {
+                    for (int i = 0; i < listCheckboxPob.length; i++) {
+                        if (listCheckboxPob[i].isChecked()) {
+                            arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
+                        }
                     }
                 }
-
                 BasePresenter.saveCategoriesSelectedInPreferences(arrayIdsCategories, context);
                 BasePresenter.savePoblationSelectedInPreferences(arrayIdsCategoriesPob, context);
 
@@ -306,6 +311,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     @Override
     public void fechedCategories(List<Category> categoryList) {
         Log.i("TAG", "Category list size: " + categoryList.size());
+        viewCategories.findViewById(R.id.progressBarLoadingTut2).setVisibility(View.GONE);
         emptyViewCategories = viewCategories.findViewById(R.id.emptyView);
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
 
@@ -336,6 +342,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
     @Override
     public void fechedPopulation(List<Population> populationList) {
+        viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.GONE);
         emptyViewPopulation = viewCategoriesPush.findViewById(R.id.emptyView);
 
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);

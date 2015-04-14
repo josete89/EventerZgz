@@ -1,10 +1,5 @@
 package com.eventerzgz.presenter.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
-
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,8 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.eventerzgz.model.event.Event;
 import com.eventerzgz.presenter.BasePresenter;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
+
 import rx.Subscriber;
 
 /**
@@ -109,6 +111,8 @@ public class AlarmReciver  extends BroadcastReceiver{
                         .setSmallIcon(IC_LAUNCHER)
                         .setContentTitle("EventerZgz")
                         .setContentText(title);
+
+        mBuilder.setAutoCancel(true);
 
         mBuilder.setContentIntent(contentIntent);
 

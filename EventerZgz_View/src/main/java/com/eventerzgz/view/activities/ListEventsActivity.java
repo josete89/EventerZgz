@@ -67,6 +67,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private List<Event> allEventsList;
     private List<Event> filterEventsList;
     private List<Category> categoryList;
+    private String categoryLoaded = "Tus eventos";
+    private int groupLoaded;
+    private String categoryLoadedPrevious;
+    private int groupLoadedPrevious;
 
     // Menu lateral
     // -------------
@@ -101,9 +105,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         //---------
         showLoading();
         Bundle extras = getIntent().getExtras();
-        if(extras != null && extras.containsKey("list")){
+        if (extras != null && extras.containsKey("list")) {
             this.fetchedEvents((List<Event>) extras.getSerializable("list"));
-        }else{
+        } else {
             listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         }
 
@@ -166,18 +170,23 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-
+                    groupLoaded = groupPosition;
                     switch (groupPosition) {
                         case 0:
+
                             switch (childPosition) {
                                 case 0:
+
+                                    categoryLoaded = "Hoy";
                                     searchToday();
                                     break;
                                 case 1:
+                                    categoryLoaded = "Mañana";
                                     searchTomorrow();
 
                                     break;
                                 case 2:
+                                    categoryLoaded = "Esta semana";
                                     searchWeek();
                                     break;
 
@@ -189,7 +198,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                             if (ListEventsActivity.this.populationList != null && ListEventsActivity.this.populationList.size() > 0
                                     && ListEventsActivity.this.populationList.get(childPosition) != null) {
-
+                                categoryLoaded = ListEventsActivity.this.populationList.get(childPosition).getsTitle();
                                 searchPopulation(ListEventsActivity.this.populationList.get(childPosition).getId());
 
                             }
@@ -199,6 +208,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                             List<Category> categoryList = getCategoryList();
 
                             if (categoryList.get(childPosition) != null) {
+                                categoryLoaded = categoryList.get(childPosition).getsTitle();
                                 searchCategory(categoryList.get(childPosition).getId());
                             }
 
@@ -363,6 +373,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         }
 
         if (listEvents.size() > 0) {
+            categoryLoadedPrevious = categoryLoaded;
+            setTitleActionBar(categoryLoaded);
             refreshListEvents(listEvents);
         } else {
             filterSearch = false;
@@ -374,6 +386,13 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         }
 
 
+    }
+
+    //-----------------------------------------------------------------
+    // SET TITLE ACTION BAR
+    //-----------------------------------------------------------------
+    private void setTitleActionBar(String title) {
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -405,11 +424,15 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     public void error(String sMessage) {
 
         hideLoading();
-        refreshListEvents(getAllEventsList());
+        if(allEventsList!=null) {
+            refreshListEvents(allEventsList);
+        }else{
+            emptyView.setVisibility(View.VISIBLE);
+        }
         if (sMessage != null && !sMessage.isEmpty()) {
             Toast.makeText(ListEventsActivity.this, sMessage, Toast.LENGTH_SHORT).show();
         }
-        //emptyView.setVisibility(View.VISIBLE);
+        
         textViewError.setText(sMessage);
     }
 
@@ -418,12 +441,20 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // REFRESH LIST ADAPTER
     //-------------------------------------------------------------------------
     private void refreshListEvents(List<Event> listEvents) {
-        listEventsToShow = listEvents;
+        if(listEventsToShow!=null) {
+            listEventsToShow.clear();
+        }else{
+            listEventsToShow = new ArrayList<>();
+        }
+        if(listEvents!=null) {
+            listEventsToShow.addAll(listEvents);
+        }
         if (adapterListEvents == null) {
             adapterListEvents = new AdapterListEvents();
             listViewEvents.setAdapter(adapterListEvents);
         } else {
             adapterListEvents.notifyDataSetChanged();
+            listViewEvents.invalidateViews();
         }
     }
 
@@ -510,11 +541,16 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
                 String dateStringfy = "";
 
-                if(event.getdEndDate() != null && event.getdStartDate() != null){
-                    dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
-                }else if(event.getdEndDate() != null){
+                if (event.getdEndDate() != null && event.getdStartDate() != null) {
+                    if (event.getStartDateForPresentantion().equals(event.getEndDateForPresentation())) {
+                        dateStringfy = String.format("Fecha: %s", event.getStartDateForPresentantion());
+
+                    } else {
+                        dateStringfy = String.format("De %s a %s", event.getStartDateForPresentantion(), event.getEndDateForPresentation());
+                    }
+                } else if (event.getdEndDate() != null) {
                     dateStringfy = String.format("Termina %s", event.getEndDateForPresentation());
-                }else if (event.getdStartDate() != null){
+                } else if (event.getdStartDate() != null) {
                     dateStringfy = String.format("Empieza %s", event.getdStartDate());
                 }
 

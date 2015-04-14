@@ -16,8 +16,8 @@
     <string name="adjuntarPosicion">Deseo ver los eventos de la zona señalada</string>
     <string name="error_indique_check_posicion">Indique que desea ver los eventos de una zona</string>
 
-    <string name="title_activity_detail_event">Detalle eventos</string>
-    <string name="title_activity_list_event">Listado eventos</string>
+    <string name="title_activity_detail_event">Detalle del evento</string>
+    <string name="title_activity_list_event">Tus eventos</string>
 
     <string name="compartir">Compartir</string>
     <string name="compartircon">Compartir con: </string>
