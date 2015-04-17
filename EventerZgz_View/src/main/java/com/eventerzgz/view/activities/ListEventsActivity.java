@@ -66,7 +66,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private static List<Event> listEventsToShow;
     private List<Event> allEventsList;
     private List<Event> filterEventsList;
-    private List<Category> categoryList;
+    //private List<Category> categoryList;
+    //private List<Population> populationList;
     private String categoryLoaded = "Tus eventos";
     private int groupLoaded;
     private String categoryLoadedPrevious;
@@ -80,7 +81,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    private List<Population> populationList;
 
 
     @Override
@@ -111,8 +111,22 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         }
 
-        listEventsPresenter.getCategories();
-        listEventsPresenter.getPopulation();
+        if(EventerZgzApplication.populationList == null ||
+                EventerZgzApplication.populationList.size()==0){
+            listEventsPresenter.getPopulation();
+        }else{
+            this.fetchedPopulation(EventerZgzApplication.populationList);
+        }
+
+        if(EventerZgzApplication.categoryList == null ||
+                EventerZgzApplication.categoryList.size()==0){
+
+            listEventsPresenter.getCategories();
+        }else{
+            this.fetchedCategories(EventerZgzApplication.categoryList);
+        }
+
+
 
         // CLick Event
         // -----------
@@ -122,6 +136,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 intentDetailEvent(position);
             }
         });
+
+        //PUBLI
+        //-----
 
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -196,10 +213,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                             break;
                         case 1:
 
-                            if (ListEventsActivity.this.populationList != null && ListEventsActivity.this.populationList.size() > 0
-                                    && ListEventsActivity.this.populationList.get(childPosition) != null) {
-                                categoryLoaded = ListEventsActivity.this.populationList.get(childPosition).getsTitle();
-                                searchPopulation(ListEventsActivity.this.populationList.get(childPosition).getId());
+                            if (EventerZgzApplication.populationList != null && EventerZgzApplication.populationList.size() > 0
+                                    && EventerZgzApplication.populationList.get(childPosition) != null) {
+                                categoryLoaded = EventerZgzApplication.populationList.get(childPosition).getsTitle();
+                                searchPopulation(EventerZgzApplication.populationList.get(childPosition).getId());
 
                             }
                             break;
@@ -367,22 +384,23 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if (filterSearch) {
             setFilterEventsList(listEvents);
         } else {
-            if (listEvents.size() > 0) {
+            if (listEvents!=null && listEvents.size() > 0) {
                 setAllEventsList(listEvents);
             }
         }
 
-        if (listEvents.size() > 0) {
+        if (listEvents!=null && listEvents.size() > 0) {
             categoryLoadedPrevious = categoryLoaded;
             setTitleActionBar(categoryLoaded);
             refreshListEvents(listEvents);
         } else {
             filterSearch = false;
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result), Toast.LENGTH_SHORT).show();
-            if (allEventsList == null) {
+            if (allEventsList == null || allEventsList.size() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
+            }else {
+                refreshListEvents(getAllEventsList());
             }
-            refreshListEvents(getAllEventsList());
         }
 
 
@@ -414,7 +432,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     @Override
     public void fetchedPopulation(List<Population> populationList) {
-        this.populationList = populationList;
+        EventerZgzApplication.populationList = populationList;
         prepareListData();
         preparePopulation(populationList);
         setLateralMenu();
@@ -444,7 +462,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if(listEventsToShow!=null) {
             listEventsToShow.clear();
         }else{
-            listEventsToShow = new ArrayList<>();
+            listEventsToShow = new ArrayList<Event>();
         }
         if(listEvents!=null) {
             listEventsToShow.addAll(listEvents);
@@ -736,11 +754,11 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
 
     //SETTERS AND GETTERS
     public List<Population> getPopulationList() {
-        return populationList;
+        return EventerZgzApplication.populationList;
     }
 
     public void setPopulationList(List<Population> populationList) {
-        this.populationList = populationList;
+        EventerZgzApplication.populationList = populationList;
     }
 
     public List<Event> getAllEventsList() {
@@ -760,10 +778,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     }
 
     public List<Category> getCategoryList() {
-        return categoryList;
+        return EventerZgzApplication.categoryList;
     }
 
     public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
+        EventerZgzApplication.categoryList = categoryList;
     }
 }
