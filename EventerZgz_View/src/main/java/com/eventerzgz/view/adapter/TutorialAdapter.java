@@ -129,9 +129,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     break;
                 case VIEW4:
                     convertView = mInflater.inflate(R.layout.tuto_step4, null);
-                    if(viewCategoriesPush == null) {
                         viewCategoriesPush = convertView;
-                    }
                     viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.VISIBLE);
                     configViewFinish(convertView);
                     Log.e("TAG", "2");
@@ -369,6 +367,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         }else{
             emptyViewCategories.setVisibility(View.GONE);
         }
+
     }
 
     @Override
@@ -408,6 +407,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
         }else{
             emptyViewPopulation.setVisibility(View.GONE);
         }
+
     }
 
     @Override
