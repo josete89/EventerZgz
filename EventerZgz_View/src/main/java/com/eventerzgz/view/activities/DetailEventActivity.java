@@ -42,9 +42,7 @@ public class DetailEventActivity extends ActionBarActivity {
 
     //Data intent
     //-----------
-    private int posEventSelected;
     private Event eventSelected;
-    private boolean eventFiltered = false;
 
     // Mapa
     // ----

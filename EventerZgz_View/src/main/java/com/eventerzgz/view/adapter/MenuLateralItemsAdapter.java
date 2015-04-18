@@ -19,11 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.eventerzgz.model.commons.Category;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
-import com.eventerzgz.view.application.EventerZgzApplication;
 
 /**
  * @author jarroyo

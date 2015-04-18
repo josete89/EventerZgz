@@ -32,6 +32,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.taptwo.android.widget.TitleProvider;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,9 +104,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     public View getView(int position, View convertView, ViewGroup parent) {
         int view = getItemViewType(position);
         if (convertView == null) {
+
             switch (view) {
                 case VIEW1:
-                    convertView = mInflater.inflate(R.layout.tuto_step1, null);
+                    convertView = mInflater.inflate(R.layout.tuto_step1,null);
                     configViewStart(convertView);
                     break;
                 case VIEW2:
@@ -144,17 +148,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
                 if(listCheckboxCat!=null) {
                     // CATEGORIAS //
-                    for (int i = 0; i < listCheckboxCat.length; i++) {
-                        if (listCheckboxCat[i].isChecked()) {
-                            arrayIdsCategories.add("" + listCheckboxCat[i].getId());
+                    for (CheckBox aListCheckboxCat : listCheckboxCat) {
+                        if (aListCheckboxCat.isChecked()) {
+                            arrayIdsCategories.add("" + aListCheckboxCat.getId());
                         }
                     }
                 }
                 // POBLACION //
                 if(listCheckboxPob!=null) {
-                    for (int i = 0; i < listCheckboxPob.length; i++) {
-                        if (listCheckboxPob[i].isChecked()) {
-                            arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
+                    for (CheckBox aListCheckboxPob : listCheckboxPob) {
+                        if (aListCheckboxPob.isChecked()) {
+                            arrayIdsCategoriesPob.add("" + aListCheckboxPob.getId());
                         }
                     }
                 }
@@ -309,7 +313,8 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     @Override
-    public void fechedCategories(List<Category> categoryList) {
+    public void fechedCategories(final List<Category> categoryList) {
+
         Log.i("TAG", "Category list size: " + categoryList.size());
         viewCategories.findViewById(R.id.progressBarLoadingTut2).setVisibility(View.GONE);
         emptyViewCategories = viewCategories.findViewById(R.id.emptyView);
@@ -333,15 +338,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategories.addView(listCheckboxCat[i]);
         }
 
-        if(categoryList == null || categoryList.size()==0){
+        if(categoryList == null || categoryList.size() == 0){
             emptyViewCategories.setVisibility(View.VISIBLE);
         }else{
             emptyViewCategories.setVisibility(View.GONE);
         }
+
     }
 
     @Override
     public void fechedPopulation(List<Population> populationList) {
+
         viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.GONE);
         emptyViewPopulation = viewCategoriesPush.findViewById(R.id.emptyView);
 
@@ -364,7 +371,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
 
-        if(populationList == null || populationList.size()==0){
+        if(populationList == null || populationList.size() == 0){
             emptyViewPopulation.setVisibility(View.VISIBLE);
         }else{
             emptyViewPopulation.setVisibility(View.GONE);

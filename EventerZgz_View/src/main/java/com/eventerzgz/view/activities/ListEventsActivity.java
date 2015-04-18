@@ -70,12 +70,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private String categoryLoaded = "Tus eventos";
     private int groupLoaded;
     private String categoryLoadedPrevious;
-    private int groupLoadedPrevious;
 
     // Menu lateral
     // -------------
     private DrawerLayout menuLateral;
-    private ListView listMenuLateral;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
@@ -687,7 +685,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     public void searchPopulation(String id) {
         hideMenuAndLoad();
-        categorySearch = true;
+        this.categorySearch = true;
         listEventsPresenter.getEventsByPopulations(id);
     }
 
@@ -696,7 +694,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     public void searchCategory(String id) {
         hideMenuAndLoad();
-        categorySearch = true;
+        this.categorySearch = true;
         listEventsPresenter.getEventsByCategories(id);
     }
 
@@ -705,7 +703,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     public void searchToday() {
         hideMenuAndLoad();
-        categorySearch = true;
+        this.categorySearch = true;
         listEventsPresenter.getEventsToday();
     }
 
@@ -714,7 +712,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     public void searchTomorrow() {
         hideMenuAndLoad();
-        categorySearch = true;
+        this.categorySearch = true;
         listEventsPresenter.getEventsTomorrow();
     }
 
@@ -723,7 +721,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     // --------------------------------------------------------------------------------------
     public void searchWeek() {
         hideMenuAndLoad();
-        categorySearch = true;
+        this.categorySearch = true;
         listEventsPresenter.getEventsWeek();
     }
 
