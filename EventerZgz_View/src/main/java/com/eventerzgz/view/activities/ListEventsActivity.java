@@ -67,9 +67,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private List<Event> allEventsList;
     private List<Event> filterEventsList;
     private List<Category> categoryList;
+    private List<Population> populationList;
     private String categoryLoaded = "Tus eventos";
-    private int groupLoaded;
-    private String categoryLoadedPrevious;
 
     // Menu lateral
     // -------------
@@ -78,7 +77,6 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    private List<Population> populationList;
 
 
     @Override
@@ -109,8 +107,23 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         }
 
-        listEventsPresenter.getCategories();
+        /*if(EventerZgzApplication.populationList == null ||
+                EventerZgzApplication.populationList.size()==0){
+            listEventsPresenter.getPopulation();
+        }else{
+            this.fetchedPopulation(EventerZgzApplication.populationList);
+        }
+
+        if(EventerZgzApplication.categoryList == null ||
+                EventerZgzApplication.categoryList.size()==0){
+
+            listEventsPresenter.getCategories();
+        }else{
+            this.fetchedCategories(EventerZgzApplication.categoryList);
+        }*/
         listEventsPresenter.getPopulation();
+        listEventsPresenter.getCategories();
+
 
         // CLick Event
         // -----------
@@ -120,6 +133,9 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 intentDetailEvent(position);
             }
         });
+
+        //PUBLI
+        //-----
 
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -168,7 +184,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v,
                                             int groupPosition, int childPosition, long id) {
-                    groupLoaded = groupPosition;
+
                     switch (groupPosition) {
                         case 0:
 
@@ -194,10 +210,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                             break;
                         case 1:
 
-                            if (ListEventsActivity.this.populationList != null && ListEventsActivity.this.populationList.size() > 0
-                                    && ListEventsActivity.this.populationList.get(childPosition) != null) {
-                                categoryLoaded = ListEventsActivity.this.populationList.get(childPosition).getsTitle();
-                                searchPopulation(ListEventsActivity.this.populationList.get(childPosition).getId());
+                            if (getPopulationList() != null && getPopulationList().size() > 0
+                                    && getPopulationList().get(childPosition) != null) {
+                                categoryLoaded = getPopulationList().get(childPosition).getsTitle();
+                                searchPopulation(getPopulationList().get(childPosition).getId());
 
                             }
                             break;
@@ -365,22 +381,22 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if (filterSearch) {
             setFilterEventsList(listEvents);
         } else {
-            if (listEvents.size() > 0) {
+            if (listEvents!=null && listEvents.size() > 0) {
                 setAllEventsList(listEvents);
             }
         }
 
-        if (listEvents.size() > 0) {
-            categoryLoadedPrevious = categoryLoaded;
+        if (listEvents!=null && listEvents.size() > 0) {
             setTitleActionBar(categoryLoaded);
             refreshListEvents(listEvents);
         } else {
             filterSearch = false;
             Toast.makeText(ListEventsActivity.this, getString(R.string.no_result), Toast.LENGTH_SHORT).show();
-            if (allEventsList == null) {
+            if (allEventsList == null || allEventsList.size() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
+            }else {
+                refreshListEvents(getAllEventsList());
             }
-            refreshListEvents(getAllEventsList());
         }
 
 
@@ -442,7 +458,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if(listEventsToShow!=null) {
             listEventsToShow.clear();
         }else{
-            listEventsToShow = new ArrayList<>();
+            listEventsToShow = new ArrayList<Event>();
         }
         if(listEvents!=null) {
             listEventsToShow.addAll(listEvents);

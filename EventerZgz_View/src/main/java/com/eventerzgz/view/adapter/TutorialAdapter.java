@@ -23,6 +23,7 @@ import com.eventerzgz.presenter.tutorial.TutorialIface;
 import com.eventerzgz.presenter.tutorial.TutorialPresenter;
 import com.eventerzgz.view.R;
 import com.eventerzgz.view.activities.ListEventsActivity;
+import com.eventerzgz.view.application.EventerZgzApplication;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,9 +33,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.taptwo.android.widget.TitleProvider;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +68,10 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     public TutorialAdapter(Context context) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
+//
+        //presenter.getCategories();
+        //presenter.getPopulation();
 
-        presenter.getCategories();
-        presenter.getPopulation();
     }
 
     @Override
@@ -104,10 +103,9 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     public View getView(int position, View convertView, ViewGroup parent) {
         int view = getItemViewType(position);
         if (convertView == null) {
-
             switch (view) {
                 case VIEW1:
-                    convertView = mInflater.inflate(R.layout.tuto_step1,null);
+                    convertView = mInflater.inflate(R.layout.tuto_step1, null);
                     configViewStart(convertView);
                     break;
                 case VIEW2:
@@ -115,6 +113,15 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     viewCategories = convertView;
                     viewCategories.findViewById(R.id.progressBarLoadingTut2).setVisibility(View.VISIBLE);
                     configViewStart(convertView);
+                    /*if(EventerZgzApplication.categoryList == null ||
+                            EventerZgzApplication.categoryList.size()==0){
+
+                        presenter.getCategories();
+                    /*}else{
+                        this.fechedCategories(EventerZgzApplication.categoryList);
+                    }*/
+
+                    presenter.getCategories();
                     break;
                 case VIEW3:
                     convertView = mInflater.inflate(R.layout.tuto_step3, null);
@@ -122,13 +129,20 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     break;
                 case VIEW4:
                     convertView = mInflater.inflate(R.layout.tuto_step4, null);
-                    viewCategoriesPush = convertView;
+                        viewCategoriesPush = convertView;
                     viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.VISIBLE);
                     configViewFinish(convertView);
                     Log.e("TAG", "2");
+                    /*if(EventerZgzApplication.populationList == null ||
+                            EventerZgzApplication.populationList.size()==0){
+                        presenter.getPopulation();
+                    }else{
+                        this.fechedPopulation(EventerZgzApplication.populationList);
+                    }*/
+                    presenter.getPopulation();
                     break;
             }
-        }
+       }
 
         return convertView;
     }
@@ -140,6 +154,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     private void configViewFinish(View convertView) {
+
         Button buttonClose = (Button) convertView.findViewById(R.id.buttonFinish);
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,17 +163,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
                 if(listCheckboxCat!=null) {
                     // CATEGORIAS //
-                    for (CheckBox aListCheckboxCat : listCheckboxCat) {
-                        if (aListCheckboxCat.isChecked()) {
-                            arrayIdsCategories.add("" + aListCheckboxCat.getId());
+                    for (int i = 0; i < listCheckboxCat.length; i++) {
+                        if (listCheckboxCat[i].isChecked()) {
+                            arrayIdsCategories.add("" + listCheckboxCat[i].getId());
                         }
                     }
                 }
                 // POBLACION //
                 if(listCheckboxPob!=null) {
-                    for (CheckBox aListCheckboxPob : listCheckboxPob) {
-                        if (aListCheckboxPob.isChecked()) {
-                            arrayIdsCategoriesPob.add("" + aListCheckboxPob.getId());
+                    for (int i = 0; i < listCheckboxPob.length; i++) {
+                        if (listCheckboxPob[i].isChecked()) {
+                            arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
                         }
                     }
                 }
@@ -181,6 +196,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                 openListEvents();
             }
         });
+
     }
 
 
@@ -313,10 +329,18 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     }
 
     @Override
-    public void fechedCategories(final List<Category> categoryList) {
+    public void fechedCategories(List<Category> categoryList) {
+
+        //Guardamos en memoria
+        //--------------------
+        //EventerZgzApplication.categoryList = categoryList;
+
 
         Log.i("TAG", "Category list size: " + categoryList.size());
-        viewCategories.findViewById(R.id.progressBarLoadingTut2).setVisibility(View.GONE);
+        View loadingView = viewCategories.findViewById(R.id.progressBarLoadingTut2);
+        if(loadingView!=null) {
+            loadingView.setVisibility(View.GONE);
+        }
         emptyViewCategories = viewCategories.findViewById(R.id.emptyView);
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
 
@@ -338,7 +362,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategories.addView(listCheckboxCat[i]);
         }
 
-        if(categoryList == null || categoryList.size() == 0){
+        if(categoryList == null || categoryList.size()==0){
             emptyViewCategories.setVisibility(View.VISIBLE);
         }else{
             emptyViewCategories.setVisibility(View.GONE);
@@ -349,7 +373,14 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     @Override
     public void fechedPopulation(List<Population> populationList) {
 
-        viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4).setVisibility(View.GONE);
+        //Guardamos en memoria
+        //--------------------
+        //EventerZgzApplication.populationList = populationList;
+
+        View loadingView = viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4);
+        if(loadingView!=null) {
+            loadingView.setVisibility(View.GONE);
+        }
         emptyViewPopulation = viewCategoriesPush.findViewById(R.id.emptyView);
 
         LinearLayout layoutCategoriesPush = (LinearLayout) viewCategoriesPush.findViewById(R.id.layoutCategoriesPush);
@@ -371,11 +402,12 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
 
-        if(populationList == null || populationList.size() == 0){
+        if(populationList == null || populationList.size()==0){
             emptyViewPopulation.setVisibility(View.VISIBLE);
         }else{
             emptyViewPopulation.setVisibility(View.GONE);
         }
+
     }
 
     @Override
