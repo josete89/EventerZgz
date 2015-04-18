@@ -24,6 +24,7 @@ import com.eventerzgz.view.application.EventerZgzApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Tut2Fragment extends Fragment implements TutorialIface {
     private View viewCategories;
@@ -72,10 +73,6 @@ public class Tut2Fragment extends Fragment implements TutorialIface {
 
     @Override
     public void fechedCategories(List<Category> categoryList) {
-        //Guardamos en memoria
-        //--------------------
-        //EventerZgzApplication.categoryList = categoryList;
-
 
         Log.i("TAG", "Category list size: " + categoryList.size());
         View loadingView = viewCategories.findViewById(R.id.progressBarLoadingTut2);
@@ -86,14 +83,12 @@ public class Tut2Fragment extends Fragment implements TutorialIface {
         LinearLayout layoutCategories = (LinearLayout) viewCategories.findViewById(R.id.layoutCategories);
 
 
-        List<String> listaPreferences = BasePresenter.getCategories(Tut2Fragment.this.getActivity());
+        Set<String> listaPreferences = BasePresenter.getCategoriesInSet(Tut2Fragment.this.getActivity());
 
         for (Category aCategoryList : categoryList) {
 
             CheckBox checkBox = new CheckBox(Tut2Fragment.this.getActivity());
-
             checkBox.setId(Integer.parseInt(aCategoryList.getId()));
-
             checkBox.setText(aCategoryList.getsTitle());
 
             if (listaPreferences.contains(aCategoryList.getId())) {
@@ -105,7 +100,7 @@ public class Tut2Fragment extends Fragment implements TutorialIface {
             layoutCategories.addView(checkBox);
         }
 
-        if(categoryList == null || categoryList.size()==0){
+        if( categoryList.size()==0 ){
             emptyViewCategories.setVisibility(View.VISIBLE);
         }else{
             emptyViewCategories.setVisibility(View.GONE);

@@ -163,17 +163,17 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
 
                 if(listCheckboxCat!=null) {
                     // CATEGORIAS //
-                    for (int i = 0; i < listCheckboxCat.length; i++) {
-                        if (listCheckboxCat[i].isChecked()) {
-                            arrayIdsCategories.add("" + listCheckboxCat[i].getId());
+                    for (CheckBox aListCheckboxCat : listCheckboxCat) {
+                        if (aListCheckboxCat.isChecked()) {
+                            arrayIdsCategories.add("" + aListCheckboxCat.getId());
                         }
                     }
                 }
                 // POBLACION //
                 if(listCheckboxPob!=null) {
-                    for (int i = 0; i < listCheckboxPob.length; i++) {
-                        if (listCheckboxPob[i].isChecked()) {
-                            arrayIdsCategoriesPob.add("" + listCheckboxPob[i].getId());
+                    for (CheckBox aListCheckboxPob : listCheckboxPob) {
+                        if (aListCheckboxPob.isChecked()) {
+                            arrayIdsCategoriesPob.add("" + aListCheckboxPob.getId());
                         }
                     }
                 }
@@ -362,7 +362,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategories.addView(listCheckboxCat[i]);
         }
 
-        if(categoryList == null || categoryList.size()==0){
+        if( categoryList.size() == 0 ){
             emptyViewCategories.setVisibility(View.VISIBLE);
         }else{
             emptyViewCategories.setVisibility(View.GONE);
@@ -373,9 +373,6 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
     @Override
     public void fechedPopulation(List<Population> populationList) {
 
-        //Guardamos en memoria
-        //--------------------
-        //EventerZgzApplication.populationList = populationList;
 
         View loadingView = viewCategoriesPush.findViewById(R.id.progressBarLoadingTut4);
         if(loadingView!=null) {
@@ -402,7 +399,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
             layoutCategoriesPush.addView(listCheckboxPob[i]);
         }
 
-        if(populationList == null || populationList.size()==0){
+        if( populationList.size()==0){
             emptyViewPopulation.setVisibility(View.VISIBLE);
         }else{
             emptyViewPopulation.setVisibility(View.GONE);

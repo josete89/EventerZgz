@@ -1,13 +1,7 @@
 package com.eventerzgz.view.application;
 
-/**
- * Created by JavierArroyo on 21/3/15.
- */
-
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
-import com.eventerzgz.model.commons.Category;
-import com.eventerzgz.model.commons.Population;
 import com.eventerzgz.presenter.service.AlarmReciver;
 import com.eventerzgz.view.R;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -18,9 +12,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-import java.util.List;
-
-
 /**
  * Created by JavierArroyo on 21/3/15.
  */
@@ -29,12 +20,6 @@ public class EventerZgzApplication  extends Application {
     //Data intent
     //-----------
     public static final String INTENT_EVENT_SELECTED = "eventObject";
-
-    //DATA
-    //----
-    //public static List<Category> categoryList;
-    //public static List<Population> populationList;
-
 
     public void startService(){
         // TODO - Comprobar que no este lanzado ya

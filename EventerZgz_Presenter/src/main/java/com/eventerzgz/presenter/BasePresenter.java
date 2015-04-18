@@ -139,20 +139,28 @@ public abstract class BasePresenter
 
     public static List<String> getPoblation(Context context)
     {
-
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         Set<String> stringSet = prefs.getStringSet(POBLATION_PREFERENCES_KEY, new HashSet<String>());
-
         return new ArrayList<>(stringSet);
+    }
+
+    public static Set<String> getPoblationInSet(Context context)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        return prefs.getStringSet(POBLATION_PREFERENCES_KEY, new HashSet<String>());
     }
 
     public static List<String> getCategories(Context context)
     {
-
         SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         Set<String> stringSet = prefs.getStringSet(CATEGORIES_PREFERENCES_KEY, new HashSet<String>());
-
         return new ArrayList<>(stringSet);
+    }
+
+    public static Set<String> getCategoriesInSet(Context context)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        return  prefs.getStringSet(CATEGORIES_PREFERENCES_KEY, new HashSet<String>());
     }
 
     public static void saveLocationPushInPreferences(Double latitude,Double longuitude,Context context){
@@ -180,7 +188,7 @@ public abstract class BasePresenter
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.remove(LOCATION_PUSH_PREFERENCES_KEY);
-        editor.commit();
+        editor.apply();
     }
 
 

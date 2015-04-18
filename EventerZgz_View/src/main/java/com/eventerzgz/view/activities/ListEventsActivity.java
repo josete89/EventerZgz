@@ -107,23 +107,8 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             listEventsPresenter.getEventsByUserPreferences(getBaseContext());
         }
 
-        /*if(EventerZgzApplication.populationList == null ||
-                EventerZgzApplication.populationList.size()==0){
-            listEventsPresenter.getPopulation();
-        }else{
-            this.fetchedPopulation(EventerZgzApplication.populationList);
-        }
-
-        if(EventerZgzApplication.categoryList == null ||
-                EventerZgzApplication.categoryList.size()==0){
-
-            listEventsPresenter.getCategories();
-        }else{
-            this.fetchedCategories(EventerZgzApplication.categoryList);
-        }*/
         listEventsPresenter.getPopulation();
         listEventsPresenter.getCategories();
-
 
         // CLick Event
         // -----------
@@ -162,7 +147,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 }
             });
 
-            // Listview Group expanded listener
+           /* // Listview Group expanded listener
             expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 @Override
                 public void onGroupExpand(int groupPosition) {
@@ -176,7 +161,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 public void onGroupCollapse(int groupPosition) {
 
                 }
-            });
+            });*/
 
             // Listview on child click listener
             expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -315,10 +300,10 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
+
                     if (newText == null || newText.isEmpty()) {
                         filterSearch = false;
                         refreshListEvents(getAllEventsList());
-                    } else {
                     }
 
                     return true;
@@ -458,7 +443,7 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
         if(listEventsToShow!=null) {
             listEventsToShow.clear();
         }else{
-            listEventsToShow = new ArrayList<Event>();
+            listEventsToShow = new ArrayList<>();
         }
         if(listEvents!=null) {
             listEventsToShow.addAll(listEvents);
@@ -596,15 +581,12 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
                 url = "¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle() + "\r\n" + listEventsToShow.get(position).getsDescription();
             }
 
-            viewholder.tvCompartir
-                    .setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                int position = (Integer) v.getTag();
-                                                SocialShare.share(ListEventsActivity.this, url);
-                                            }
-                                        }
-                    );
+            viewholder.tvCompartir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SocialShare.share(ListEventsActivity.this, url);
+                }
+            });
 
             return vi;
         }

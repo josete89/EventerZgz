@@ -133,20 +133,7 @@ public class EventInteractor extends BaseInteractor{
 
     }
 
-    public void createEvent(Event objEvent)
-    {
 
-    }
-
-    public void updateEvent(Event objEvent)
-    {
-
-    }
-
-    public void deleteEvent(String sId)
-    {
-
-    }
 
     public static List<Event> getAllEvent(EventFilter... eventFilter) throws EventZgzException
     {
@@ -155,9 +142,6 @@ public class EventInteractor extends BaseInteractor{
 
     }
 
-    public void findById(String sId){
-
-    }
 
 
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,14 @@ import com.eventerzgz.view.application.EventerZgzApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Tut4Fragment extends Fragment implements TutorialIface {
 
     private View viewPopulation;
     private View emptyViewPopulation;
     private View loading;
-    private CheckBox[] listCheckboxPob;
+    private List<CheckBox> listCheckboxPob;
     private List<CheckBox> listCheckboxCat;
 
     private final TutorialPresenter presenter = new TutorialPresenter(this);
@@ -96,9 +98,8 @@ public class Tut4Fragment extends Fragment implements TutorialIface {
 
     @Override
     public void fechedPopulation(List<Population> populationList) {
-        //Guardamos en memoria
-        //--------------------
-        //EventerZgzApplication.populationList = populationList;
+
+        Log.i("EventerZgz","Population list size -> "+populationList.size());
 
         View loadingView = viewPopulation.findViewById(R.id.progressBarLoadingTut4);
         if (loadingView != null) {
@@ -108,24 +109,26 @@ public class Tut4Fragment extends Fragment implements TutorialIface {
 
         LinearLayout layoutCategoriesPush = (LinearLayout) viewPopulation.findViewById(R.id.layoutCategoriesPush);
 
-        listCheckboxPob = new CheckBox[populationList.size()];
+        listCheckboxPob = new ArrayList<>(populationList.size());
 
-        List<String> listaPreferences = BasePresenter.getPoblation(Tut4Fragment.this.getActivity());
+        Set<String> listaPreferences = BasePresenter.getPoblationInSet(Tut4Fragment.this.getActivity());
 
-        for (int i = 0; i < populationList.size(); i++) {
+        for (Population aPopulationList : populationList) {
 
-            listCheckboxPob[i] = new CheckBox(Tut4Fragment.this.getActivity());
+            CheckBox checkBox = new CheckBox(Tut4Fragment.this.getActivity());
 
-            listCheckboxPob[i].setId(Integer.parseInt(populationList.get(i).getId()));
+            checkBox.setId(Integer.parseInt(aPopulationList.getId()));
+            checkBox.setText(aPopulationList.getsTitle());
 
-            listCheckboxPob[i].setText(populationList.get(i).getsTitle());
-            if (listaPreferences.contains(populationList.get(i).getId())) {
-                listCheckboxPob[i].setChecked(true);
+            if (listaPreferences.contains(aPopulationList.getId())) {
+                checkBox.setChecked(true);
             }
-            layoutCategoriesPush.addView(listCheckboxPob[i]);
+            layoutCategoriesPush.addView(checkBox);
+
+            listCheckboxPob.add(checkBox);
         }
 
-        if (populationList == null || populationList.size() == 0) {
+        if ( populationList.size() == 0 ) {
             emptyViewPopulation.setVisibility(View.VISIBLE);
         } else {
             emptyViewPopulation.setVisibility(View.GONE);

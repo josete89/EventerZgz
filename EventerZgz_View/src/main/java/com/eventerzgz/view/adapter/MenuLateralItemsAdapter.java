@@ -57,21 +57,17 @@ public class MenuLateralItemsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup arg2) {
-		LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+		LayoutInflater mInflater;
+		TextView textViewCategoria;
+
+		mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_menu_lateral, null);
 		}
 
-		TextView textViewCategoria = (TextView) convertView.findViewById(R.id.textViewCategoria);
+		textViewCategoria = (TextView) convertView.findViewById(R.id.textViewCategoria);
 
-		switch (position) {
-		case 0:
-
-			break;
-
-		default:
-			break;
-		}
 
 		textViewCategoria.setText(categoryList.get(position).getsTitle().trim());
         textViewCategoria.setTag(position);
