@@ -156,4 +156,21 @@ public class Tut3Fragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (mapView != null) {
+            mapView.onLowMemory();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        if (mapView != null) {
+            mapView.onResume();
+        }
+        super.onResume();
+    }
+
+
 }

@@ -26,8 +26,8 @@ android {
         applicationId "com.eventerzgz.view"
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
     }
     lintOptions {
         abortOnError false

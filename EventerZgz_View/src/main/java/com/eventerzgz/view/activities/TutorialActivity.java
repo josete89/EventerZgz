@@ -1,7 +1,5 @@
 package com.eventerzgz.view.activities;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,10 +9,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-
 import android.widget.CheckBox;
+
 import com.eventerzgz.view.R;
-import com.eventerzgz.view.adapter.TutorialAdapter;
+
+import java.util.List;
 
 
 /**
@@ -153,21 +152,6 @@ public class TutorialActivity extends ActionBarActivity implements
         }
     }
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        if (TutorialAdapter.mapView != null) {
-            TutorialAdapter.mapView.onLowMemory();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        if (TutorialAdapter.mapView != null) {
-            TutorialAdapter.mapView.onResume();
-        }
-        super.onResume();
-    }
 
 
     //GETTERS AND SETTERS

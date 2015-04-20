@@ -250,7 +250,7 @@ public class DetailEventActivity extends ActionBarActivity {
             case R.id.btnShare:
                 String url;
                 if (eventSelected.getsWeb() != null) {
-                    url = eventSelected.getsTitle()+" #EventerZgz: " + eventSelected.getsWeb();
+                    url = eventSelected.getsTitle()+"#EventerZgz: " + eventSelected.getsWeb();
                 } else {
                     url = "¡¿Qué te parece este evento?! #EventerZgz\r\n" + eventSelected.getsTitle() + "\r\n" + Html.fromHtml(eventSelected.getsDescription());
                 }

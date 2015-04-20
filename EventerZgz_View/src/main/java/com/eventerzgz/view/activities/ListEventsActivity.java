@@ -7,6 +7,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -576,9 +577,17 @@ public class ListEventsActivity extends ActionBarActivity implements ListEventsI
             viewholder.tvCompartir.setTag(position);
             final String url;
             if (event.getsWeb() != null) {
-                url = "Información compartida a través de #EventerZgz: " + listEventsToShow.get(position).getsWeb();
+                url = "#EventerZgz: " + listEventsToShow.get(position).getsWeb();
             } else {
-                url = "¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle() + "\r\n" + listEventsToShow.get(position).getsDescription();
+                if(listEventsToShow.get(position).getsTitle()!=null && listEventsToShow.get(position).getsDescription()!=null){
+                    url = "#EventerZgz ¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle()+"\r\n" + Html.fromHtml(listEventsToShow.get(position).getsDescription());
+                }
+                else if(listEventsToShow.get(position).getsTitle()!=null){
+                    url = "#EventerZgz ¡¿Qué te parece este evento?!\r\n" + listEventsToShow.get(position).getsTitle() ;
+                }else{
+                    url = "#EventerZgz";
+                }
+
             }
 
             viewholder.tvCompartir.setOnClickListener(new View.OnClickListener() {
