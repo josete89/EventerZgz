@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.eventerzgz.presenter.BasePresenter;
 import com.eventerzgz.view.R;
+import com.eventerzgz.view.utils.TextViewEventer;
 
 public class Tut1Fragment extends Fragment {
     @Override
@@ -18,6 +19,23 @@ public class Tut1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.tuto_step1, container, false);
+
+        TextViewEventer textViewWelcome = (TextViewEventer)rootView.findViewById(R.id.textViewWelcome);
+        TextViewEventer textViewSettings = (TextViewEventer)rootView.findViewById(R.id.textViewSettings);
+
+        textViewWelcome.setmDuration(3000);
+        textViewWelcome.setIsVisible(true);
+        textViewSettings.setmDuration(3000);
+        textViewSettings.setIsVisible(true);
+
+        textViewWelcome
+                .setText(getString(R.string.welcome));
+        textViewWelcome.hide();
+        textViewWelcome.toggle();
+        textViewSettings
+                .setText(getString(R.string.configure));
+        textViewSettings.hide();
+        textViewSettings.toggle();
 
         Button buttonClose = (Button) rootView.findViewById(R.id.buttonClose);
         buttonClose.setOnClickListener(new View.OnClickListener() {

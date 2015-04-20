@@ -66,6 +66,7 @@ public class TutorialActivity extends ActionBarActivity implements
 
         // Adding Tabs
         for (String tab_name : tabs) {
+
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }

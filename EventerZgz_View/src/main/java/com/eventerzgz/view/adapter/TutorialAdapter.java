@@ -125,7 +125,7 @@ public class TutorialAdapter extends BaseAdapter implements TitleProvider, Tutor
                     break;
                 case VIEW3:
                     convertView = mInflater.inflate(R.layout.tuto_step3, null);
-                    configViewPosition(convertView);
+                    //configViewPosition(convertView);
                     break;
                 case VIEW4:
                     convertView = mInflater.inflate(R.layout.tuto_step4, null);
